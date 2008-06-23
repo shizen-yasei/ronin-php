@@ -4,15 +4,6 @@ Manifest.txt
 README.txt
 Rakefile
 lib/ronin/php.rb
+lib/ronin/php/lfi.rb
 lib/ronin/php/rfi.rb
-lib/ronin/php/rpc.rb
-lib/ronin/php/rpc/batch.rb
-lib/ronin/php/rpc/client.rb
-lib/ronin/php/rpc/message.rb
-lib/ronin/php/rpc/server.rb
 test/test_ronin.rb
-static/php_console/css/layout.css
-static/php_console/jquery-1.2.1.min.js
-static/php_console/php_console.js
-static/php_console/php_console.txt
-static/rpc_server.txt

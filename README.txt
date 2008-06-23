@@ -1,34 +1,28 @@
-Ronin PHP
-    by Postmodern Modulus III
-    http://rubyforge.net/projects/ronin/
+= Ronin PHP
+
+* Postmodern Modulus III
+* http://ronin.rubyforge.org/
 
 == DESCRIPTION:
 
-Ronin is a ruby development environment geared towards information security
-and data exploration tasks. Ronin allows for the rapid development and
-distribution of code over most Source-Code-Management system.
+Ronin PHP is a Ruby library for Ronin that provides support for PHP
+related security tasks.
 
-== PHILOSOPHY:
-
-Ronin's philosophy was heavily influenced by the Hackety Manifesto written 
-by why the lucky stiff. The development of Ronin was done with the mindset
-that information security and data exploration programming should be fun, not
-tedious and complex. Furthermore, well written tools and API shouldn't cost
-exorbent sums of money nor come with incumbering licenses that restricts the
-users abilities. Such tools and APIs should be easily accessible to all and
-promote sharing of works created within them.
+Ronin is a Ruby platform designed for information security and data
+exploration tasks. Ronin allows for the rapid development and distribution
+of code over many of the common Source-Code-Management (SCM) systems.
 
 == FEATURES/PROBLEMS:
 
 == INSTALL:
 
-sudo gem install ronin_php
+sudo gem install ronin-php
 
 == LICENSE:
 
 The MIT License
 
-Copyright (c) 2006-2007 Hal Brodigan
+Copyright (c) 2006-2008 Hal Brodigan
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
