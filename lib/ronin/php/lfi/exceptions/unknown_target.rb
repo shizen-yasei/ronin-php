@@ -21,8 +21,11 @@
 #++
 #
 
-require 'ronin/php/lfi/exceptions'
-require 'ronin/php/lfi/extensions'
-require 'ronin/php/lfi/target'
-require 'ronin/php/lfi/file'
-require 'ronin/php/lfi/lfi'
+module Ronin
+  module PHP
+    class LFI
+      class UnknownTarget < RuntimeError
+      end
+    end
+  end
+end

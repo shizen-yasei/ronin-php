@@ -21,8 +21,4 @@
 #++
 #
 
-require 'ronin/php/lfi/exceptions'
-require 'ronin/php/lfi/extensions'
-require 'ronin/php/lfi/target'
-require 'ronin/php/lfi/file'
-require 'ronin/php/lfi/lfi'
+require 'ronin/php/lfi/exceptions/unknown_target'

@@ -21,8 +21,38 @@
 #++
 #
 
-require 'ronin/php/lfi/exceptions'
-require 'ronin/php/lfi/extensions'
-require 'ronin/php/lfi/target'
-require 'ronin/php/lfi/file'
 require 'ronin/php/lfi/lfi'
+
+module URI
+  class HTTP < Generic
+
+    def test_lfi(options={})
+      up = ((options[:up]) || 0..Ronin::PHP::LFI::MAX_UP)
+      vulns = []
+
+      query_params.each_key do |param|
+        lfi = Ronin::PHP::LFI.new(self,param)
+
+        up.each do |n|
+          lfi.up = n
+
+          if lfi.vulnerable?(options)
+            vulns << lfi
+            break
+          end
+        end
+      end
+
+      return vulns
+    end
+
+    def lfi(options={})
+      test_lfi(options).first
+    end
+
+    def has_lfi?(options={})
+      !(test_lfi(options).empty?)
+    end
+
+  end
+end
