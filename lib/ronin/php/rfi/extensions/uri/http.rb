@@ -21,5 +21,34 @@
 #++
 #
 
-require 'ronin/php/rfi/extensions'
 require 'ronin/php/rfi/rfi'
+require 'ronin/extensions/uri'
+
+module URI
+  class HTTP < Generic
+
+    def test_rfi(options={})
+      vulns = []
+
+      query_params.each_key do |param|
+        rfi = Ronin::PHP::RFI.new(self,param)
+
+        if rfi.vulnerable?(options)
+          vulns << rfi
+          break
+        end
+      end
+
+      return vulns
+    end
+
+    def rfi(options={})
+      test_rfi(options).first
+    end
+
+    def has_rfi?(options={})
+      !(test_rfi(options).empty?)
+    end
+
+  end
+end

@@ -21,5 +21,4 @@
 #++
 #
 
-require 'ronin/php/rfi/extensions'
-require 'ronin/php/rfi/rfi'
+require 'ronin/php/rfi/extensions/uri/http'
