@@ -53,13 +53,17 @@ class ConsoleService extends Service
   {
     $name = $params[0];
     $arguments = $params[1];
+    $call_arguments = array();
 
-    if ($arguments == null)
+    if ($arguments != null)
     {
-      $arguments = array();
+      foreach(array_keys($arguments) as $index)
+      {
+        $call_arguments[$index] = "\$arguments[{$index}]";
+      }
     }
 
-    $call_string = "return {$name}(" . join($arguments, ", ") . ");";
+    $call_string = "return {$name}(" . join($call_arguments, ", ") . ");";
     $ret = eval($call_string);
 
     if (($name == 'include' || $name == 'require') && $ret != false)
@@ -111,7 +115,7 @@ class RPCServer
 
   function load_session()
   {
-    foreach ($this->services as $name => $service)
+    foreach (array_values($this->services) as $service)
     {
       $service->load_session();
     }
@@ -159,8 +163,10 @@ if (isset($_REQUEST['rpc_call']))
 
   $server->load_session();
 
+  $xml = base64_decode(urldecode($_REQUEST['rpc_call']));
+
   echo('<rpc>');
-  echo($server->call_method(base64_decode($_REQUEST['rpc_call'])));
+  echo($server->call_method($xml));
   echo('</rpc>');
 
   $server->save_session();
