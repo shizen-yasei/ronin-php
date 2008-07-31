@@ -21,29 +21,28 @@
 #++
 #
 
-require 'ronin/rpc/php/client'
+require 'ronin/rpc/exceptions/response_missing'
+require 'ronin/rpc/response'
+
+require 'xmlrpc/client'
 
 module Ronin
   module RPC
     module PHP
-      class Shell < Client
+      class Response < RPC::Response
 
-        def exec(program,*args)
-          call(:exec,program,*args)
+        def Response.parser
+          @@parser ||= XMLRPC::XMLParser::REXMLStreamParser.new
         end
 
-        def system(program,*args)
-          puts(exec(progra,*args))
-        end
+        def decode
+          response = @contents[/<rpc>.*<\/rpc>/m]
 
-        def <<(command)
-          exec(command)
-        end
+          unless response
+            raise(ResponseMissing,"failed to receive a valid RPC method response",caller)
+          end
 
-        protected
-
-        def method_missing(sym,*args)
-          call(:exec,sym,*args)
+          return Response.parser.parseMethodResponse(response)
         end
 
       end

@@ -22,10 +22,11 @@
 #
 
 require 'ronin/rpc/php/call'
+require 'ronin/rpc/php/response'
+require 'ronin/rpc/php/console'
 require 'ronin/rpc/client'
-require 'ronin/web'
-
-require 'xmlrpc/client'
+require 'ronin/rpc/shell'
+require 'ronin/network/http'
 
 module Ronin
   module RPC
@@ -35,11 +36,30 @@ module Ronin
         # URL of RPC Server
         attr_reader :url
 
+        # Proxy to send requests through
+        attr_accessor :proxy
+
+        # User-Agent string to send with each request
+        attr_accessor :user_agent
+
+        # Provides a console service
+        service :console, Console
+
+        # Provides a shell service
+        service :shell, Shell
+
         def initialize(url,options={})
           @url = url
 
-          @agent = Web.agent(options)
-          @parser = XMLRPC::XMLParser::REXMLStreamParser.new
+          @proxy = options[:proxy]
+
+          if options[:user_agent_alias]
+            @user_agent = Web.user_agent_alias[options[:user_agent_alias]]
+          else
+            @user_agent = options[:user_agent]
+          end
+
+          @cookie = nil
         end
 
         protected
@@ -56,17 +76,19 @@ module Ronin
         end
 
         def send_call(call_obj)
-          @agent.get_file(call_url(call_obj))
+          resp = Net.http_get(:url => call_url(call_obj),
+                              :cookie => @cookie,
+                              :proxy => @proxy,
+                              :user_agent => @user_agent)
+
+          new_cookie = resp['Set-Cookie']
+          @cookie = new_cookie if new_cookie
+
+          return Response.new(resp.body)
         end
 
-        def return_value(page)
-          response = page[/<rpc>.*<\/rpc>/m]
-
-          unless response
-            raise(ResponseMissing,"failed to receive a valid RPC method response",caller)
-          end
-
-          status, params = @parser.parseMethodResponse(response)
+        def return_value(response)
+          status, params = response.decode
 
           unless status
             raise(params)

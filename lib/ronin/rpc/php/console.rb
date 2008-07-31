@@ -21,17 +21,31 @@
 #++
 #
 
-require 'ronin/rpc/php/client'
+require 'ronin/rpc/console'
 
 module Ronin
   module RPC
     module PHP
-      class Console < Client
+      class Console < RPC::Console
 
-        protected
+        def fingerprint
+          profile = {
+            :uname => php_uname,
+            :php_server_api => php_sapi_name,
+            :php_version => phpversion,
+            :uid => posix_getuid,
+            :gid => posix_getgid,
+            :cwd => getcwd,
+            :disk_free_space => disk_free_space('/'),
+            :disk_total_space => disk_total_space('/')
+          }
 
-        def method_missing(sym,*args)
-          call(:invoke,sym,*args)
+          case profile[:php_server_api]
+          when 'apache'
+            profile[:apache_version] = apache_get_version
+          end
+
+          return profile
         end
 
       end
