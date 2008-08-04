@@ -1,0 +1,117 @@
+body {
+	padding: 0;
+	margin: 0;
+	color: black;
+	background-color: white;
+	font-family: Helvetica;
+	font-size: 0.8em;
+}
+
+#console_container {
+  float: left;
+  margin: 0 20% 0 20%;
+  width: 60%;
+}
+
+#console_title {
+  font-weight: bold;
+}
+
+#console_content {
+  background-color: black;
+}
+
+.ui-tabs-hide {
+  display: none;
+}
+
+.ui-tabs-nav {
+  float: right;
+  margin: 0;
+  padding: 0.5em 0 0 0.5em;
+  list-style: none;
+}
+
+.ui-tabs-nav:after { /* clearing without presentational markup, IE gets extra treatment */
+  display: block;
+  clear: both;
+  content: " ";
+}
+
+.ui-tabs-nav li {
+  float: left;
+  margin: 0 0 0 2px;
+  font-weight: bold;
+}
+
+.ui-tabs-nav a {
+  float: left; /* fixes dir=ltr problem and other quirks IE */
+  margin-left: 1em;
+  margin-right: 1em;
+  color: white;
+  text-decoration: none;
+}
+
+.ui-tabs-nav a:hover {
+  text-decoration:
+  border-bottom: 2px solid white;
+}
+
+.ui-tabs-nav a span {
+  float: left; /* fixes dir=ltr problem and other quirks IE */
+}
+
+div.console_tab {
+  clear: right;
+  margin: 0;
+  padding: 0;
+}
+
+div.console_tab h2 {
+  color: white;
+  font-weight: bold;
+}
+
+div.console_tab a {
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px dotted gray;
+}
+
+div.console_tab a:hover {
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px solid white;
+}
+
+div.console_tab button {
+      color: white;
+      background-color: black;
+      border: 2px solid white;
+}
+
+div.console_dialogue {
+  margin: 0;
+  padding: 0.5em;
+  background-color: gray;
+}
+
+#console_shell {
+  margin: 0;
+  padding: 0 1em 0 1em;
+}
+
+.terminal_textarea {
+      padding: 0.125em;
+      margin: 0 0 1em 0;
+      width: 100%;
+      color: white;
+      font-family: monospace;
+      font-size: 1.2em;
+      background-color: black;
+      border: 2px solid white;
+}
+
+textarea.terminal_textarea {
+  height: auto;
+}
