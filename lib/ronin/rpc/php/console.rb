@@ -29,20 +29,10 @@ module Ronin
       class Console < RPC::Console
 
         def fingerprint
-          profile = {
-            :uname => php_uname,
-            :php_server_api => php_sapi_name,
-            :php_version => phpversion,
-            :uid => posix_getuid,
-            :gid => posix_getgid,
-            :cwd => getcwd,
-            :disk_free_space => disk_free_space('/'),
-            :disk_total_space => disk_total_space('/')
-          }
+          profile = {}
 
-          case profile[:php_server_api]
-          when 'apache'
-            profile[:apache_version] = apache_get_version
+          call(:fingerprint).each do |name,value|
+            profile[name.to_sym] = value
           end
 
           return profile
