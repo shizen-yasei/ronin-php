@@ -21,24 +21,47 @@
 #++
 #
 
-require 'ronin/rpc/console'
+require 'ronin/rpc/shell'
 
 module Ronin
   module RPC
     module PHP
-      class Console < RPC::Console
+      class Shell < RPC::Shell
 
         #
-        # Returns a finger-print of the PHP server.
+        # Returns the current working directory.
         #
-        def fingerprint
-          profile = {}
+        def cwd
+          call(:cwd)
+        end
 
-          call(:fingerprint).each do |name,value|
-            profile[name.to_sym] = value
-          end
+        #
+        # Changes the current working directory.
+        #
+        def cd(path)
+          call(:cd,path)
+        end
 
-          return profile
+        #
+        # Returns the environment variables.
+        #
+        def env
+          call(:env)
+        end
+
+        #
+        # Returns the environment variable of the specified _name_.
+        #
+        def getenv(name)
+          call(:getenv,name)
+        end
+
+        #
+        # Sets the environment variable of the specified _name_
+        # with the specified _value_.
+        #
+        def setenv(name,value)
+          call(:setenv,name,value)
         end
 
       end

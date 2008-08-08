@@ -36,7 +36,7 @@ var shell = {
       }
       else
       {
-        shell.print(output.result);
+        shell.print('$ ' + command + "\n" + output.result);
       }
     });
   }

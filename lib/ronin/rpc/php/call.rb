@@ -35,8 +35,8 @@ module Ronin
           super(name,*arguments)
         end
 
-        def encode
-          XMLRPC::Create.new.methodCall(@name,*(@arguments)).base64_encode
+        def encode(session={})
+          XMLRPC::Create.new.methodCall(@name,session,*(@arguments)).base64_encode
         end
 
       end

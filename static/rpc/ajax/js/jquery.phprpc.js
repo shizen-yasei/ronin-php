@@ -24,12 +24,14 @@
  * http://drupalbin.com/1173
  */
 (function($) {
-  $.xmlrpc = {
+  $.phprpc = {
     xmlVersion: '1.0',
 
     serverURL: window.location.href,
 
     serverType: 'GET',
+
+    session: {},
 
     serializeXML: function(data) {
       switch (typeof data)
@@ -60,7 +62,7 @@
 
             for (var i=0; i < data.length; i++)
 	    {
-              ret += '  <value>' + $.xmlrpc.serializeToXml(data[i]) + "</value>\n";
+              ret += '  <value>' + $.phprpc.serializeXML(data[i]) + "</value>\n";
             }
             ret += '</data></array>';
             return ret;
@@ -71,7 +73,7 @@
 
             $.each(data, function(key, value) {
               ret += '  <member><name>' + key + '</name><value>';
-              ret += $.xmlrpc.serializeToXml(value) + "</value></member>\n";
+              ret += $.phprpc.serializeXML(value) + "</value></member>\n";
             });
             ret += '</struct>';
             return ret;
@@ -102,7 +104,7 @@
             var ret = [];
 
             $("> data > value", childs[i]).each(function() {
-              ret.push($.xmlrpc.parseXmlValue(this));
+              ret.push($.phprpc.parseXmlValue(this));
             });
             return ret;
 
@@ -110,7 +112,7 @@
             var ret = {};
 
             $("> member", childs[i]).each(function() {
-              ret[$( "> name", this).text()] = $.xmlrpc.parseXMLValue($("value", this));
+              ret[$( "> name", this).text()] = $.phprpc.parseXMLValue($("value", this));
             });
             return ret;
 
@@ -122,11 +124,13 @@
     },
 
     callMessage: function(method, params) {
-      var ret = '<?xml version="' + $.xmlrpc.xmlVersion + '"?><methodCall><methodName>' + method + '</methodName><params>';
+      var ret = '<?xml version="' + $.phprpc.xmlVersion + '"?><methodCall><methodName>' + method + '</methodName><params>';
+
+      ret += '<param><value>' + $.phprpc.serializeXML($.phprpc.session) + '</value></param>';
 
       for (var i=0; i<params.length; i++)
       {
-        ret += '<param><value>' + $.xmlrpc.serializeXML(params[i]) + '</value></param>';
+        ret += '<param><value>' + $.phprpc.serializeXML(params[i]) + '</value></param>';
       }
 
       ret += '</params></methodCall>';
@@ -137,15 +141,18 @@
       var ret = {};
       var value = $(response).find("value");
 
-      ret.version = $.xmlrpc.xmlVersion;
+      ret.version = $.phprpc.xmlVersion;
 
       if (value.parent().get(0).tagName.toLowerCase() == 'fault')
       {
-        ret.error = $.xmlrpc.parseXMLValue(value);
+        ret.error = $.phprpc.parseXMLValue(value);
       }
       else
       {
-        ret.result = $.xmlrpc.parseXMLValue(value);
+        var response = $.phprpc.parseXMLValue(value);
+
+	$.phprpc.session = response['session'];
+	ret.result = response['return_value'];
       }
 
       return ret;
@@ -153,8 +160,8 @@
 
     callURL: function(method, params)
     {
-      var call_xml = $.xmlrpc.callMessage(method, params);
-      var url = $.xmlrpc.serverURL;
+      var call_xml = $.phprpc.callMessage(method, params);
+      var url = $.phprpc.serverURL;
 
       if (url.indexOf('?') == -1)
       {
@@ -169,17 +176,17 @@
     },
 
     call: function(method, params, callback) {
-      var url = $.xmlrpc.callURL(method, params);
+      var url = $.phprpc.callURL(method, params);
 
-      $("#xmlrpc").html('');
+      $("#phprpc").html('');
 
       jQuery.ajax({
         url: url,
-        type: $.xmlrpc.serverType,
+        type: $.phprpc.serverType,
         dataType: 'html',
         success: function(response) {
           var xml = response.replace(/^.*<rpc>/m,'').replace(/<\/rpc>/m,'');
-          var ret = $.xmlrpc.returnValue(xml);
+          var ret = $.phprpc.returnValue(xml);
 
           callback(ret);
         }
@@ -187,7 +194,7 @@
     },
 
     callService: function(service, method, params, callback) {
-      return $.xmlrpc.call(service + '.' + method, params, callback);
+      return $.phprpc.call(service + '.' + method, params, callback);
     }
   };
 })(jQuery);

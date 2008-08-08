@@ -19,11 +19,11 @@ lib/ronin/php/rfi/extensions/uri.rb
 lib/ronin/php/rfi/extensions/uri/http.rb
 lib/ronin/php/rfi/rfi.rb
 lib/ronin/rpc/php.rb
-lib/ronin/rpc/php/exceptions.rb
 lib/ronin/rpc/php/call.rb
 lib/ronin/rpc/php/response.rb
 lib/ronin/rpc/php/client.rb
 lib/ronin/rpc/php/console.rb
+lib/ronin/rpc/php/shell.rb
 test/test_ronin.rb
 static/rfi/test.php
 static/rpc/server.php

@@ -38,8 +38,9 @@ of Ronin.
 == FEATURES:
 
 * Provides tests for Local File Inclusion (LFI) and
-  Remote File Inclusion (RFI).
-* Provides a AJAX RFI console using jQuery and YAML.
+  Remote File Inclusion (RFI) that are built into the URI::HTTP class.
+* Provides a PHP-RPC client and server designed to work in hostile
+  environments (such as RFI vulnerable web-apps).
 
 == INSTALL:
 
