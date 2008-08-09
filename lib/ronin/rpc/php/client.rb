@@ -33,7 +33,7 @@ module Ronin
     module PHP
       class Client < RPC::Client
 
-        # URL of RPC Server
+        # URL of RPC server
         attr_reader :url
 
         # Proxy to send requests through
@@ -51,6 +51,17 @@ module Ronin
         # Provides a shell service
         service :shell, Shell
 
+        #
+        # Creates a new Client object with the specified _url_ and the
+        # given _options_.
+        #
+        # _options_ may contain the following keys:
+        # <tt>:proxy</tt>:: The proxy settings to use when communicating
+        #                   with the server.
+        # <tt>:user_agent</tt>:: The User-Agent to send to the server.
+        # <tt>:user_agent_alias</tt>:: The User-Agent alias to send to
+        #                              the server.
+        #
         def initialize(url,options={})
           @url = url
 
@@ -66,21 +77,37 @@ module Ronin
           @session = {}
         end
 
-        def call_url(call_obj)
+        def call_url(call_object)
           new_url = URI(@url.to_s)
-          new_url.query_params['rpc_call'] = call_obj.encode(@session)
+          new_url.query_params['rpc_call'] = call_object.encode(@session)
 
           return new_url
         end
 
-        protected
-
-        def create_call(func,*args)
-          Call.new(func,*args)
+        #
+        # Returns +true+ if the RPC server is running and responding to
+        # function calls, returns +false+ otherwise.
+        #
+        def running?
+          call(:running)
         end
 
-        def send_call(call_obj)
-          resp = Net.http_get(:url => call_url(call_obj),
+        protected
+
+        #
+        # Creates a new Call object for the specified _funtion_ and
+        # _arguments_.
+        #
+        def create_call(function,*arguments)
+          Call.new(function,*arguments)
+        end
+
+        #
+        # Sends the specified _call_object_ to the RPC server. Returns
+        # a new Response object that represents the server's response.
+        #
+        def send_call(call_object)
+          resp = Net.http_get(:url => call_url(call_object),
                               :cookie => @cookie,
                               :proxy => @proxy,
                               :user_agent => @user_agent)
@@ -91,6 +118,11 @@ module Ronin
           return Response.new(resp.body)
         end
 
+        #
+        # Returns the return-value of a previous function call encoded
+        # into the specified _response_. If the _response_ contains
+        # a fault message, the fault exception will be raised.
+        #
         def return_value(response)
           status, params = response.decode
 
@@ -99,6 +131,11 @@ module Ronin
           end
 
           @session.merge!(params['session'])
+
+          if params.has_key?('output')
+            print(params['output'])
+          end
+
           return params['return_value']
         end
 

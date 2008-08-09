@@ -31,10 +31,18 @@ module Ronin
     module PHP
       class Response < RPC::Response
 
+        #
+        # Returns the default XML parser to use for parsing XMLRPC
+        # responses.
+        #
         def Response.parser
           @@parser ||= XMLRPC::XMLParser::REXMLStreamParser.new
         end
 
+        #
+        # Decodes the XMLRPC response message embedded in the response
+        # from the server.
+        #
         def decode
           response = @contents[/<rpc>.*<\/rpc>/m]
 
