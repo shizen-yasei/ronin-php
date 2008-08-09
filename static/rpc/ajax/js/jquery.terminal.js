@@ -38,10 +38,10 @@
     input.keypress(function(e) {
       if (e.which == 13)
       {
-        var data = input.val();
+        var data = $.trim(input.val());
 
         if (data.length > 0)
-	{
+        {
           callback(data);
         }
 
@@ -66,8 +66,13 @@
     return this.each(function() {
       var output = $("textarea.terminal_textarea",this);
 
-      output.val(output.val() + message + "\n");
+      output.val(output.val() + message);
       output.attr('scrollTop', output.attr('scrollHeight'));
     });
   };
+
+  jQuery.fn.terminalPrintLine = function(message) {
+    return this.terminalPrint(message + "\n");
+  };
+
 })(jQuery);

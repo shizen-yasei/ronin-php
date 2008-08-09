@@ -29,14 +29,51 @@ var shell = {
   },
 
   exec: function(command) {
-    $.xmlrpc.callService('shell','exec',new Array(command),function(output) {
+    $.phprpc.callService('shell','exec',new Array(command),function(output) {
       if (output.error != null)
       {
         shell.print(output.error);
       }
       else
       {
-        shell.print('$ ' + command + "\n" + output.result);
+        var text = '$ ' + command + "\n";
+
+	if (output.returnValue != null && output.returnValue.length > 0)
+	{
+	  text += output.returnValue + "\n";
+	}
+
+        shell.print(text);
+      }
+    });
+  }
+};
+
+var php = {
+  clear: function() {
+    $("#console_php").terminalClear();
+  },
+
+  print: function(message) {
+    $("#console_php").terminalPrint(message);
+  },
+
+  inspect: function(code) {
+    $.phprpc.callService('console','inspect',new Array(code),function(response) {
+      if (response.error != null)
+      {
+        php.print(response.error);
+      }
+      else
+      {
+        var text = '>> ' + code + "\n";
+
+        if (response.output != null)
+        {
+          text = text + response.output;
+        }
+
+        php.print(text + "=> " + response.returnValue + "\n");
       }
     });
   }

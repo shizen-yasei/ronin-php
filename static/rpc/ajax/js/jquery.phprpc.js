@@ -137,25 +137,27 @@
       return ret;
     },
 
-    returnValue: function(response) {
-      var ret = {};
-      var value = $(response).find("value");
+    response: function(message) {
+      var resp = {};
+      var value = $(message).find("value");
 
-      ret.version = $.phprpc.xmlVersion;
+      resp.version = $.phprpc.xmlVersion;
 
       if (value.parent().get(0).tagName.toLowerCase() == 'fault')
       {
-        ret.error = $.phprpc.parseXMLValue(value);
+        resp.error = $.phprpc.parseXMLValue(value);
       }
       else
       {
-        var response = $.phprpc.parseXMLValue(value);
+        var data = $.phprpc.parseXMLValue(value);
 
-	$.phprpc.session = response['session'];
-	ret.result = response['return_value'];
+	$.phprpc.session = data['session'];
+
+	resp.output = data['output'];
+	resp.returnValue = data['return_value'];
       }
 
-      return ret;
+      return resp;
     },
 
     callURL: function(method, params)
@@ -186,9 +188,9 @@
         dataType: 'html',
         success: function(response) {
           var xml = response.replace(/^.*<rpc>/m,'').replace(/<\/rpc>/m,'');
-          var ret = $.phprpc.returnValue(xml);
+          var resp = $.phprpc.response(xml);
 
-          callback(ret);
+          callback(resp);
         }
       });
     },
