@@ -29,16 +29,11 @@ module Ronin
       class Console < RPC::Console
 
         #
-        # Returns a finger-print of the PHP server.
+        # Evaluates the specified _string_ of PHP code and returns the
+        # result.
         #
-        def fingerprint
-          profile = {}
-
-          call(:fingerprint).each do |name,value|
-            profile[name.to_sym] = value
-          end
-
-          return profile
+        def eval(string)
+          call(:eval,string)
         end
 
       end

@@ -92,6 +92,13 @@ module Ronin
           call(:running)
         end
 
+        #
+        # Returns a finger-print of the PHP server.
+        #
+        def fingerprint
+          call(:fingerprint)
+        end
+
         protected
 
         #

@@ -39,6 +39,10 @@ module Ronin
           @@parser ||= XMLRPC::XMLParser::REXMLStreamParser.new
         end
 
+        def Response.parser=(new_parser)
+          @@parser = new_parser
+        end
+
         #
         # Decodes the XMLRPC response message embedded in the response
         # from the server.
