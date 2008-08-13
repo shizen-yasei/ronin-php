@@ -24,6 +24,7 @@ lib/ronin/rpc/php/response.rb
 lib/ronin/rpc/php/client.rb
 lib/ronin/rpc/php/console.rb
 lib/ronin/rpc/php/shell.rb
-test/test_ronin.rb
+tasks/spec.rb
+spec/spec_helper.rb
 static/rfi/test.php
 static/rpc/server.php
