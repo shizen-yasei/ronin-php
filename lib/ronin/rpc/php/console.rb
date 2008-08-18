@@ -36,6 +36,14 @@ module Ronin
           call(:eval,string)
         end
 
+        def inspect(string=nil)
+          if string
+            return call(:inspect,string)
+          else
+            return super
+          end
+        end
+
       end
     end
   end
