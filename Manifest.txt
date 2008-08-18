@@ -24,6 +24,7 @@ lib/ronin/rpc/php/response.rb
 lib/ronin/rpc/php/client.rb
 lib/ronin/rpc/php/console.rb
 lib/ronin/rpc/php/shell.rb
+lib/ronin/rpc/php/rfi.rb
 tasks/spec.rb
 tasks/static.rb
 tasks/helpers.rb
