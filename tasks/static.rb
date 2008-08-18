@@ -29,3 +29,6 @@ namespace :static do
     end
   end
 end
+
+desc 'Creates minified versions of all static files'
+task :static => ['static:minify']
