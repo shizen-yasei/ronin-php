@@ -23,3 +23,4 @@
 
 require 'ronin/php/lfi'
 require 'ronin/php/rfi'
+require 'ronin/rpc/php'
