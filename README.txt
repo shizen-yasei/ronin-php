@@ -37,10 +37,12 @@ of Ronin.
 
 == FEATURES:
 
-* Provides tests for Local File Inclusion (LFI) and
-  Remote File Inclusion (RFI) that are built into the URI::HTTP class.
-* Provides a PHP-RPC client and server designed to work in hostile
-  environments (such as RFI vulnerable web-apps).
+* Provides tests for Location File Inclusion (LFI) and Remote File
+  Inclusion (RFI) that are built into the URI::HTTP class.
+* Allows for effortless finger-printing of a web-server using LFI.
+* Provides a PHP-RPC client and server that are designed to work in hostile
+  environments.
+* Provides an AJAX PHP-RPC Console.
 
 == INSTALL:
 

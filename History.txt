@@ -1,6 +1,10 @@
-== 0.1.0 / 2007-12-23
+== 0.1.0 / 2008-07-30
 
- * Initial release.
- * Provides a PHP RPC Client and Server.
- * Provides an AJAX PHP Console.
+* Initial release.
+* Provides tests for Location File Inclusion (LFI) and Remote File
+  Inclusion (RFI) that are built into the URI::HTTP class.
+* Allows for effortless finger-printing of a web-server using LFI.
+* Provides a PHP-RPC client and server that are designed to work in hostile
+  environments.
+* Provides an AJAX PHP-RPC Console.
 
