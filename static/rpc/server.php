@@ -376,7 +376,14 @@ class ShellService extends Service
     $output = $this->exec_output($command);
     $this->cwd = array_pop($output);
 
-    return join("\n", $output);
+    $output_string = '';
+
+    foreach ($output as $line)
+    {
+      $output_string .= "{$line}\n";
+    }
+
+    return $output_string;
   }
 }
 

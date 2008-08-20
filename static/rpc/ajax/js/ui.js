@@ -40,7 +40,7 @@ var shell = {
 
 	if (output.returnValue != null && output.returnValue.length > 0)
 	{
-	  text += output.returnValue + "\n";
+	  text += output.returnValue;
 	}
 
         shell.print(text);
