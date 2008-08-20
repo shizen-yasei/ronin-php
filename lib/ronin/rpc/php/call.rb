@@ -32,14 +32,6 @@ module Ronin
       class Call < RPC::Call
 
         #
-        # Creates a new Call object with the specified _name_ and the given
-        # _arguments_.
-        #
-        def initialize(name,*arguments)
-          super(name,*arguments)
-        end
-
-        #
         # Encodes the call and the given _session_ variables into a base64
         # encoded XMLRPC call message.
         #
