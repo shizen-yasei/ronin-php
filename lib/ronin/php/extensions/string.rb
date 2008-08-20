@@ -3,7 +3,7 @@
 # Ronin PHP - A Ruby library for Ronin that provides support for PHP
 # related security tasks.
 #
-# Copyright (c) 2007 Hal Brodigan (postmodern.mod3 at gmail.com)
+# Copyright (c) 2007-2008 Hal Brodigan (postmodern.mod3 at gmail.com)
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,7 +21,22 @@
 #++
 #
 
-require 'ronin/php/extensions'
-require 'ronin/php/lfi'
-require 'ronin/php/rfi'
-require 'ronin/rpc/php'
+class String
+
+  #
+  # Returns +true+ if the String contains a PHP Warning message, returns
+  # +false+ otherwise.
+  #
+  def php_warning?
+    !((self =~ /<b>Warning<\/b>:\s+/).nil?)
+  end
+
+  #
+  # Returns +true+ if the String contains a PHP Error message, returns
+  # +false+ otherwise.
+  #
+  def php_error?
+    !((self =~ /<b>Fatal error<\/b>:\s+/).nil?)
+  end
+
+end

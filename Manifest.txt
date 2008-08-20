@@ -4,6 +4,8 @@ Manifest.txt
 README.txt
 Rakefile
 lib/ronin/php.rb
+lib/ronin/php/extensions.rb
+lib/ronin/php/extensions/string.rb
 lib/ronin/php/lfi.rb
 lib/ronin/php/lfi/exceptions.rb
 lib/ronin/php/lfi/exceptions/unknown_target.rb
