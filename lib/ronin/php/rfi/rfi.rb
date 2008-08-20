@@ -31,7 +31,10 @@ module Ronin
     class RFI
 
       # Default URL of the RFI Test script
-      TEST_SCRIPT = 'http://ronin.rubyforge.org/dist/php/rfi/test.php.txt'
+      TEST_SCRIPT = 'http://ronin.rubyforge.org/dist/php/rfi/test.php'
+
+      # Prefix text that will appear before the random RFI challenge string
+      CHALLENGE_PREFIX = 'PHP RFI Response: '
 
       # RFI vulnerable url
       attr_reader :url
@@ -86,7 +89,7 @@ module Ronin
         new_url.query_params.merge!(script_url.query_params)
         script_url.query_params.clear
 
-        script_url = "#{script_url}\0" if terminate?
+        script_url = "#{script_url}?" if terminate?
 
         new_url.query_params[@param.to_s] = script_url
         return new_url
@@ -110,12 +113,13 @@ module Ronin
       # otherwise.
       #
       def vulnerable?(options={})
-        test_pattern = Chars.alpha_numeric.random_string(10).md5
+        challenge = Chars.alpha_numeric.random_string(10).md5
 
         test_url = URI(@test_script.to_s)
-        test_url.query_params['rfi_test'] = test_pattern
+        test_url.query_params['rfi_challenge'] = challenge
 
-        return include(test_url,options).include?(test_pattern)
+        response = include(test_url,options)
+        return response.include?("#{CHALLENGE_PREFIX}#{challenge}")
       end
 
     end
