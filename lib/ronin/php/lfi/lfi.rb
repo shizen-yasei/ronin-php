@@ -23,6 +23,7 @@
 
 require 'ronin/php/lfi/exceptions/unknown_target'
 require 'ronin/php/lfi/target'
+require 'ronin/php/lfi/targets'
 require 'ronin/php/lfi/file'
 require 'ronin/extensions/uri'
 require 'ronin/network/http'
