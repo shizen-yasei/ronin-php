@@ -97,6 +97,9 @@ module Ronin
           @extractors[name] = pattern
         end
 
+        #
+        # Extracts data from the specified _body_ of HTML.
+        #
         def extract_from(body)
           data = {}
 
@@ -191,10 +194,13 @@ module Ronin
 
         protected
 
-        def self.define(name,&block)
+        #
+        # Defines a new Target in the specified _group_.
+        #
+        def self.define(group,&block)
           new_target = Target.new(&block)
 
-          Target.categories[name] << new_target
+          Target.categories[group] << new_target
           return new_target
         end
 
