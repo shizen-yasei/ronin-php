@@ -97,6 +97,9 @@ module Ronin
           @extractors[name] = pattern
         end
 
+        #
+        # Extracts data from the specified _body_ of HTML.
+        #
         def extract_from(body)
           data = {}
 
@@ -117,48 +120,91 @@ module Ronin
           return data
         end
 
+        #
+        # Returns all Target categories.
+        #
         def Target.categories
           @@categories ||= Hash.new { |hash,key| hash[key] = [] }
         end
 
+        #
+        # Returns +true+ if there is a category with the specified _name_,
+        # returns +false+ otherwise.
+        #
+        def Target.has_category?(name)
+          Target.categories.has_key?(name)
+        end
+
+        #
+        # Returns the targets within the category with the specified _name_.
+        #
         def Target.category(name)
           Target.categories[name]
         end
 
+        #
+        # Returns all targets.
+        #
         def Target.all
           Target.categories.values.flatten
         end
 
+        #
+        # Iterates over all targets, passing each to the given _block_.
+        #
         def Target.each(&block)
           Target.categories.each_value do |targets|
             targets.each(&block)
           end
         end
 
+        #
+        # Defines a new target within the test category of targets, used
+        # for testing LFI.
+        #
         def Target.test(&block)
           Target.define(:test,&block)
         end
 
-        def Target.tests
-          Target.category(:test)
-        end
-
+        #
+        # Defines a new target within the config category of configuration
+        # file targets.
+        #
         def Target.config(&block)
           Target.define(:config,&block)
         end
 
-        def Target.configs
-          Target.category(:config)
-        end
-
+        #
+        # Defines a new target within the log category of log file targets.
+        #
         def Target.log(&block)
           Target.define(:log,&block)
         end
 
-        def Target.logs
-          Target.category(:logs)
+        #
+        # Returns the targeted files used in testing for LFI.
+        #
+        def Target.tests
+          Target.category(:test)
         end
 
+        #
+        # Returns the targeted configuration files.
+        #
+        def Target.configs
+          Target.category(:config)
+        end
+
+        #
+        # Returns the targeted log files.
+        #
+        def Target.logs
+          Target.category(:log)
+        end
+
+        #
+        # Returns all targets for the specified _os_.
+        #
         def Target.targets_for(os)
           Target.each do |target|
             if target.oses.include?(os)
@@ -167,6 +213,9 @@ module Ronin
           end
         end
 
+        #
+        # Returns all targets with extractors.
+        #
         def Target.with_extractors
           targets = []
 
@@ -179,163 +228,27 @@ module Ronin
           return targets
         end
 
+        #
+        # Returns all targets with the specified file _name_.
+        #
         def Target.with_file(name)
           Target.each do |target|
             target.each_path do |path|
-              if path =~ /#{name}$/
-                return target
-              end
+              return target if path =~ /#{name}$/
             end
           end
         end
 
         protected
 
+        #
+        # Defines a new Target in the specified category _name_.
+        #
         def self.define(name,&block)
           new_target = Target.new(&block)
 
           Target.categories[name] << new_target
           return new_target
-        end
-
-        Target.test do |target|
-          target.paths['Linux'] = ['/etc/group']
-          target.paths['Solaris'] = ['/etc/group']
-
-          target.recognizor = /root:/
-        end
-
-        Target.test do |target|
-          target.paths['Windows'] = ['/boot.ini']
-
-          target.recognizor = /\[boot loader\]/
-        end
-
-        Target.config do |target|
-          target.paths['Linux'] = ['/etc/passwd']
-          target.paths['Solaris'] = ['/etc/passwd']
-
-          target.recognizor = /root:/
-        end
-
-        Target.config do |target|
-          target.paths['Linux'] = ['/etc/group']
-          target.paths['Solaris'] = ['/etc/group']
-
-          target.recognizor = /root:/
-        end
-
-        Target.config do |target|
-          target.paths['Linux'] = ['/etc/fstab']
-          target.paths['Solaris'] = ['/etc/vfstab']
-
-          target.recognizor = /\/?proc\s+(-\s+)?\/proc\s+proc/
-        end
-
-        Target.config do |target|
-          target.paths['Linux'] = ['/etc/mtab']
-          target.paths['Solaris'] = ['/etc/mnttab']
-
-          target.recognizor = /proc\s+\/proc\s+proc/
-        end
-
-        Target.config do |target|
-          target.paths['Linux'] = ['/etc/apache/apache.conf', '/etc/apache2/apache.conf']
-          target.paths['Solaris'] = ['/etc/apache/apache.conf', '/etc/apache2/apache.conf']
-
-          target.recognizor = /ServerRoot/
-
-          apache_setting = lambda { |name,setting|
-            target.extract name, /^[^#]*#{setting}\s+\"?[^\"]+\"?\n/
-          }
-
-          apache_setting.call(:apache_server_name,'ServerName')
-          apache_setting.call(:apache_server_listen,'Listen')
-          apache_setting.call(:apache_server_bind,'BindAddress')
-          apache_setting.call(:apache_server_port,'Port')
-          apache_setting.call(:apache_server_root,'ServerRoot')
-          apache_setting.call(:apache_server_admin,'ServerAdmin')
-          apache_setting.call(:apache_document_root,'DocumentRoot')
-          apache_setting.call(:apache_pid_file,'PidTarget')
-          apache_setting.call(:apache_user,'User')
-          apache_setting.call(:apache_group,'Group')
-          apache_setting.call(:apache_log_level,'LogLevel')
-          apache_setting.call(:apache_error_log,'ErrorLog')
-          apache_setting.call(:apache_access_log,'CustomLog')
-          apache_setting.call(:apache_access_filename,'AccessFileName')
-          apache_setting.call(:apache_user_dir,'UserDir')
-          apache_setting.call(:apache_script_alias,'ScriptAlias')
-        end
-
-        Target.config do |target|
-          target.paths['Linux'] = ['/etc/lighttpd/lighttpd.conf']
-          target.paths['Solaris'] = ['/etc/lighttpd/lighttpd.conf']
-
-          target.recognizor = /server\.modules/
-
-          lighttpd_string = lambda { |name,setting|
-            target.extract name, /^[^#]*#{Regexp.escape(setting)}\s*=\s*\"([^\"]+)\"\n/
-          }
-
-          lighttpd_number = lambda { |name,setting|
-            target.extract name, /^[^#]*#{Regexp.escape(setting)}\s*=\s*(\d+)\n/
-          }
-
-          lighttpd_string.call(:lighttpd_name,'server.name')
-          lighttpd_string.call(:lighttpd_bind,'server.bind')
-          lighttpd_number.call(:lighttpd_port,'server.port')
-          lighttpd_string.call(:lighttpd_tag,'server.tag')
-          lighttpd_string.call(:lighttpd_pid_file,'server.pid-file')
-          lighttpd_string.call(:lighttpd_chroot,'server.chroot')
-          lighttpd_string.call(:lighttpd_user,'server.username')
-          lighttpd_string.call(:lighttpd_group,'server.groupname')
-          lighttpd_string.call(:lighttpd_server_root,'server.root')
-          lighttpd_string.call(:lighttpd_error_log,'server.errorlog')
-          lighttpd_string.call(:lighttpd_access_log,'accesslog.filename')
-          lighttpd_string.call(:lighttpd_auth,'auth.backend')
-          lighttpd_string.call(:lighttpd_auth_plain_file,'auth.backend.plain.userfile')
-          lighttpd_string.call(:lighttpd_auth_htpasswd_file,'auth.backend.htpasswd.userfile')
-          lighttpd_string.call(:lighttpd_status_url,'status.status-url')
-          lighttpd_string.call(:lighttpd_config_url,'status.config-url')
-          lighttpd_string.call(:lighttpd_ssl,'ssl.engine')
-          lighttpd_string.call(:lighttpd_ssl_pem,'ssl.pemfile')
-        end
-
-        Target.config do |target|
-          target.paths['Linux'] = ['/etc/mysql/my.cnf']
-
-          target.recognizor = /^\[mysql[^\]]*\]/
-
-          mysql_setting = lambda { |name,setting|
-            target.extract name, /\[mysqld\]\n[^\[]+#{setting}\s*=\s*(.*)\n/
-          }
-
-          mysql_setting.call(:mysql_user, 'user')
-          mysql_setting.call(:mysql_port, 'port')
-          mysql_setting.call(:mysql_socket, 'socket')
-          mysql_setting.call(:mysql_log, 'log-error')
-          mysql_setting.call(:mysql_data_dir, 'datadir')
-          mysql_setting.call(:mysql_bind, 'bind-address')
-        end
-
-        Target.log do |target|
-          target.paths['Linux'] = ['/var/log/wtmp']
-          target.paths['Solaris'] = ['/var/log/wtmp']
-
-          target.recognizor = /(tty\d+|:\d+)/
-        end
-
-        Target.log do |target|
-          target.paths['Linux'] = ['/var/log/apache/rewrite.log', '/var/log/apache2/rewrite.log']
-
-          target.recognizor = /init rewrite engine with requested uri/
-        end
-
-        Target.log do |target|
-          target.paths['Linux'] = ['/etc/syslog.conf']
-          target.paths['Solaris'] = ['/etc/syslog.conf']
-
-          target.recognizor = /kern\.(\*|emerg|alert|crit|err|warn(ing)?|notice|info|debug)/
         end
 
       end
