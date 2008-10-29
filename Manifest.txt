@@ -32,5 +32,6 @@ tasks/static.rb
 tasks/helpers.rb
 tasks/helpers/minify.rb
 spec/spec_helper.rb
+spec/php_spec.rb
 static/rfi/test.php
 static/rpc/server.php
