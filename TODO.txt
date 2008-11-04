@@ -1,4 +1,4 @@
-== DESIGN:
+== TODO:
 
-== IMPROVEMENTS:
+* Utilize Spidr (http://spidr.rubyforge.org) to scan for PHP LFI/RFI en-mass.
 
