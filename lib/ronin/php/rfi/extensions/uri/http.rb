@@ -47,7 +47,7 @@ module URI
     end
 
     def has_rfi?(options={})
-      !(test_rfi(options).empty?)
+      !(rfi_test(options).empty?)
     end
 
   end
