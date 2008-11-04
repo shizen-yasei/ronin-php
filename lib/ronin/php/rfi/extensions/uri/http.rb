@@ -27,7 +27,7 @@ require 'ronin/extensions/uri'
 module URI
   class HTTP < Generic
 
-    def test_rfi(options={})
+    def rfi_test(options={})
       vulns = []
 
       query_params.each_key do |param|
@@ -43,7 +43,7 @@ module URI
     end
 
     def rfi(options={})
-      test_rfi(options).first
+      rfi_test(options).first
     end
 
     def has_rfi?(options={})
