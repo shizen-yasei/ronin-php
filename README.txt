@@ -46,6 +46,12 @@ of Ronin.
   environments.
 * Provides an AJAX PHP-RPC Console.
 
+== REQUIREMENTS:
+
+* Ronin >= 0.1.1
+* cssmin
+* jsmin
+
 == INSTALL:
 
   $ sudo gem install ronin-php
