@@ -33,10 +33,7 @@ module URI
       query_params.each_key do |param|
         rfi = Ronin::PHP::RFI.new(self,param)
 
-        if rfi.vulnerable?(options)
-          vulns << rfi
-          break
-        end
+        vulns << rfi if rfi.vulnerable?(options)
       end
 
       return vulns
