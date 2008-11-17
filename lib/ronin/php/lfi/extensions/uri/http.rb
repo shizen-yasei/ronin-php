@@ -27,7 +27,7 @@ require 'ronin/vulnerable'
 module URI
   class HTTP < Generic
 
-    include Vulnerable
+    include Ronin::Vulnerable
 
     vulnerable_to :lfi => :test_lfi
 
