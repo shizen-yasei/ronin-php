@@ -23,9 +23,14 @@
 
 require 'ronin/php/rfi/rfi'
 require 'ronin/extensions/uri'
+require 'ronin/vulnerable'
 
 module URI
   class HTTP < Generic
+
+    include Vulnerable
+
+    vulnerable_to :rfi => :test_rfi
 
     def test_rfi(options={})
       vulns = []
