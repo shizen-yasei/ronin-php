@@ -71,6 +71,21 @@ module Ronin
         @test_script = (options[:test_script] || TEST_SCRIPT)
       end
 
+      def RFI.spider(url,options={},&block)
+        rfis = []
+
+        Web.spider_site(url,options) do |spider|
+          spider.every_url_like(/\?[a-zA-Z0-9_]/) do |vuln_url|
+            found = vuln_url.test_rfi
+
+            found.each(&block) if block
+            rfis += found
+          end
+        end
+
+        return rfis
+      end
+
       #
       # Returns +true+ if the RFI script url will be terminated with
       # a null byte, returns +false+ otherwise.
