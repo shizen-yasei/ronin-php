@@ -1,4 +1,9 @@
 == TODO:
 
-* Utilize Spidr (http://spidr.rubyforge.org) to scan for PHP LFI/RFI en-mass.
+=== Ronin PHP 0.1.0:
+
+* Have PHP::RFI and PHP::LFI inherite from the new Exploits::WebExploit
+  class.
+* Move PHP::LFI::File and PHP::LFI::Target into the Vulnerability
+  namespace.
 
