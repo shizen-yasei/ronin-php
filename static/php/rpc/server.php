@@ -4,7 +4,7 @@
 # Ronin PHP-RPC Server - A PHP-RPC server designed to work in hostile
 # environments.
 #
-# Copyright (c) 2007-2008
+# Copyright (c) 2007-2009
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
