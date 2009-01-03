@@ -6,3 +6,4 @@ tmp/*
 *.log
 *.swp
 *~
+static/php/rpc/server.min.php
