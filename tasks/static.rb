@@ -7,8 +7,8 @@ namespace :static do
 
   MINIFY = [
     {
-      :path => File.join('rpc','server.php'),
-      :output => File.join('rpc','server.min.php')
+      :path => File.join('php','rpc','server.php'),
+      :output => File.join('php','rpc','server.min.php')
     }
   ]
 
