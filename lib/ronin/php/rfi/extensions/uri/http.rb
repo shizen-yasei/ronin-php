@@ -22,7 +22,7 @@
 #
 
 require 'ronin/php/rfi/rfi'
-require 'ronin/extensions/uri'
+require 'ronin/extensions/uri/http'
 
 module URI
   class HTTP < Generic

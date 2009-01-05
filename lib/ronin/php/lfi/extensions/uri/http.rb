@@ -22,6 +22,7 @@
 #
 
 require 'ronin/php/lfi/lfi'
+require 'ronin/extensions/uri/http'
 
 module URI
   class HTTP < Generic
