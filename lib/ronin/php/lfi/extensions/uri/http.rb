@@ -22,14 +22,9 @@
 #
 
 require 'ronin/php/lfi/lfi'
-require 'ronin/vulnerable'
 
 module URI
   class HTTP < Generic
-
-    include Ronin::Vulnerable
-
-    vulnerable_to :lfi => :test_lfi
 
     def test_lfi(options={})
       up = ((options[:up]) || 0..Ronin::PHP::LFI::MAX_UP)
