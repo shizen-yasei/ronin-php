@@ -25,3 +25,8 @@ require 'ronin/php/extensions'
 require 'ronin/php/lfi'
 require 'ronin/php/rfi'
 require 'ronin/rpc/php'
+require 'ronin/config'
+
+module Ronin
+  Config.load :php
+end
