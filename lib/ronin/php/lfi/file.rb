@@ -39,19 +39,8 @@ module Ronin
           @path = path
         end
 
-        #
-        # Returns the contents of the File in String form.
-        #
-        def contents
-          string
-        end
-
-        #
-        # See contents.
-        #
-        def to_s
-          contents
-        end
+        alias contents string
+        alias to_s string
 
         def inspect
           "#<#{self.class}:#{@path}>"
