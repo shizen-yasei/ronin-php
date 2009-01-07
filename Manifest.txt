@@ -14,6 +14,9 @@ lib/ronin/php/lfi/extensions/uri.rb
 lib/ronin/php/lfi/extensions/uri/http.rb
 lib/ronin/php/lfi/target.rb
 lib/ronin/php/lfi/targets.rb
+lib/ronin/php/lfi/targets/configs.rb
+lib/ronin/php/lfi/targets/logs.rb
+lib/ronin/php/lfi/targets/tests.rb
 lib/ronin/php/lfi/file.rb
 lib/ronin/php/lfi/lfi.rb
 lib/ronin/php/rfi.rb
