@@ -1,4 +1,4 @@
-== 0.1.0 / 2008-07-30
+== 0.0.9 / 2008-07-30
 
 * Initial release.
 * Provides tests for Location File Inclusion (LFI) and Remote File
