@@ -1,6 +1,6 @@
 == TODO:
 
-=== Ronin PHP 0.1.0:
+=== Ronin PHP 0.2.0:
 
 * Have PHP::RFI and PHP::LFI inherite from the new Exploits::WebExploit
   class.
