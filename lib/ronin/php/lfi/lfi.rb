@@ -27,6 +27,7 @@ require 'ronin/php/lfi/targets'
 require 'ronin/php/lfi/file'
 require 'ronin/extensions/uri'
 require 'ronin/network/http'
+require 'ronin/web/spider'
 require 'ronin/path'
 
 module Ronin
@@ -86,7 +87,7 @@ module Ronin
       def LFI.spider(url,options={},&block)
         lfis = []
 
-        Web.spider_site(url,options) do |spider|
+        Web::Spider.site(url,options) do |spider|
           spider.every_url_like(/\?[a-zA-Z0-9_]/) do |vuln_url|
             found = vuln_url.test_lfi
 

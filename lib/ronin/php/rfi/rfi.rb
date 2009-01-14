@@ -21,10 +21,11 @@
 #++
 #
 
-require 'ronin/network/http'
+require 'ronin/chars'
 require 'ronin/extensions/uri'
 require 'ronin/formatting/digest'
-require 'ronin/chars'
+require 'ronin/network/http'
+require 'ronin/web/spider'
 
 module Ronin
   module PHP
@@ -74,7 +75,7 @@ module Ronin
       def RFI.spider(url,options={},&block)
         rfis = []
 
-        Web.spider_site(url,options) do |spider|
+        Web::Spider.site(url,options) do |spider|
           spider.every_url_like(/\?[a-zA-Z0-9_]/) do |vuln_url|
             found = vuln_url.test_rfi
 

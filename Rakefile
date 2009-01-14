@@ -11,9 +11,10 @@ Hoe.new('ronin-php', Ronin::PHP::VERSION) do |p|
   p.developer('Postmodern','postmodern.mod3@gmail.com')
   p.remote_rdoc_dir = 'docs/ronin-php'
   p.extra_deps = [
-    ['ronin', '>=0.1.3'],
     'cssmin',
-    'jsmin'
+    'jsmin',
+    ['ronin', '>=0.1.4'],
+    ['ronin-web', '>=0.1.0']
   ]
 end
 
