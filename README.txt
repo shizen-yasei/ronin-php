@@ -56,6 +56,12 @@ of Ronin.
 
   $ sudo gem install ronin-php
 
+== SYNOPSIS:
+
+* Start the Ronin console with Ronin PHP preloaded:
+
+  $ ronin-php
+
 == LICENSE:
 
 Ronin PHP - A Ruby library for Ronin that provides support for PHP
