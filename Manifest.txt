@@ -3,6 +3,7 @@ COPYING.txt
 Manifest.txt
 README.txt
 Rakefile
+bin/ronin-php
 lib/ronin/php.rb
 lib/ronin/php/extensions.rb
 lib/ronin/php/extensions/string.rb
