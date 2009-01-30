@@ -48,9 +48,9 @@ of Ronin.
 
 == REQUIREMENTS:
 
-* Ronin >= 0.1.1
 * cssmin
 * jsmin
+* {ronin}[http://ronin.rubyforge.org/] >= 0.1.1
 
 == INSTALL:
 
