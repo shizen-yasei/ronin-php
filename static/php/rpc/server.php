@@ -410,8 +410,8 @@ if (isset($_REQUEST['rpc_call']))
     <title>Ronin::PHP - AJAX PHP-RPC Console</title>
     <link rel="stylesheet" type="text/css" href="ajax/css/layout.css">
     <script type="text/javascript" src="ajax/js/base64.js"></script>
-    <script type="text/javascript" src="ajax/js/jquery-1.2.6.min.js"></script>
-    <script type="text/javascript" src="ajax/js/jquery-ui-personalized-1.5.2.min.js"></script>
+    <script type="text/javascript" src="ajax/js/jquery.min.js"></script>
+    <script type="text/javascript" src="ajax/js/jquery-ui-personalized.min.js"></script>
     <script type="text/javascript" src="ajax/js/jquery.terminal.js"></script>
     <script type="text/javascript" src="ajax/js/jquery.phprpc.js"></script>
     <script type="text/javascript" src="ajax/js/ui.js"></script>
