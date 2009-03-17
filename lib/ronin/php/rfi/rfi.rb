@@ -21,11 +21,12 @@
 #++
 #
 
-require 'ronin/chars'
 require 'ronin/extensions/uri'
 require 'ronin/formatting/digest'
 require 'ronin/network/http'
 require 'ronin/web/spider'
+
+require 'chars'
 
 module Ronin
   module PHP

@@ -13,7 +13,7 @@ Hoe.new('ronin-php', Ronin::PHP::VERSION) do |p|
   p.extra_deps = [
     'cssmin',
     'jsmin',
-    ['ronin', '>=0.2.1'],
+    ['ronin', '>=0.2.2'],
     ['ronin-web', '>=0.1.0']
   ]
 end
