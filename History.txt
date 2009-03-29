@@ -1,3 +1,15 @@
+=== 0.1.1 / 2009-03-28
+
+* Require hpricot.
+* Require ronin >= 0.2.2.
+* Require ronin-web >= 0.1.2.
+* Use http://ronin.rubyforge.org/static/ for hosting static content.
+* Place all static content under the static/ronin/ directory.
+* Simplified RFI#vulnerable?.
+  * Don't use the Chars library to generate the RFI challenge string.
+  * Use Digest::MD5.hexdigest directly for encoding the RFI challenge
+    string.
+
 === 0.1.0 / 2009-01-08
 
 * Require Ronin >= 0.1.3.
