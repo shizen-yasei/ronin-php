@@ -47,3 +47,4 @@ static/php/rpc/ajax/js/jquery-ui-personalized.min.js
 static/php/rpc/ajax/js/jquery.terminal.js
 static/php/rpc/ajax/js/ui.js
 static/php/rpc/server.php
+static/php/rpc/server.min.php
