@@ -14,7 +14,7 @@ Hoe.new('ronin-php', Ronin::PHP::VERSION) do |p|
     'cssmin',
     'jsmin',
     ['ronin', '>=0.2.2'],
-    ['ronin-web', '>=0.1.0']
+    ['ronin-web', '>=0.1.2']
   ]
 end
 
