@@ -50,6 +50,7 @@ of Ronin.
 
 * cssmin
 * jsmin
+* hpricot
 * {ronin}[http://ronin.rubyforge.org/] >= 0.2.2
 
 == INSTALL:
