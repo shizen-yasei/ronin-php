@@ -24,6 +24,7 @@
 require 'ronin/php/extensions'
 require 'ronin/php/lfi'
 require 'ronin/php/rfi'
+require 'ronin/php/version'
 require 'ronin/rpc/php'
 require 'ronin/config'
 
