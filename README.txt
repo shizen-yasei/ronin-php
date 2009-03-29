@@ -50,7 +50,7 @@ of Ronin.
 
 * cssmin
 * jsmin
-* {ronin}[http://ronin.rubyforge.org/] >= 0.1.1
+* {ronin}[http://ronin.rubyforge.org/] >= 0.2.2
 
 == INSTALL:
 
