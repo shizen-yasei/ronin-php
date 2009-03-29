@@ -22,11 +22,10 @@
 #
 
 require 'ronin/extensions/uri'
-require 'ronin/formatting/digest'
 require 'ronin/network/http'
 require 'ronin/web/spider'
 
-require 'chars'
+require 'digest/md5'
 
 module Ronin
   module PHP
@@ -130,7 +129,7 @@ module Ronin
       # otherwise.
       #
       def vulnerable?(options={})
-        challenge = Chars.alpha_numeric.random_string(10).md5
+        challenge = Digest::MD5.hexdigest((rand(1000) + 1000).to_s)
 
         test_url = URI(@test_script.to_s)
         test_url.query_params['rfi_challenge'] = challenge
