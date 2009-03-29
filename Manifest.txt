@@ -47,4 +47,3 @@ static/ronin/php/rpc/ajax/js/jquery-ui-personalized.min.js
 static/ronin/php/rpc/ajax/js/jquery.terminal.js
 static/ronin/php/rpc/ajax/js/ui.js
 static/ronin/php/rpc/server.php
-static/ronin/php/rpc/server.min.php
