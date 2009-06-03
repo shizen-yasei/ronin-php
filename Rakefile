@@ -2,6 +2,7 @@
 
 require 'rubygems'
 require 'hoe'
+require 'hoe/signing'
 require './tasks/spec.rb'
 require './tasks/static.rb'
 require './lib/ronin/php/version.rb'
