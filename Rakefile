@@ -6,7 +6,7 @@ require './tasks/spec.rb'
 require './tasks/static.rb'
 require './lib/ronin/php/version.rb'
 
-Hoe.new('ronin-php', Ronin::PHP::VERSION) do |p|
+Hoe.spec('ronin-php') do |p|
   p.rubyforge_name = 'ronin'
   p.developer('Postmodern','postmodern.mod3@gmail.com')
   p.remote_rdoc_dir = 'docs/ronin-php'
