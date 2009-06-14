@@ -7,11 +7,11 @@ require './tasks/spec.rb'
 require './tasks/static.rb'
 require './lib/ronin/php/version.rb'
 
-Hoe.spec('ronin-php') do |p|
-  p.rubyforge_name = 'ronin'
-  p.developer('Postmodern','postmodern.mod3@gmail.com')
-  p.remote_rdoc_dir = 'docs/ronin-php'
-  p.extra_deps = [
+Hoe.spec('ronin-php') do
+  self.rubyforge_name = 'ronin'
+  self.developer('Postmodern','postmodern.mod3@gmail.com')
+  self.remote_rdoc_dir = 'docs/ronin-php'
+  self.extra_deps = [
     'cssmin',
     'jsmin',
     'hpricot',
