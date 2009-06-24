@@ -9,6 +9,7 @@ require './lib/ronin/php/version.rb'
 
 Hoe.spec('ronin-php') do
   self.rubyforge_name = 'ronin'
+  self.version = Ronin::PHP::VERSION
   self.developer('Postmodern','postmodern.mod3@gmail.com')
   self.remote_rdoc_dir = 'docs/ronin-php'
   self.extra_deps = [
