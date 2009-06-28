@@ -34,7 +34,7 @@ module URI
       up = (options[:up] || 0..Ronin::PHP::LFI::MAX_UP)
 
       url.query_params.each_key do |param|
-        lfi = Ronin::PHP::LFI.new(self,param)
+        lfi = Ronin::PHP::LFI.new(url,param)
 
         up.each do |n|
           lfi.up = n
