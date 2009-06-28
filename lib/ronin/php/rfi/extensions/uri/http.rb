@@ -22,30 +22,24 @@
 #
 
 require 'ronin/php/rfi/rfi'
+require 'ronin/scanners/scanner'
 require 'ronin/extensions/uri/http'
 
 module URI
   class HTTP < Generic
 
-    def test_rfi(options={})
-      vulns = []
+    include Ronin::Scanners::Scanner
 
-      query_params.each_key do |param|
-        rfi = Ronin::PHP::RFI.new(self,param)
+    scanner(:rfi) do |url,results,options|
+      url.query_params.each_key do |param|
+        rfi = Ronin::PHP::RFI.new(url,param)
 
-        vulns << rfi if rfi.vulnerable?(options)
+        results.call(rfi) if rfi.vulnerable?(options)
       end
-
-      return vulns
     end
 
-    def rfi(options={})
-      test_rfi(options).first
-    end
-
-    def has_rfi?(options={})
-      !(test_rfi(options).empty?)
-    end
+    alias test_rfi rfi_scan
+    alias rfi first_rfi
 
   end
 end
