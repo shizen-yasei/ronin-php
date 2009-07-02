@@ -1,3 +1,12 @@
+=== 0.1.2 / 2009-07-02
+
+* Use Hoe >= 2.0.0.
+* Require ronin >= 0.2.4.
+* Require ronin-web >= 0.1.3.
+* Use Ronin::Scanners::Scanner to define scanners for
+  Ronin::PHP::LFI and Ronin::PHP::RFI objects on
+  URI::HTTP urls.
+
 === 0.1.1 / 2009-03-28
 
 * Require hpricot.
