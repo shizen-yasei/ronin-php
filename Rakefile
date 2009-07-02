@@ -15,7 +15,7 @@ Hoe.spec('ronin-php') do
     'jsmin',
     'hpricot',
     ['ronin', '>=0.2.4'],
-    ['ronin-web', '>=0.1.2']
+    ['ronin-web', '>=0.1.3']
   ]
 end
 
