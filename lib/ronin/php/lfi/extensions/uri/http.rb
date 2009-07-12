@@ -48,7 +48,7 @@ module URI
     end
 
     alias test_lfi lfi_scan
-    alias lfi get_lfi
+    alias lfi first_lfi
 
   end
 end
