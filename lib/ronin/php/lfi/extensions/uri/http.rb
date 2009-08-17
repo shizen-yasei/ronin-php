@@ -28,6 +28,19 @@ module URI
 
     include Ronin::Scanners::Scanner
 
+    #
+    # Defines a scanner for finding Local File Inclusion (LFI) on specified
+    # URLs.
+    #
+    #   url.lfi_scan
+    #   # => [#<Ronin::PHP::LFI: ...>, ...]
+    #
+    #   url.first_lfi
+    #   # => #<Ronin::PHP::LFI: ...>
+    #
+    #   url.has_lfi?
+    #   # => true
+    #
     scanner(:lfi) do |url,results,options|
       up = (options[:up] || 0..Ronin::PHP::LFI::MAX_UP)
 
