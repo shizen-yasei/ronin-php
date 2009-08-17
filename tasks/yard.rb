@@ -5,7 +5,7 @@ YARD::Rake::YardocTask.new do |t|
   t.options = [
     '--protected',
     '--files', 'History.txt',
-    '--title', 'Ronin Exploits'
+    '--title', 'Ronin PHP'
   ]
 end
 
