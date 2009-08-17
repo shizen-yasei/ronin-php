@@ -28,6 +28,19 @@ module URI
 
     include Ronin::Scanners::Scanner
 
+    #
+    # Defines a scanner method for finding Remote File Inclusion (RFI)
+    # in specified URLs.
+    #
+    #   url.scan_rfi
+    #   # => [#<Ronin::PHP::RFI: ...>, ...]
+    #
+    #   url.first_rfi
+    #   # => #<Ronin::PHP::RFI: ...>
+    #
+    #   url.has_rfi?
+    #   # => true
+    #
     scanner(:rfi) do |url,results,options|
       url.query_params.each_key do |param|
         rfi = Ronin::PHP::RFI.new(url,param)
