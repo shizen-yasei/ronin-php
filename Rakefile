@@ -4,6 +4,7 @@ require 'rubygems'
 require 'hoe'
 require 'hoe/signing'
 require './tasks/spec.rb'
+require './tasks/yard.rb'
 require './tasks/static.rb'
 
 Hoe.spec('ronin-php') do
@@ -17,6 +18,7 @@ Hoe.spec('ronin-php') do
     ['ronin', '>=0.2.4'],
     ['ronin-web', '>=0.1.3']
   ]
+  self.spec_extras = {:has_rdoc => 'yard'}
 end
 
 # vim: syntax=Ruby
