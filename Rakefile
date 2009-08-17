@@ -11,9 +11,9 @@ Hoe.spec('ronin-php') do
   self.developer('Postmodern','postmodern.mod3@gmail.com')
   self.remote_rdoc_dir = 'docs/ronin-php'
   self.extra_deps = [
-    'cssmin',
-    'jsmin',
-    'hpricot',
+    ['cssmin'],
+    ['jsmin'],
+    ['hpricot'],
     ['ronin', '>=0.2.4'],
     ['ronin-web', '>=0.1.3']
   ]
