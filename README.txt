@@ -61,7 +61,7 @@ of Ronin.
 
 * Start the Ronin console with Ronin PHP preloaded:
 
-  $ ronin-php
+    $ ronin-php
 
 == LICENSE:
 
