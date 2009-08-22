@@ -60,7 +60,8 @@ module Ronin
         end
 
         #
-        # Returns the paths for the target commonly found on the specified _os_.
+        # Returns the paths for the target commonly found on the specified
+        # _os_.
         #
         def paths_for(os)
           @paths[os]
