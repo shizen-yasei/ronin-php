@@ -146,6 +146,9 @@ module Ronin
       # If a _block_ is given, it will be passed the newly created File
       # object.
       #
+      # @raise [UnknownTarget] Unable to load target information for the
+      #                        file with the specified _name_.
+      #
       def include_target(name,options={},&block)
         name = name.to_s
         target = Target.with_file(name)
