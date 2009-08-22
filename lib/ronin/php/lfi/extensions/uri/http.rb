@@ -32,12 +32,15 @@ module URI
     # Defines a scanner for finding Local File Inclusion (LFI) on specified
     # URLs.
     #
+    # @example Scan the url for LFI vulnerabilities.
     #   url.lfi_scan
     #   # => [#<Ronin::PHP::LFI: ...>, ...]
     #
+    # @example Scan the url and return the first LFI detected.
     #   url.first_lfi
     #   # => #<Ronin::PHP::LFI: ...>
     #
+    # @example Determine if the url is vulnerable to LFI.
     #   url.has_lfi?
     #   # => true
     #

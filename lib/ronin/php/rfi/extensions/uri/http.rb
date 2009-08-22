@@ -32,12 +32,15 @@ module URI
     # Defines a scanner method for finding Remote File Inclusion (RFI)
     # in specified URLs.
     #
+    # @example Scan the url for RFI vulnerabilities.
     #   url.scan_rfi
     #   # => [#<Ronin::PHP::RFI: ...>, ...]
     #
+    # @example Scan the url and return the first RFI detected.
     #   url.first_rfi
     #   # => #<Ronin::PHP::RFI: ...>
     #
+    # @example Determine if the url is vulnerable to RFI.
     #   url.has_rfi?
     #   # => true
     #
