@@ -41,6 +41,7 @@ tasks/helpers/minify.rb
 spec/spec_helper.rb
 spec/php/php_spec.rb
 spec/php/rfi_spec.rb
+spec/rpc/php/rfi_spec.rb
 static/ronin/php/rfi/test.php
 static/ronin/php/rpc/ajax/css/layout.css
 static/ronin/php/rpc/ajax/js/base64.js
