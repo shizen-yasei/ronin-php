@@ -49,10 +49,10 @@ module Ronin
       #
       # _options_ may contain the following keys:
       # <tt>:script</tt>:: The URL of the PHP-RPC Server script.
-      #                    Defaults to +RPC_SCRIPT+.
+      #                    Defaults to RFI.rpc_script.
       #
       def rpc(options={})
-        server_script = (options[:script] || RPC_SCRIPT)
+        server_script = (options[:script] || RFI.rpc_script)
 
         return RPC::PHP::Client.new(url_for(server_script),options)
       end
