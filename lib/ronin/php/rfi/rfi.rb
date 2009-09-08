@@ -55,7 +55,7 @@ module Ronin
       # <tt>:terminate</tt>:: Whether or not to terminate the RFI script url
       #                       with a null byte. Defaults to +true+.
       # <tt>:test_script</tt>:: URL of RFI test script. Defaults to
-      #                         TEST_SCRIPT.
+      #                         RFI.test_script.
       #
       def initialize(url,param,options={})
         @url = url
@@ -67,7 +67,26 @@ module Ronin
           @terminate = true
         end
 
-        @test_script = (options[:test_script] || TEST_SCRIPT)
+        @test_script = (options[:test_script] || RFI.test_script)
+      end
+
+      #
+      # Specifies the URL to the RFI testing script.
+      #
+      # @return [String] The URL to the RFI testing script.
+      #
+      def RFI.test_script
+        @@ronin_rfi_test_script ||= TEST_SCRIPT
+      end
+
+      #
+      # Uses a new URL for the RFI testing script.
+      #
+      # @param [String] new_url The new URL to the RFI testing script.
+      # @return [String] The new URL to the RFI testing script.
+      #
+      def RFI.test_script=(new_url)
+        @@ronin_rfi_test_script = new_url
       end
 
       def RFI.spider(url,options={},&block)
