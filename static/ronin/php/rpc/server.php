@@ -293,8 +293,8 @@ class ShellService extends Service
   function exec_output($command)
   {
     $output = array();
-    exec($command, &$output);
 
+    exec($command, $output);
     return $output;
   }
 
