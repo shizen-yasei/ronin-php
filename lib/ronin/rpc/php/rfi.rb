@@ -31,11 +31,11 @@ module Ronin
       # the PHP-RPC Server script using the given _options_.
       #
       # _options_ may contain the following keys:
-      # <tt>:server</tt>:: The URL of the PHP-RPC Server script.
+      # <tt>:script</tt>:: The URL of the PHP-RPC Server script.
       #                    Defaults to +RPC_SERVER_SCRIPT+.
       #
       def rpc(options={})
-        server_script = (options[:server] || RPC_SCRIPT)
+        server_script = (options[:script] || RPC_SCRIPT)
 
         return RPC::PHP::Client.new(url_for(server_script),options)
       end
