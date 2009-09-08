@@ -27,6 +27,23 @@ module Ronin
       RPC_SCRIPT = 'http://ronin.rubyforge.org/static/ronin/php/rpc/server.min.php'
 
       #
+      # @return [String] The URL of the PHP-RPC script.
+      #
+      def RFI.rpc_script
+        @@ronin_rfi_rpc_script ||= RPC_SCRIPT
+      end
+
+      #
+      # Sets the URL to the PHP-RPC script.
+      #
+      # @param [String] new_url The new URL to the PHP-RPC script.
+      # @return [String] The new URL to the PHP-RPC script.
+      #
+      def RFI.rpc_script=(new_url)
+        @@ronin_rfi_rpc_script = new_url
+      end
+
+      #
       # Returns an PHP-RPC Client using the RFI vulnerability to inject
       # the PHP-RPC Server script using the given _options_.
       #
