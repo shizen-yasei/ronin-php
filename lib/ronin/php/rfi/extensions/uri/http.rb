@@ -52,8 +52,19 @@ module URI
       end
     end
 
-    alias test_rfi rfi_scan
-    alias rfi first_rfi
+    #
+    # @deprecated Use {#rfi_scan} instead.
+    #
+    def test_rfi(*arguments,&block)
+      rf_scan(*arguments,&block)
+    end
+
+    #
+    # @deprecated Use {#first_rfi} instead.
+    #
+    def rfi(*arguments,&block)
+      first_rfi(*arguments,&block)
+    end
 
   end
 end
