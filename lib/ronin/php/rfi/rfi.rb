@@ -51,11 +51,21 @@ module Ronin
       # Creates a new RFI object with the specified _url_, _param_ and given
       # _options_.
       #
-      # _options may contain the following keys:
-      # <tt>:terminate</tt>:: Whether or not to terminate the RFI script url
-      #                       with a null byte. Defaults to +true+.
-      # <tt>:test_script</tt>:: URL of RFI test script. Defaults to
-      #                         RFI.test_script.
+      # @param [String, URI::HTTP] url
+      #   The URL to attempt to exploit.
+      #
+      # @param [String] param
+      #   The query parameter to attempt RFI on.
+      #
+      # @param [Hash] options
+      #   Additional options.
+      #
+      # @option options [Boolean] :terminate (true)
+      #   Specifies whether to terminate the RFI script URL
+      #   with a +?+.
+      #
+      # @option options [String, URI::HTTP] :test_script (RFI.test_script)
+      #   The URL of the RFI test script.
       #
       def initialize(url,param,options={})
         @url = url
@@ -105,15 +115,22 @@ module Ronin
       end
 
       #
-      # Returns +true+ if the RFI script url will be terminated with
-      # a null byte, returns +false+ otherwise.
+      # @return [Boolean]
+      #   Specifies whether the RFI script URL will be terminated with
+      #   a +?+.
       #
       def terminate?
         @terminate == true
       end
 
       #
-      # Builds a RFI url to include the specified _script_url_.
+      # Builds a RFI URL.
+      #
+      # @param [String, URI::HTTP] script_url
+      #   The URL of the PHP script to include remotely.
+      #
+      # @return [URI::HTTP]
+      #   The URL to use to trigger the RFI.
       #
       def url_for(script_url)
         script_url = URI(script_url.to_s)
@@ -129,7 +146,22 @@ module Ronin
       end
 
       #
-      # Include the specified RFI _script_ using the given _options_.
+      # Performs a Remote File Inclusion.
+      #
+      # @param [String, URI::HTTP] script
+      #   The URL of the PHP script to include remotely.
+      #
+      # @param [Hash] options
+      #   Additional HTTP options.
+      #
+      # @option options [Symbol] :method (:get)
+      #   Specifies whether to perform a HTTP POST or GET request.
+      #
+      # @return [String]
+      #   The body of the response from the RFI.
+      #
+      # @see Net.http_post_body
+      # @see Net.http_get_body
       #
       def include(script,options={})
         options = options.merge(:url => url_for(script))
@@ -142,8 +174,11 @@ module Ronin
       end
 
       #
-      # Returns +true+ if the url is vulnerable to RFI, returns +false+
-      # otherwise.
+      # Tests whether the URL and query parameter are vulnerable to RFI.
+      #
+      # @return [Boolean]
+      #   Specifies whether the URL and query parameter are vulnerable
+      #   to RFI.
       #
       def vulnerable?(options={})
         challenge = Digest::MD5.hexdigest((rand(1000) + 1000).to_s)
