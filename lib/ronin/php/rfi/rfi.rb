@@ -154,7 +154,8 @@ module Ronin
       #   Additional HTTP options.
       #
       # @option options [Symbol] :method (:get)
-      #   Specifies whether to perform a HTTP POST or GET request.
+      #   The HTTP method to perform the Remote File Inclusion.
+      #   Maybe be either +:get+ or +:post+.
       #
       # @return [String]
       #   The body of the response from the RFI.
