@@ -54,7 +54,7 @@ module Ronin
       # @param [String, URI::HTTP] url
       #   The URL to attempt to exploit.
       #
-      # @param [String] param
+      # @param [String, Symbol] param
       #   The query parameter to attempt RFI on.
       #
       # @param [Hash] options
