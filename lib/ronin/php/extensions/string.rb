@@ -22,16 +22,16 @@
 class String
 
   #
-  # Returns +true+ if the String contains a PHP Warning message, returns
-  # +false+ otherwise.
+  # @return [Boolean]
+  #   Specifies whether the String contains a PHP Warning message.
   #
   def php_warning?
     !((self =~ /<b>Warning<\/b>:\s+/).nil?)
   end
 
   #
-  # Returns +true+ if the String contains a PHP Error message, returns
-  # +false+ otherwise.
+  # @return [Boolean]
+  #   Specifies whether the String contains a PHP Error message.
   #
   def php_error?
     !((self =~ /<b>Fatal error<\/b>:\s+/).nil?)
