@@ -234,11 +234,11 @@ module Ronin
       # @return [Array<File>]
       #   The successfully included local files.
       #
-      # @see include_of
+      # @see inclusion_of
       #
       def include_targets(options={},&block)
         (Target.configs + Target.logs).map { |target|
-          include_of(target,options,&block)
+          inclusion_of(target,options,&block)
         }.compact
       end
 
