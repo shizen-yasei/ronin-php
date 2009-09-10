@@ -48,8 +48,7 @@ module Ronin
       attr_accessor :test_script
 
       #
-      # Creates a new RFI object with the specified _url_, _param_ and given
-      # _options_.
+      # Creates a new RFI object.
       #
       # @param [String, URI::HTTP] url
       #   The URL to attempt to exploit.
