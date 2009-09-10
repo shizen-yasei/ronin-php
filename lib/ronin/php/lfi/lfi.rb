@@ -54,9 +54,7 @@ module Ronin
       attr_accessor :os
 
       #
-      # Creates a new LFI object with the specified _url_, _param_ and the
-      # given _options_. The specified _param_ indicates which query param
-      # in the _url_ is vulnerable to Local File Inclusion.
+      # Creates a new LFI object.
       #
       # @param [String, URI::HTTP] url
       #   The URL to exploit.
