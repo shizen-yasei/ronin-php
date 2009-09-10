@@ -61,8 +61,19 @@ module URI
       end
     end
 
-    alias test_lfi lfi_scan
-    alias lfi first_lfi
+    #
+    # @deprecated Use {#lfi_scan} instead.
+    #
+    def test_lfi(*arguments,&block)
+      lfi_scan(*arguments,&block)
+    end
+
+    #
+    # @deprecated Use {#first_lfi} instead.
+    #
+    def lfi(*arguments,&block)
+      first_lfi(*arguments,&block)
+    end
 
   end
 end
