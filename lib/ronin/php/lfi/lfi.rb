@@ -58,13 +58,25 @@ module Ronin
       # given _options_. The specified _param_ indicates which query param
       # in the _url_ is vulnerable to Local File Inclusion.
       #
-      # _options_ may contain the following keys:
-      # <tt>:prefix</tt>:: The path prefix.
-      # <tt>:up</tt>:: The number of directories to transverse up. Defaults
-      #                to 0.
-      # <tt>:terminate</tt>:: Whether or not to terminate the LFI path with
-      #                       a null byte. Defaults to +true+.
-      # <tt>:os</tt>:: The Operating System to target.
+      # @param [String, URI::HTTP] url
+      #   The URL to exploit.
+      #
+      # @param [String, Symbol] param
+      #   The query parameter to perform LFI on.
+      #
+      # @param [Hash] options
+      #
+      # @option options [String] :prefix
+      #   Optional prefix for any Local File Inclusion path.
+      #
+      # @option options [Integer] :up (0)
+      #   Number of directories to escape up.
+      #
+      # @option options [Boolean] :terminate (true)
+      #   Specifies whether to terminate the LFI path with a null byte.
+      #
+      # @option options [String] :os
+      #   Operating System to specifically target.
       #
       def initialize(url,param,options={})
         @url = url
@@ -98,15 +110,22 @@ module Ronin
       end
 
       #
-      # Returns +true+ if the LFI path will be terminated with a null byte,
-      # returns +false+ otherwise.
+      # @return [Boolean]
+      #   Specifies whether the LFI path will be terminated with a null
+      #   byte.
       #
       def terminate?
         @terminate == true
       end
 
       #
-      # Builds a LFI url to include the specified _path_.
+      # Builds a Local File Inclusion URL which includes a local path.
+      #
+      # @param [String] path
+      #   The path of the local file to include.
+      #
+      # @return [URI::HTTP]
+      #   The URL for the Local File Inclusion.
       #
       def url_for(path)
         escape = (@prefix || Path.up(@up))
@@ -120,7 +139,23 @@ module Ronin
       end
 
       #
-      # Get the specified _path_ with the given _options_.
+      # Requests the contents of a local file.
+      #
+      # @param [String] path
+      #   The path of the local file to request.
+      # 
+      # @param [Hash] options
+      #   Additional HTTP options to use when requesting the local file.
+      #
+      # @option options [Symbol] :method (:get)
+      #   The HTTP method to request the local file. May be either
+      #   +:get+ or +:post+.
+      #
+      # @return [String]
+      #   The body of the response.
+      #
+      # @see Net.http_get_body
+      # @see Net.http_post_body
       #
       def get(path,options={})
         options = options.merge(:url => url_for(path))
@@ -133,21 +168,30 @@ module Ronin
       end
 
       #
-      # Include the specified _path_ with the given _options_. Returns a
-      # new File object for the included _path_.
+      # Requests the contents of a local file.
+      #
+      # @return [File]
+      #   A File object representing the local file.
+      #
+      # @see get
       #
       def include(path,options={})
         File.new(path,get(path,options))
       end
 
       #
-      # Include a targeted file specified by _name_ using the given
-      # _options_. Returns a new File object for the included file.
-      # If a _block_ is given, it will be passed the newly created File
-      # object.
+      # Include a local file commonly known by a given name.
+      #
+      # @param [String] name
+      #   The common name of the local file to request.
+      #
+      # @param [Hash] options
+      #   Additional inclusion options.
       #
       # @raise [UnknownTarget] Unable to load target information for the
       #                        file with the specified _name_.
+      #
+      # @see inclusion_of
       #
       def include_target(name,options={},&block)
         name = name.to_s
@@ -160,6 +204,21 @@ module Ronin
         return inclusion_of(target,options,&block)
       end
 
+      #
+      # Saves a local file commonly known by a given name.
+      #
+      # @param [String] name
+      #   The common name of the local file to save.
+      #
+      # @param [String] dest
+      #   The destination path to save the local file to.
+      #
+      # @param [Hash] options
+      #   Additional inclusion options.
+      #
+      # @see include_target
+      # @see inclusion_of
+      #
       def save_target(name,dest,options={})
         include_target(name,options) do |file|
           file.save(dest)
@@ -167,7 +226,15 @@ module Ronin
       end
 
       #
-      # Includes all targeted config and log files with the given _options_.
+      # Includes all targeted config and log files.
+      #
+      # @param [Hash] options
+      #   Additional inclusion options.
+      #
+      # @return [Array<File>]
+      #   The successfully included local files.
+      #
+      # @see include_of
       #
       def include_targets(options={},&block)
         (Target.configs + Target.logs).map { |target|
@@ -176,8 +243,18 @@ module Ronin
       end
 
       #
-      # Mirrors all targeted config and log files to the specifed
-      # _directory_ using the given _options_.
+      # Mirrors all targeted config and log files.
+      #
+      # @param [String] directory
+      #   The directory to mirror all local files to.
+      #
+      # @param [Hash] options
+      #   Additional inclusion options.
+      #
+      # @return [Array<String>]
+      #   The desintation paths of the mirrored local files.
+      #
+      # @see include_targets
       #
       def mirror_targets(directory,options={})
         include_targets(options).map do |file|
@@ -186,8 +263,9 @@ module Ronin
       end
 
       #
-      # Returns +true+ if the url is vulnerable to LFI, returns +false+
-      # otherwise.
+      # @return [Boolean]
+      #   Specifies whether the URL and query parameter are vulnerable
+      #   to LFI.
       #
       def vulnerable?(options={})
         Target.tests.each do |target|
@@ -200,11 +278,16 @@ module Ronin
       end
 
       #
-      # Extracts information from all targeted files using the given
-      # _options_.
+      # Extracts information from all targeted files.
       #
-      # _options_ may include the following options:
-      # <tt>:oses</tt>:: The Array of OSes to test for.
+      # @param [Hash] options
+      #   Additional inclusion options.
+      #
+      # @option options [Array] :oses
+      #   A list of OSes to test for.
+      #
+      # @return [Hash]
+      #   The gathered information.
       #
       def fingerprint(options={})
         data = {}
@@ -219,7 +302,10 @@ module Ronin
       end
 
       #
-      # Returns the String form of the url.
+      # Converts the LFI to a String.
+      #
+      # @return [String]
+      #   The URL being exploited.
       #
       def to_s
         @url.to_s
@@ -228,7 +314,11 @@ module Ronin
       protected
 
       #
-      # Returns the available paths of the specified _target_.
+      # @param [String] target
+      #   Commonly known name of a file.
+      #
+      # @return [Array<String>]
+      #   The available paths of the specified target file.
       #
       def paths_of(target)
         if @os
@@ -242,6 +332,22 @@ module Ronin
       # Returns the File object obtained via the specified _target_
       # and the given _options_. If a _block_ is given, it will be passed
       # the new File object.
+      #
+      # @param [String] target
+      #   Commonly known name of a file.
+      #
+      # @param [Hash] options
+      #   Additional inclusion options.
+      #
+      # @yield [file]
+      #   If a block is given it will be passed the successfully
+      #   included local file.
+      #
+      # @yieldparam [File] file
+      #   The File representing the included local file.
+      #
+      # @return [File]
+      #   The file representing the successfully included local file.
       #
       def inclusion_of(target,options={},&block)
         paths_of(target).each do |path|
