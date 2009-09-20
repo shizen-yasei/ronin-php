@@ -71,12 +71,12 @@ install or update Overlays.
     url.has_rfi?
     # => true
 
-* Get the first viable Remote File Inclusion (RFI):
+* Get the first viable RFI vulnerability:
 
     url.rfi
     # => #<Ronin::PHP::RFI: ...>
 
-* Scan a URL for Remote File Inclusion (RFI):
+* Scan a URL for RFI vulnerabilities:
 
     url.rfi_scan
     # => [#<Ronin::PHP::RFI: ...>, ...]
@@ -89,12 +89,12 @@ install or update Overlays.
     url.has_lfi?
     # => true
 
-* Get the first viable Local File Inclusion (LFI):
+* Get the first viable LFI vulnerability:
 
     url.lfi
     # => #<Ronin::PHP::LFI: ...>
 
-* Scan a URL for Local File Inclusion (LFI):
+* Scan a URL for LFI vulnerabilities:
 
     url.lfi_scan
     # => [#<Ronin::PHP::LFI: ...>, ...]
