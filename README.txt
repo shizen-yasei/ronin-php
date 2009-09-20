@@ -73,7 +73,7 @@ install or update Overlays.
 
 * Get the first viable RFI vulnerability:
 
-    url.rfi
+    url.first_rfi
     # => #<Ronin::PHP::RFI: ...>
 
 * Scan a URL for RFI vulnerabilities:
@@ -104,7 +104,7 @@ install or update Overlays.
 
 * Get the first viable LFI vulnerability:
 
-    url.lfi
+    url.first_lfi
     # => #<Ronin::PHP::LFI: ...>
 
 * Scan a URL for LFI vulnerabilities:
