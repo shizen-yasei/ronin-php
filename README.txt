@@ -65,6 +65,8 @@ install or update Overlays.
 
 * Test for Remote File Inclusion (RFI):
 
+    require 'ronin/php/rfi'
+
     url = URI('http://www.example.com/page.php?lang=en')
     url.has_rfi?
     # => true
@@ -80,6 +82,8 @@ install or update Overlays.
     # => [#<Ronin::PHP::RFI: ...>, ...]
 
 * Test for Local File Inclusion (LFI):
+
+    require 'ronin/php/lfi'
 
     url = URI('http://www.example.com/site.php?page=home')
     url.has_lfi?
