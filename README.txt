@@ -61,6 +61,40 @@ install or update Overlays.
 
     $ ronin-php
 
+== EXAMPLES:
+
+* Test for Remote File Inclusion (RFI):
+
+    url = URI('http://www.example.com/page.php?lang=en')
+    url.has_rfi?
+    # => true
+
+* Get the first viable Remote File Inclusion (RFI):
+
+    url.rfi
+    # => #<Ronin::PHP::RFI: ...>
+
+* Scan a URL for Remote File Inclusion (RFI):
+
+    url.rfi_scan
+    # => [#<Ronin::PHP::RFI: ...>, ...]
+
+* Test for Local File Inclusion (LFI):
+
+    url = URI('http://www.example.com/site.php?page=home')
+    url.has_lfi?
+    # => true
+
+* Get the first viable Local File Inclusion (LFI):
+
+    url.lfi
+    # => #<Ronin::PHP::LFI: ...>
+
+* Scan a URL for Local File Inclusion (LFI):
+
+    url.lfi_scan
+    # => [#<Ronin::PHP::LFI: ...>, ...]
+
 == LICENSE:
 
 Ronin PHP - A Ruby library for Ronin that provides support for PHP
