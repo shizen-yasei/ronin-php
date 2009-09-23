@@ -44,17 +44,6 @@ install or update Overlays.
   environments.
 * Provides an AJAX PHP-RPC Console.
 
-== REQUIREMENTS:
-
-* cssmin
-* jsmin
-* {hpricot}[http://github.com/why/hpricot]
-* {ronin}[http://ronin.rubyforge.org/] >= 0.2.2
-
-== INSTALL:
-
-  $ sudo gem install ronin-php
-
 == SYNOPSIS:
 
 * Start the Ronin console with Ronin PHP preloaded:
@@ -111,6 +100,17 @@ install or update Overlays.
 
     url.lfi_scan
     # => [#<Ronin::PHP::LFI: ...>, ...]
+
+== REQUIREMENTS:
+
+* cssmin
+* jsmin
+* {hpricot}[http://github.com/why/hpricot]
+* {ronin}[http://ronin.rubyforge.org/] >= 0.2.2
+
+== INSTALL:
+
+  $ sudo gem install ronin-php
 
 == LICENSE:
 
