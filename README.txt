@@ -106,7 +106,7 @@ install or update Overlays.
 * cssmin
 * jsmin
 * {hpricot}[http://github.com/why/hpricot]
-* {ronin}[http://ronin.rubyforge.org/] >= 0.2.2
+* {ronin}[http://ronin.rubyforge.org/] >= 0.3.0
 
 == INSTALL:
 
