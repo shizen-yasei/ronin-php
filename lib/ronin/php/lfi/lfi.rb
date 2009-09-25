@@ -327,9 +327,7 @@ module Ronin
       end
 
       #
-      # Returns the File object obtained via the specified _target_
-      # and the given _options_. If a _block_ is given, it will be passed
-      # the new File object.
+      # Returns the File object obtained via a given target file.
       #
       # @param [String] target
       #   Commonly known name of a file.
