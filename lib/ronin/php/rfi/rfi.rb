@@ -82,7 +82,8 @@ module Ronin
       #
       # Specifies the URL to the RFI testing script.
       #
-      # @return [String] The URL to the RFI testing script.
+      # @return [String]
+      #   The URL to the RFI testing script.
       #
       # @since 0.1.4
       #
@@ -93,8 +94,11 @@ module Ronin
       #
       # Uses a new URL for the RFI testing script.
       #
-      # @param [String] new_url The new URL to the RFI testing script.
-      # @return [String] The new URL to the RFI testing script.
+      # @param [String] new_url
+      #   The new URL to the RFI testing script.
+      #
+      # @return [String]
+      #   The new URL to the RFI testing script.
       #
       # @since 0.1.4
       #
