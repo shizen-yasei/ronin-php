@@ -103,9 +103,6 @@ install or update Overlays.
 
 == REQUIREMENTS:
 
-* cssmin
-* jsmin
-* {hpricot}[http://github.com/why/hpricot]
 * {ronin}[http://ronin.rubyforge.org/] >= 0.3.0
 * {ronin-web}[http://ronin.rubyforge.org/web/] >= 0.2.0
 
