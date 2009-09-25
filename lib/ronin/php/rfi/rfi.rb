@@ -84,6 +84,8 @@ module Ronin
       #
       # @return [String] The URL to the RFI testing script.
       #
+      # @since 0.1.4
+      #
       def RFI.test_script
         @@ronin_rfi_test_script ||= TEST_SCRIPT
       end
@@ -93,6 +95,8 @@ module Ronin
       #
       # @param [String] new_url The new URL to the RFI testing script.
       # @return [String] The new URL to the RFI testing script.
+      #
+      # @since 0.1.4
       #
       def RFI.test_script=(new_url)
         @@ronin_rfi_test_script = new_url
