@@ -29,6 +29,8 @@ module Ronin
       #
       # @return [String] The URL of the PHP-RPC script.
       #
+      # @since 0.1.4
+      #
       def RFI.rpc_script
         @@ronin_rfi_rpc_script ||= RPC_SCRIPT
       end
@@ -38,6 +40,8 @@ module Ronin
       #
       # @param [String] new_url The new URL to the PHP-RPC script.
       # @return [String] The new URL to the PHP-RPC script.
+      #
+      # @since 0.1.4
       #
       def RFI.rpc_script=(new_url)
         @@ronin_rfi_rpc_script = new_url
