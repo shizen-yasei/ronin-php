@@ -28,8 +28,13 @@ module Ronin
         attr_reader :path
 
         #
-        # Creates a new Inclusion with the specified _path_ and response
-        # _body_.
+        # Creates a new Inclusion object.
+        #
+        # @param [String] path
+        #   The path that was included.
+        #
+        # @param [String] body
+        #   The body of the included file.
         #
         def initialize(path,body)
           super(body)
@@ -45,8 +50,13 @@ module Ronin
         end
 
         #
-        # Saves the body to specified _destination_, returns the
-        # _destination_.
+        # Saves the body to a local file.
+        #
+        # @param [String] destination
+        #   The destination path to save the file to.
+        #
+        # @return [String]
+        #   The path of the saved file.
         #
         def save(destination)
           File.open(destination,'w') do |dest|
