@@ -1,3 +1,17 @@
+=== 0.1.4 / 2009-09-24
+
+* Require ronin >= 0.3.0.
+* Require ronin-web >= 0.2.0.
+* Require rspec >= 1.2.8.
+* Added Ronin::PHP::RFI.rpc_script.
+* Added Ronin::PHP::RFI.rpc_script=.
+* Moved to YARD based documentation.
+* Updated the project summary and 3-point description for Ronin PHP.
+* Fixed the URL for Ronin::PHP::RFI::TEST_SCRIPT.
+* Fixed the URL for Ronin::PHP::RFI::RPC_SCRIPT.
+* Fixed a bug with how the exec_output() function executes commands under
+  PHP5.
+
 === 0.1.3 / 2009-07-25
 
 * Fixed a show-stopping typo in ronin/php/lfi/extensions/uri/http.rb
