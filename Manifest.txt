@@ -20,11 +20,13 @@ lib/ronin/php/lfi/targets/logs.rb
 lib/ronin/php/lfi/targets/tests.rb
 lib/ronin/php/lfi/file.rb
 lib/ronin/php/lfi/lfi.rb
+lib/ronin/php/lfi/scanner.rb
 lib/ronin/php/rfi.rb
 lib/ronin/php/rfi/extensions.rb
 lib/ronin/php/rfi/extensions/uri.rb
 lib/ronin/php/rfi/extensions/uri/http.rb
 lib/ronin/php/rfi/rfi.rb
+lib/ronin/php/rfi/scanner.rb
 lib/ronin/php/version.rb
 lib/ronin/rpc/php.rb
 lib/ronin/rpc/php/call.rb
