@@ -19,9 +19,13 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-require 'ronin/php/lfi/exceptions'
-require 'ronin/php/lfi/extensions'
-require 'ronin/php/lfi/target'
-require 'ronin/php/lfi/file'
-require 'ronin/php/lfi/lfi'
-require 'ronin/php/lfi/scanner'
+require 'ronin/php/lfi/extensions/uri/http'
+require 'ronin/scanners/web'
+
+module Ronin
+  module Scanners
+    Web.scanner(:lfi) do |page,results,options|
+      page.url.lfi_scan(options,&results)
+    end
+  end
+end
