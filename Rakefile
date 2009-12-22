@@ -18,7 +18,7 @@ Hoe.spec('ronin-php') do
 
   self.extra_dev_deps = [
     ['rspec', '>=1.2.8'],
-    ['yard', '>=0.4.0'],
+    ['yard', '>=0.5.2'],
     ['cssmin', '>=1.0.2'],
     ['jsmin', '>=1.0.1'],
     ['hpricot', '>=0.8.1']
