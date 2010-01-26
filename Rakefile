@@ -15,7 +15,7 @@ Hoe.spec('ronin-php') do
   self.remote_rdoc_dir = 'docs/ronin-php'
 
   self.extra_deps = [
-    ['ronin', '>=0.3.0'],
+    ['ronin', '>=0.4.0'],
     ['ronin-web', '>=0.2.2']
   ]
 
