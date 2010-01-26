@@ -24,8 +24,7 @@ Hoe.spec('ronin-php') do
     ['rspec', '>=1.2.8'],
     ['yard', '>=0.5.2'],
     ['cssmin', '>=1.0.2'],
-    ['jsmin', '>=1.0.1'],
-    ['hpricot', '>=0.8.1']
+    ['jsmin', '>=1.0.1']
   ]
 
   self.spec_extras = {:has_rdoc => 'yard'}
