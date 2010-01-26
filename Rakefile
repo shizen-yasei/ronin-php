@@ -7,11 +7,14 @@ require './tasks/spec.rb'
 require './tasks/yard.rb'
 require './tasks/static.rb'
 
+Hoe.plugin :yard
+
 Hoe.spec('ronin-php') do
   self.rubyforge_name = 'ronin'
   self.developer('Postmodern','postmodern.mod3@gmail.com')
-  self.readme_file = 'README.rdoc'
-  self.history_file = 'History.rdoc'
+
+  self.yard_title = 'Ronin PHP Documentation'
+  self.yard_options += ['--protected']
   self.remote_rdoc_dir = 'docs/ronin-php'
 
   self.extra_deps = [
@@ -26,8 +29,6 @@ Hoe.spec('ronin-php') do
     ['cssmin', '>=1.0.2'],
     ['jsmin', '>=1.0.1']
   ]
-
-  self.spec_extras = {:has_rdoc => 'yard'}
 end
 
 # vim: syntax=Ruby
