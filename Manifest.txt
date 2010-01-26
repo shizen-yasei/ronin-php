@@ -4,6 +4,9 @@ Manifest.txt
 README.rdoc
 Rakefile
 bin/ronin-php
+lib/ronin/gen/php.rb
+lib/ronin/gen/php/config.rb
+lib/ronin/gen/php/rpc_server.rb
 lib/ronin/php.rb
 lib/ronin/php/extensions.rb
 lib/ronin/php/extensions/string.rb
