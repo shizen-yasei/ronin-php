@@ -41,6 +41,7 @@ if (isset($_REQUEST['rpc_call']))
 ?>
 -->
 
+<% if options.ajax? %>
 <html>
   <head>
     <title>Ronin::PHP - AJAX PHP-RPC Console</title>
@@ -95,6 +96,7 @@ if (isset($_REQUEST['rpc_call']))
 
           <div id="console_fingerprint" class="console_tab">
             <div class="console_dialogue">
+<% end %>
               <!--
 <?php
   echo(" -->");
@@ -109,6 +111,8 @@ if (isset($_REQUEST['rpc_call']))
   echo("<!-- ");
 ?>
               -->
+
+<% if options.ajax? %>
             </div>
           </div>
         </div>
@@ -116,3 +120,4 @@ if (isset($_REQUEST['rpc_call']))
     </div>
   </body>
 </html>
+<% end %>

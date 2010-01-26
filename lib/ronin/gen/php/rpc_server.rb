@@ -29,6 +29,8 @@ module Ronin
 
         SERVER_FILE = File.join('ronin','gen','php','rpc','server.php.erb')
 
+        class_option :ajax, :type => :boolean
+
         def generate
           template SERVER_FILE, self.path
         end
