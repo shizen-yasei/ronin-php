@@ -81,14 +81,13 @@ if (isset($_REQUEST['rpc_call']))
 <html>
   <head>
     <title>Ronin::PHP - AJAX PHP-RPC Console</title>
-    <link rel="stylesheet" type="text/css" href="ajax/css/layout.css">
-    <script type="text/javascript" src="ajax/js/base64.js"></script>
-    <script type="text/javascript" src="ajax/js/jquery.min.js"></script>
-    <script type="text/javascript" src="ajax/js/jquery-ui-personalized.min.js"></script>
-    <script type="text/javascript" src="ajax/js/jquery.terminal.js"></script>
-    <script type="text/javascript" src="ajax/js/jquery.phprpc.js"></script>
-    <script type="text/javascript" src="ajax/js/ui.js"></script>
-
+    <%= css_min read_template('ajax/css/layout.css') %>
+    <%= js_min read_template('ajax/js/base64.js') %>
+    <%= js_min read_template('ajax/js/jquery.min.js') %>
+    <%= js_min read_template('ajax/js/jquery-ui-personalized.min.js') %>
+    <%= js_min read_template('ajax/js/jquery.terminal.js') %>
+    <%= js_min read_template('ajax/js/jquery.phprpc.js') %>
+    <%= js_min read_template('ajax/js/ui.js') %>
     <script type="text/javascript">
       $(document).ready(function() {
         $("#console_shell").terminal(function(input) {

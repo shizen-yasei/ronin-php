@@ -22,6 +22,9 @@
 require 'ronin/gen/php/config'
 require 'ronin/gen/file_generator'
 
+require 'cssmin'
+require 'jsmin'
+
 module Ronin
   module Gen
     module PHP
@@ -30,10 +33,26 @@ module Ronin
         SERVER_FILE = File.join('ronin','gen','php','rpc','server.php.erb')
 
         class_option :no_ajax, :type => :boolean
+        class_option :no_cssmin, :type => :boolean
+        class_option :no_jsmin, :type => :boolean
         class_option :inline, :type => :array, :default => []
 
         def generate
           template SERVER_FILE, self.path
+        end
+
+        protected
+
+        def css_min(css)
+          css = CSSMin.minify(css) unless options.no_cssmin?
+
+          return "<style type=\"text/css\">#{css}</style>"
+        end
+
+        def js_min(js)
+          js = JSMin.minify(js) unless options.no_jsmin?
+
+          return "<script type=\"text/javascript\">#{js}</script>"
         end
 
       end
