@@ -1,36 +1,3 @@
-function running($params=array())
-{
-  return true;
-}
-
-function fingerprint($params=array())
-{
-  $profile = array(
-    'os' => PHP_OS,
-    'system_name' => php_uname('s'),
-    'system_release' => php_uname('r'),
-    'system_version' => php_uname('v'),
-    'machine_type' => php_uname('m'),
-    'host_name' => php_uname('n'),
-    'php_server_api' => php_sapi_name(),
-    'php_version' => phpversion(),
-    'uid' => posix_getuid(),
-    'gid' => posix_getgid(),
-    'cwd' => getcwd(),
-    'disk_free_space' => disk_free_space('/'),
-    'disk_total_space' => disk_total_space('/')
-  );
-
-  switch ($profile['php_server_api'])
-  {
-  case 'apache':
-    $profile['apache_version'] = apache_get_version();
-    break;
-  }
-
-  return $profile;
-}
-
 function rpc_method_proxy($method,$arguments,$server)
 {
   $session = array_shift($arguments);
