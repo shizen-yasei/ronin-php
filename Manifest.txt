@@ -59,4 +59,5 @@ static/ronin/gen/php/rpc/rpc_server.php
 static/ronin/gen/php/rpc/service.php
 static/ronin/gen/php/rpc/console_service.php
 static/ronin/gen/php/rpc/shell_service.php
+static/ronin/gen/php/rpc/ajax.php
 static/ronin/gen/php/rpc/server.php.erb
