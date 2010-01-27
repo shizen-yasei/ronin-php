@@ -37,18 +37,39 @@ module Ronin
         class_option :no_jsmin, :type => :boolean
         class_option :inline, :type => :array, :default => []
 
+        #
+        # Generates the PHP-RPC Server script.
+        #
+        # @since 0.2.0
+        #
         def generate
           template SERVER_FILE, self.path
         end
 
         protected
 
+        #
+        # Minifies CSS source-code and emits a +style+ tag.
+        #
+        # @param [String] css
+        #   The CSS source-code to minify.
+        #
+        # @since 0.2.0
+        #
         def css_min(css)
           css = CSSMin.minify(css) unless options.no_cssmin?
 
           return "<style type=\"text/css\">#{css}</style>"
         end
 
+        #
+        # Minifies JavaScript source-code and emits a +script+ tag.
+        #
+        # @param [String] js
+        #   The JavaScript source-code to minify.
+        #
+        # @since 0.2.0
+        #
         def js_min(js)
           js = JSMin.minify(js) unless options.no_jsmin?
 
