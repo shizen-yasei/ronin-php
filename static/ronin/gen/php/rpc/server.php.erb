@@ -21,10 +21,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-<%= template 'rpc_server.php' %>
-<%= template 'service.php' %>
-<%= template 'console_service.php' %>
-<%= template 'shell_service.php' %>
+<%= read_template 'rpc_server.php' %>
+<%= read_template 'service.php' %>
+<%= read_template 'console_service.php' %>
+<%= read_template 'shell_service.php' %>
 
 function running($params=array())
 {
