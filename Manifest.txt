@@ -4,6 +4,7 @@ Manifest.txt
 README.rdoc
 Rakefile
 bin/ronin-php
+bin/ronin-gen-php-rpc
 lib/ronin/gen/php.rb
 lib/ronin/gen/php/config.rb
 lib/ronin/gen/php/rpc_server.rb
@@ -38,6 +39,7 @@ lib/ronin/rpc/php/client.rb
 lib/ronin/rpc/php/console.rb
 lib/ronin/rpc/php/shell.rb
 lib/ronin/rpc/php/rfi.rb
+lib/ronin/ui/command_line/commands/gen_php_rpc.rb
 tasks/spec.rb
 tasks/yard.rb
 tasks/static.rb
