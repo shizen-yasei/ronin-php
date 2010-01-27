@@ -56,5 +56,5 @@ static/ronin/gen/php/rpc/ajax/js/jquery.phprpc.js
 static/ronin/gen/php/rpc/ajax/js/jquery-ui-personalized.min.js
 static/ronin/gen/php/rpc/ajax/js/jquery.terminal.js
 static/ronin/gen/php/rpc/ajax/js/ui.js
-static/ronin/gen/php/rpc/_rpc.php.erb
+static/ronin/gen/php/rpc/rpc.php
 static/ronin/gen/php/rpc/server.php
