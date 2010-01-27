@@ -58,7 +58,13 @@ function fingerprint($params=array())
   return $profile;
 }
 
+#
+# Inlined PHP: Start
+#
 <% options[:inline].each { |path| %><%= File.read(path) %><% } %>
+#
+# Inlined PHP: End
+#
 
 if (isset($_REQUEST['rpc_call']))
 {
@@ -77,6 +83,5 @@ if (isset($_REQUEST['rpc_call']))
 
 ?>
 -->
-<% unless options.no_ajax? %>
-<%= read_template 'ajax.php' %>
-<% end %>
+
+<% unless options.no_ajax? %><%= read_template 'ajax.php' %><% end %>
