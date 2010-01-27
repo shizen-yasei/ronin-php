@@ -42,7 +42,7 @@ if (isset($_REQUEST['rpc_call']))
 ?>
 -->
 
-<% if options.ajax? %>
+<% unless options.no_ajax? %>
 <html>
   <head>
     <title>Ronin::PHP - AJAX PHP-RPC Console</title>
@@ -113,7 +113,7 @@ if (isset($_REQUEST['rpc_call']))
 ?>
               -->
 
-<% if options.ajax? %>
+<% unless options.no_ajax? %>
             </div>
           </div>
         </div>
