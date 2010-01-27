@@ -3,15 +3,14 @@
 require 'rubygems'
 require 'hoe'
 require 'hoe/signing'
-require './tasks/spec.rb'
-require './tasks/yard.rb'
-require './tasks/static.rb'
 
 Hoe.plugin :yard
 
 Hoe.spec('ronin-php') do
   self.rubyforge_name = 'ronin'
   self.developer('Postmodern','postmodern.mod3@gmail.com')
+
+  self.rspec_options += ['--colour', '--format', 'specdoc']
 
   self.yard_title = 'Ronin PHP Documentation'
   self.yard_options += ['--protected']
