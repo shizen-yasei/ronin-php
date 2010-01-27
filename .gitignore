@@ -7,4 +7,5 @@ tmp/*
 *.log
 *.swp
 *~
-static/ronin/php/rpc/server.min.php
+static/ronin/php/rpc/server.php
+static/ronin/php/rpc/server.ajax.php

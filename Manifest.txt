@@ -40,12 +40,12 @@ lib/ronin/rpc/php/console.rb
 lib/ronin/rpc/php/shell.rb
 lib/ronin/rpc/php/rfi.rb
 lib/ronin/ui/command_line/commands/gen_php_rpc.rb
+tasks/static.rb
 spec/spec_helper.rb
 spec/helpers/database.rb
 spec/php/php_spec.rb
 spec/php/rfi_spec.rb
 spec/rpc/php/rfi_spec.rb
-static/ronin/php/rfi/test.php
 static/ronin/gen/php/rpc/ajax/css/layout.css
 static/ronin/gen/php/rpc/ajax/js/base64.js
 static/ronin/gen/php/rpc/ajax/js/jquery.min.js
@@ -57,5 +57,8 @@ static/ronin/gen/php/rpc/rpc_server.php
 static/ronin/gen/php/rpc/service.php
 static/ronin/gen/php/rpc/console_service.php
 static/ronin/gen/php/rpc/shell_service.php
-static/ronin/gen/php/rpc/ajax.php
+static/ronin/gen/php/rpc/ajax.php.erb
 static/ronin/gen/php/rpc/server.php.erb
+static/ronin/php/rfi/test.php
+static/ronin/php/rpc/server.php
+static/ronin/php/rpc/server.ajax.php
