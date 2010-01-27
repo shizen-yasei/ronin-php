@@ -19,7 +19,7 @@ Hoe.spec('ronin-php') do
   self.extra_deps = [
     ['ronin', '>=0.4.0'],
     ['ronin-gen', '>=0.3.0'],
-    ['ronin-web', '>=0.2.2']
+    ['ronin-web', '>=0.2.2'],
     ['cssmin', '>=1.0.2'],
     ['jsmin', '>=1.0.1']
   ]
