@@ -58,6 +58,8 @@ function fingerprint($params=array())
   return $profile;
 }
 
+<% options[:includes].each { |path| %><%= File.read(path) %><% } %>
+
 if (isset($_REQUEST['rpc_call']))
 {
   $server = new RPCServer();
