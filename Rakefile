@@ -15,7 +15,7 @@ Hoe.spec('ronin-php') do
 
   self.yard_title = 'Ronin PHP Documentation'
   self.yard_options += ['--protected']
-  self.remote_rdoc_dir = 'docs/ronin-php'
+  self.remote_yard_dir = 'docs/ronin-php'
 
   self.extra_deps = [
     ['ronin', '>=0.4.0'],
