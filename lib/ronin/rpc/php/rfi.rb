@@ -27,7 +27,8 @@ module Ronin
       RPC_SCRIPT = 'http://ronin.rubyforge.org/static/ronin/php/rpc/server.min.php'
 
       #
-      # @return [String] The URL of the PHP-RPC script.
+      # @return [String]
+      #   The URL of the PHP-RPC script.
       #
       # @since 0.1.4
       #
