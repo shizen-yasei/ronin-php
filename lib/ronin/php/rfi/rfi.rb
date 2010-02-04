@@ -61,7 +61,7 @@ module Ronin
       #
       # @option options [Boolean] :terminate (true)
       #   Specifies whether to terminate the RFI script URL
-      #   with a +?+.
+      #   with a `?`.
       #
       # @option options [String, URI::HTTP] :test_script (RFI.test_script)
       #   The URL of the RFI test script.
@@ -124,7 +124,7 @@ module Ronin
       #
       # @return [Boolean]
       #   Specifies whether the RFI script URL will be terminated with
-      #   a +?+.
+      #   a `?`.
       #
       def terminate?
         @terminate == true
@@ -163,7 +163,7 @@ module Ronin
       #
       # @option options [Symbol] :method (:get)
       #   The HTTP method to perform the Remote File Inclusion.
-      #   Maybe be either +:get+ or +:post+.
+      #   Maybe be either `:get` or `:post`.
       #
       # @return [String]
       #   The body of the response from the RFI.

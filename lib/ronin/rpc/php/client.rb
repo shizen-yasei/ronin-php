@@ -83,8 +83,8 @@ module Ronin
         end
 
         #
-        # Returns +true+ if the RPC server is running and responding to
-        # function calls, returns +false+ otherwise.
+        # Returns `true` if the RPC server is running and responding to
+        # function calls, returns `false` otherwise.
         #
         def running?
           call(:running)

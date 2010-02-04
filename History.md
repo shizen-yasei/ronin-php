@@ -1,4 +1,4 @@
-=== 0.1.4 / 2009-09-24
+### 0.1.4 / 2009-09-24
 
 * Require ronin >= 0.3.0.
 * Require ronin-web >= 0.2.0.
@@ -15,12 +15,12 @@
 * Fixed a bug with how the exec_output() function executes commands under
   PHP5.
 
-=== 0.1.3 / 2009-07-25
+### 0.1.3 / 2009-07-25
 
 * Fixed a show-stopping typo in ronin/php/lfi/extensions/uri/http.rb
   that was preventing ronin-php from being loaded.
 
-=== 0.1.2 / 2009-07-02
+### 0.1.2 / 2009-07-02
 
 * Use Hoe >= 2.0.0.
 * Require ronin >= 0.2.4.
@@ -29,7 +29,7 @@
   Ronin::PHP::LFI and Ronin::PHP::RFI objects on
   URI::HTTP urls.
 
-=== 0.1.1 / 2009-03-28
+### 0.1.1 / 2009-03-28
 
 * Require hpricot.
 * Require ronin >= 0.2.2.
@@ -41,7 +41,7 @@
   * Use Digest::MD5.hexdigest directly for encoding the RFI challenge
     string.
 
-=== 0.1.0 / 2009-01-08
+### 0.1.0 / 2009-01-08
 
 * Require Ronin >= 0.1.3.
 * Removed references to Ronin::Vulnerable.
@@ -50,7 +50,7 @@
 * Added more documentation.
 * Added more specs.
 
-=== 0.0.9 / 2008-07-30
+### 0.0.9 / 2008-07-30
 
 * Initial release.
 * Provides tests for Location File Inclusion (LFI) and Remote File

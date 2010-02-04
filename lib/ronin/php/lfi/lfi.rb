@@ -147,7 +147,7 @@ module Ronin
       #
       # @option options [Symbol] :method (:get)
       #   The HTTP method to request the local file. May be either
-      #   +:get+ or +:post+.
+      #   `:get` or `:post`.
       #
       # @return [String]
       #   The body of the response.

@@ -49,7 +49,7 @@ module Ronin
         protected
 
         #
-        # Minifies CSS source-code and emits a +style+ tag.
+        # Minifies CSS source-code and emits a `style` tag.
         #
         # @param [String] css
         #   The CSS source-code to minify.
@@ -63,7 +63,7 @@ module Ronin
         end
 
         #
-        # Minifies JavaScript source-code and emits a +script+ tag.
+        # Minifies JavaScript source-code and emits a `script` tag.
         #
         # @param [String] js
         #   The JavaScript source-code to minify.
