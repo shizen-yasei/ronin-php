@@ -30,13 +30,24 @@ module Ronin
       class Response < RPC::Response
 
         #
-        # Returns the default XML parser to use for parsing XMLRPC
-        # responses.
+        # The default XML parser to use for parsing XMLRPC responses.
+        #
+        # @return [XMLRPC::XMLParser::REXMLStreamParser]
+        #   The default XML parser.
         #
         def Response.parser
           @@parser ||= XMLRPC::XMLParser::REXMLStreamParser.new
         end
 
+        #
+        # Sets the XML parser used for parsing XMLRPC responses.
+        #
+        # @param [XMLRPC::XMLParser::AbstractStreamParser] new_parser
+        #   The new parser to use.
+        #
+        # @return [XMLRPC::XMLParser::AbstractStreamParser]
+        #   The new parser.
+        #
         def Response.parser=(new_parser)
           @@parser = new_parser
         end
@@ -44,6 +55,13 @@ module Ronin
         #
         # Decodes the XMLRPC response message embedded in the response
         # from the server.
+        #
+        # @return [Array]
+        #   The status and additional parameters in the response.
+        #
+        # @raise [ResponseMissing]
+        #   The response does not contain any information from the
+        #   RPC Server.
         #
         def decode
           response = @contents[/<rpc>.*<\/rpc>/m]

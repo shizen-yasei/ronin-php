@@ -27,7 +27,10 @@ module Ronin
       class Shell < RPC::Shell
 
         #
-        # Returns the current working directory.
+        # Requests the current working directory.
+        #
+        # @return [String]
+        #   The current working directory.
         #
         def cwd
           call(:cwd)
@@ -36,27 +39,44 @@ module Ronin
         #
         # Changes the current working directory.
         #
+        # @param [String] path
+        #   The directory to switch to.
+        #
         def cd(path)
           call(:cd,path)
         end
 
         #
-        # Returns the environment variables.
+        # Requests the environment variables.
+        #
+        # @return [Hash]
+        #   The environment variables.
         #
         def env
           call(:env)
         end
 
         #
-        # Returns the environment variable of the specified _name_.
+        # Requests the environment variable of the given name.
+        #
+        # @param [String] name
+        #   The name of the environment variable to request.
+        #
+        # @return [String]
+        #   The value of the environment variable.
         #
         def getenv(name)
           call(:getenv,name)
         end
 
         #
-        # Sets the environment variable of the specified _name_
-        # with the specified _value_.
+        # Sets the environment variable of the given name.
+        #
+        # @param [String] name
+        #   The name of the environment variable to set.
+        #
+        # @param [String] value
+        #   The value to set the environment variable to.
         #
         def setenv(name,value)
           call(:setenv,name,value)

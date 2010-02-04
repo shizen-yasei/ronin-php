@@ -30,8 +30,14 @@ module Ronin
       class Call < RPC::Call
 
         #
-        # Encodes the call and the given _session_ variables into a base64
-        # encoded XMLRPC call message.
+        # Encodes the function call along with additional session
+        # information.
+        #
+        # @param [Hash] session
+        #   Additional session information to encode.
+        #
+        # @return [String]
+        #   Base64 encoded XMLRPC method call.
         #
         def encode(session={})
           XMLRPC::Create.new.methodCall(@name,session,*(@arguments)).base64_encode

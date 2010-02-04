@@ -39,8 +39,11 @@ module Ronin
       #
       # Sets the URL to the PHP-RPC script.
       #
-      # @param [String] new_url The new URL to the PHP-RPC script.
-      # @return [String] The new URL to the PHP-RPC script.
+      # @param [String] new_url
+      #   The new URL to the PHP-RPC script.
+      #
+      # @return [String]
+      #   The new URL to the PHP-RPC script.
       #
       # @since 0.1.4
       #
@@ -49,12 +52,17 @@ module Ronin
       end
 
       #
-      # Returns an PHP-RPC Client using the RFI vulnerability to inject
-      # the PHP-RPC Server script using the given _options_.
+      # Creates a PHP-RPC Client using the RFI vulnerability to inject
+      # the PHP-RPC Server script.
       #
-      # _options_ may contain the following keys:
-      # <tt>:script</tt>:: The URL of the PHP-RPC Server script.
-      #                    Defaults to RFI.rpc_script.
+      # @param [Hash] options
+      #   Additional options.
+      #
+      # @option options [String] :script (RFI.rpc_script)
+      #   The URL of the PHP-RPC Server script.
+      #
+      # @return [Client]
+      #   The new PHP-RPC Client.
       #
       def rpc(options={})
         server_script = (options[:script] || RFI.rpc_script)

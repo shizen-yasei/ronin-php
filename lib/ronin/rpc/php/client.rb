@@ -50,15 +50,22 @@ module Ronin
         service :shell, Shell
 
         #
-        # Creates a new Client object with the specified _url_ and the
-        # given _options_.
+        # Creates a new Client object.
         #
-        # _options_ may contain the following keys:
-        # <tt>:proxy</tt>:: The proxy settings to use when communicating
-        #                   with the server.
-        # <tt>:user_agent</tt>:: The User-Agent to send to the server.
-        # <tt>:user_agent_alias</tt>:: The User-Agent alias to send to
-        #                              the server.
+        # @param [URI::HTTP, String] url
+        #   The url that the server is located at.
+        #
+        # @param [Hash] options
+        #   Additional options.
+        #
+        # @option options [Hash] :proxy
+        #   The proxy settings to use when communicating with the server.
+        #
+        # @option options [String] :user_agent
+        #   The User-Agent to send to the server.
+        #
+        # @option options [String] :user_agent_alias
+        #   The User-Agent alias to send to the server.
         #
         def initialize(url,options={})
           @url = url
@@ -83,15 +90,21 @@ module Ronin
         end
 
         #
-        # Returns `true` if the RPC server is running and responding to
-        # function calls, returns `false` otherwise.
+        # Determines if the RPC Server is running and responding to
+        # function calls.
+        #
+        # @return [Boolean]
+        #   Specifies whether the RPC Server is running.
         #
         def running?
           call(:running)
         end
 
         #
-        # Returns a finger-print of the PHP server.
+        # Finger-prints of the PHP server.
+        #
+        # @return [Hash]
+        #   Finger-print information.
         #
         def fingerprint
           call(:fingerprint)
@@ -100,16 +113,29 @@ module Ronin
         protected
 
         #
-        # Creates a new Call object for the specified _funtion_ and
-        # _arguments_.
+        # Creates a new {Call} object.
+        #
+        # @param [Symbol] function
+        #   Name of the function to call.
+        #
+        # @param [Array] arguments
+        #   Additional arguments to pass to the function.
+        #
+        # @return [Call]
+        #   The newly created Call object for the function call.
         #
         def create_call(function,*arguments)
           Call.new(function,*arguments)
         end
 
         #
-        # Sends the specified _call_object_ to the RPC server. Returns
-        # a new Response object that represents the server's response.
+        # Sends a function call to the RPC server.
+        #
+        # @param [Call] call_object
+        #   The function call to send to the RPC Server.
+        #
+        # @return [Response]
+        #   The response from the RPC Server.
         #
         def send_call(call_object)
           resp = Net.http_get(:url => call_url(call_object),
@@ -124,9 +150,18 @@ module Ronin
         end
 
         #
-        # Returns the return-value of a previous function call encoded
-        # into the specified _response_. If the _response_ contains
-        # a fault message, the fault exception will be raised.
+        # Decodes the return-value of a previous function from a given
+        # response.
+        #
+        # @param [Response] response
+        #   The response to decode.
+        #
+        # @return [Object]
+        #   The return value from the response.
+        #
+        # @raise [Exception]
+        #   If the response represents an exception, an equivalent Ruby
+        #   exception will be raised.
         #
         def return_value(response)
           status, params = response.decode

@@ -27,8 +27,13 @@ module Ronin
       class Console < RPC::Console
 
         #
-        # Evaluates the specified _string_ of PHP code and returns the
-        # result.
+        # Evaluates the given PHP code.
+        #
+        # @param [String] string
+        #   PHP code to evaluate.
+        #
+        # @return [Object]
+        #   Return value from the evaluation.
         #
         def eval(string)
           call(:eval,string)
