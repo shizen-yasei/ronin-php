@@ -39,6 +39,7 @@ lib/ronin/rpc/php/client.rb
 lib/ronin/rpc/php/console.rb
 lib/ronin/rpc/php/shell.rb
 lib/ronin/rpc/php/rfi.rb
+lib/ronin/exploits/lfi.rb
 lib/ronin/exploits/rfi.rb
 lib/ronin/ui/command_line/commands/gen_php_rpc.rb
 tasks/static.rb
