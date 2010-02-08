@@ -63,5 +63,6 @@ static/ronin/gen/php/rpc/shell_service.php
 static/ronin/gen/php/rpc/ajax.php.erb
 static/ronin/gen/php/rpc/server.php.erb
 static/ronin/php/rfi/test.php
+static/ronin/php/rfi/command_exec.php
 static/ronin/php/rpc/server.php
 static/ronin/php/rpc/server.ajax.php
