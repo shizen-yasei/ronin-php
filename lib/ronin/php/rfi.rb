@@ -22,3 +22,10 @@
 require 'ronin/php/rfi/extensions'
 require 'ronin/php/rfi/rfi'
 require 'ronin/php/rfi/scanner'
+require 'ronin/database'
+
+module Ronin
+  Database.upgrade do
+    require 'ronin/exploits/rfi'
+  end
+end
