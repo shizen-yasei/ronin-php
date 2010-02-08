@@ -39,6 +39,7 @@ lib/ronin/rpc/php/client.rb
 lib/ronin/rpc/php/console.rb
 lib/ronin/rpc/php/shell.rb
 lib/ronin/rpc/php/rfi.rb
+lib/ronin/exploits/rfi.rb
 lib/ronin/ui/command_line/commands/gen_php_rpc.rb
 tasks/static.rb
 spec/spec_helper.rb
@@ -46,6 +47,7 @@ spec/helpers/database.rb
 spec/php/php_spec.rb
 spec/php/rfi_spec.rb
 spec/rpc/php/rfi_spec.rb
+spec/exploits/helpers/database.rb
 static/ronin/gen/php/rpc/ajax/css/layout.css
 static/ronin/gen/php/rpc/ajax/js/base64.js
 static/ronin/gen/php/rpc/ajax/js/jquery.min.js

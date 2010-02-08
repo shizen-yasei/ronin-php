@@ -18,11 +18,12 @@ Hoe.spec('ronin-php') do
   self.remote_yard_dir = 'docs/ronin-php'
 
   self.extra_deps = [
+    ['cssmin', '>=1.0.2'],
+    ['jsmin', '>=1.0.1'],
     ['ronin', '>=0.4.0'],
     ['ronin-gen', '>=0.3.0'],
     ['ronin-web', '>=0.2.2'],
-    ['cssmin', '>=1.0.2'],
-    ['jsmin', '>=1.0.1']
+    ['ronin-exploits', '>=0.3.2']
   ]
 
   self.extra_dev_deps = [
