@@ -107,7 +107,7 @@ Scan a URL for LFI vulnerabilities:
 * cssmin >= 1.0.2
 * jsmin >= 1.0.1
 * [ronin](http://ronin.rubyforge.org/) >= 0.3.0
-* [ronin-web](http://ronin.rubyforge.org/web/) >= 0.2.0
+* [ronin-web](http://ronin.rubyforge.org/web/) >= 0.2.2
 
 ## INSTALL:
 
