@@ -42,6 +42,9 @@ lib/ronin/rpc/php/rfi.rb
 lib/ronin/exploits/php.rb
 lib/ronin/exploits/php/lfi.rb
 lib/ronin/exploits/php/rfi.rb
+lib/ronin/payloads/php.rb
+lib/ronin/payloads/php/backdoor.rb
+lib/ronin/payloads/php/rpc.rb
 lib/ronin/ui/command_line/commands/gen_php_rpc.rb
 tasks/static.rb
 spec/spec_helper.rb
