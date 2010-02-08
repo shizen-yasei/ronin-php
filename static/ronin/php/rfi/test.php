@@ -1,6 +1,9 @@
 <?php
   if (isset($_REQUEST['rfi_challenge']))
   {
+    $challenge = $_REQUEST['rfi_challenge'];
+    $response = sqrt($challenge);
+
     echo <<<EOS
 <style type="text/css">
 #rfi_response {
@@ -20,7 +23,8 @@
 }
 </style>
 <div id="rfi_response">
-  <p>PHP RFI Response: {$_REQUEST['rfi_challenge']}</p>
+  <p>PHP RFI Challenge: <kbd>sqrt({$challenge});</kbd></p>
+  <p>PHP RFI Response: {$response}</p>
 </div>
 EOS;
   }
