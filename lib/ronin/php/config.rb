@@ -2,7 +2,7 @@
 # Ronin PHP - A Ruby library for Ronin that provides support for PHP
 # related security tasks.
 #
-# Copyright (c) 2007-2009 Hal Brodigan (postmodern.mod3 at gmail.com)
+# Copyright (c) 2007-2010 Hal Brodigan (postmodern.mod3 at gmail.com)
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,15 +19,15 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-require 'ronin/gen/php/rpc_server'
+require 'static_paths'
 
 module Ronin
-  module UI
-    module CommandLine
-      module Commands
-        class GenPhpRpc < Ronin::Gen::PHP::RPCServer
+  module Gen
+    module PHP
+      module Config
+        include StaticPaths
 
-        end
+        register_static_dir File.join(File.dirname(__FILE__),'..','..','..','static')
       end
     end
   end

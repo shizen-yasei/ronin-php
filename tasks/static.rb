@@ -3,12 +3,13 @@ unless $LOAD_PATH.include?(lib_dir)
   $LOAD_PATH << lib_dir
 end
 
-require 'ronin/gen/php/rpc_server'
+require 'ronin/gen'
 
 namespace :php do
   namespace :rpc do
     GEN_DIR = File.join('static','ronin','gen','php','rpc')
     STATIC_DIR = File.join('static','ronin','php','rpc')
+    Generator = Ronin::Gen.generator('php:rpc_server')
 
     directory STATIC_DIR
 
@@ -16,7 +17,7 @@ namespace :php do
       Dir[File.join(GEN_DIR,'*.php')] +
       [File.join(GEN_DIR,'server.php.erb')]
     ) do |t|
-      Ronin::Gen::PHP::RPCServer.generate(
+      Generator.generate(
         {:no_ajax => true},
         [t.name]
       )
@@ -25,7 +26,7 @@ namespace :php do
     file File.join(STATIC_DIR,'server.ajax.php') => (
       Dir[File.join(GEN_DIR,'**','*')]
     ) do |t|
-      Ronin::Gen::PHP::RPCServer.generate({},[t.name])
+      Generator.generate({},[t.name])
     end
   end
 end
