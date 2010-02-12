@@ -66,6 +66,7 @@ Gem::Specification.new do |s|
     "lib/ronin/rpc/php/response.rb",
     "lib/ronin/rpc/php/rfi.rb",
     "lib/ronin/rpc/php/shell.rb",
+    "ronin-php.gemspec",
     "spec/exploits/php/helpers/database.rb",
     "spec/helpers/database.rb",
     "spec/php/php_spec.rb",
