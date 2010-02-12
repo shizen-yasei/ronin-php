@@ -1,12 +1,12 @@
 # Ronin PHP
 
-* http://ronin.rubyforge.org/php/
-* http://github.com/postmodern/ronin-php
-* http://github.com/postmodern/ronin-php/issues
-* http://groups.google.com/group/ronin-ruby
+* [ronin.rubyforge.org/php](http://ronin.rubyforge.org/php/)
+* [github.com/postmodern/ronin-php](http://github.com/postmodern/ronin-php/)
+* [github.com/postmodern/ronin-php/issues](http://github.com/postmodern/ronin-php/issues)
+* [groups.google.com/group/ronin-ruby](http://groups.google.com/group/ronin-ruby)
 * irc.freenode.net #ronin
 
-## DESCRIPTION:
+## Description
 
 Ronin PHP is a Ruby library for Ronin that provides support for PHP
 related security tasks.
@@ -36,7 +36,7 @@ data via Overlays. Overlays are directories of code and data that can be
 hosted on any SVN, Hg, Git or Rsync server. Ronin makes it easy to create,
 install or update Overlays.
 
-## FEATURES:
+## Features
 
 * Provides tests for Location File Inclusion (LFI) and Remote File
   Inclusion (RFI) that are built into the URI::HTTP class.
@@ -45,13 +45,13 @@ install or update Overlays.
   environments.
 * Provides an AJAX PHP-RPC Console.
 
-## SYNOPSIS:
+## Synopsis
 
 Start the Ronin console with Ronin PHP preloaded:
 
     $ ronin-php
 
-## EXAMPLES:
+## Examples
 
 Test for Remote File Inclusion (RFI):
 
@@ -102,19 +102,19 @@ Scan a URL for LFI vulnerabilities:
     url.lfi_scan
     # => [#<Ronin::PHP::LFI: ...>, ...]
 
-## REQUIREMENTS:
+## Requirements
 
 * cssmin >= 1.0.2
 * jsmin >= 1.0.1
-* [ronin](http://ronin.rubyforge.org/) >= 0.3.0
+* [ronin](http://ronin.rubyforge.org/) >= 0.4.0
 * [ronin-web](http://ronin.rubyforge.org/web/) >= 0.2.2
 * [ronin-exploits](http://ronin.rubyforge.org/exploits/) >= 0.3.2
 
-## INSTALL:
+## Install
 
     $ sudo gem install ronin-php
 
-## LICENSE:
+## License
 
 Ronin PHP - A Ruby library for Ronin that provides support for PHP
 related security tasks.
