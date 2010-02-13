@@ -33,6 +33,7 @@ module Ronin
 
           SERVER_FILE = File.join('ronin','gen','php','rpc','server.php.erb')
 
+          desc 'Generates a new PHP-RPC Server script'
           class_option :no_ajax, :type => :boolean
           class_option :no_cssmin, :type => :boolean
           class_option :no_jsmin, :type => :boolean
