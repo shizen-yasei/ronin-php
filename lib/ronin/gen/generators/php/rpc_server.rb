@@ -37,7 +37,9 @@ module Ronin
           class_option :no_ajax, :type => :boolean
           class_option :no_cssmin, :type => :boolean
           class_option :no_jsmin, :type => :boolean
-          class_option :inline, :type => :array, :default => []
+          class_option :inline, :type => :array,
+                                :default => [],
+                                :banner => 'file1.php file2.php'
 
           #
           # Generates the PHP-RPC Server script.
