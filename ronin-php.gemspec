@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Postmodern"]
-  s.date = %q{2010-02-11}
+  s.date = %q{2010-03-25}
   s.default_executable = %q{ronin-php}
   s.description = %q{Ronin PHP is a Ruby library for Ronin that provides support for PHP related security tasks.}
   s.email = %q{postmodern.mod3@gmail.com}
@@ -88,13 +88,14 @@ Gem::Specification.new do |s|
     "static/ronin/gen/php/rpc/shell_service.php",
     "static/ronin/php/rfi/backdoor.php",
     "static/ronin/php/rfi/test.php",
-    "tasks/static.rb"
+    "static/ronin/php/rpc/server.php"
   ]
   s.has_rdoc = %q{yard}
   s.homepage = %q{http://github.com/ronin-ruby/ronin-php}
+  s.licenses = ["GPL-2"]
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{A Ruby library for Ronin that provides support for PHP related security tasks.}
   s.test_files = [
     "spec/spec_helper.rb",
