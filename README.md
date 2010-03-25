@@ -1,8 +1,8 @@
 # Ronin PHP
 
 * [ronin.rubyforge.org/php](http://ronin.rubyforge.org/php/)
-* [github.com/postmodern/ronin-php](http://github.com/postmodern/ronin-php/)
-* [github.com/postmodern/ronin-php/issues](http://github.com/postmodern/ronin-php/issues)
+* [github.com/ronin-ruby/ronin-php](http://github.com/ronin-ruby/ronin-php/)
+* [github.com/ronin-ruby/ronin-php/issues](http://github.com/ronin-ruby/ronin-php/issues)
 * [groups.google.com/group/ronin-ruby](http://groups.google.com/group/ronin-ruby)
 * irc.freenode.net #ronin
 
