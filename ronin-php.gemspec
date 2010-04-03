@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Postmodern"]
-  s.date = %q{2010-03-25}
+  s.date = %q{2010-04-03}
   s.default_executable = %q{ronin-php}
   s.description = %q{Ronin PHP is a Ruby library for Ronin that provides support for PHP related security tasks.}
   s.email = %q{postmodern.mod3@gmail.com}
@@ -111,30 +111,30 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<cssmin>, [">= 1.0.2"])
-      s.add_runtime_dependency(%q<jsmin>, [">= 1.0.1"])
-      s.add_runtime_dependency(%q<ronin>, [">= 0.4.0"])
-      s.add_runtime_dependency(%q<ronin-web>, [">= 0.2.2"])
-      s.add_runtime_dependency(%q<ronin-exploits>, [">= 0.3.2"])
-      s.add_development_dependency(%q<rspec>, [">= 1.3.0"])
-      s.add_development_dependency(%q<yard>, [">= 0.5.3"])
+      s.add_runtime_dependency(%q<cssmin>, ["~> 1.0.2"])
+      s.add_runtime_dependency(%q<jsmin>, ["~> 1.0.1"])
+      s.add_runtime_dependency(%q<ronin>, ["~> 0.4.0"])
+      s.add_runtime_dependency(%q<ronin-web>, ["~> 0.2.2"])
+      s.add_runtime_dependency(%q<ronin-exploits>, ["~> 0.3.2"])
+      s.add_development_dependency(%q<rspec>, ["~> 1.3.0"])
+      s.add_development_dependency(%q<yard>, ["~> 0.5.3"])
     else
-      s.add_dependency(%q<cssmin>, [">= 1.0.2"])
-      s.add_dependency(%q<jsmin>, [">= 1.0.1"])
-      s.add_dependency(%q<ronin>, [">= 0.4.0"])
-      s.add_dependency(%q<ronin-web>, [">= 0.2.2"])
-      s.add_dependency(%q<ronin-exploits>, [">= 0.3.2"])
-      s.add_dependency(%q<rspec>, [">= 1.3.0"])
-      s.add_dependency(%q<yard>, [">= 0.5.3"])
+      s.add_dependency(%q<cssmin>, ["~> 1.0.2"])
+      s.add_dependency(%q<jsmin>, ["~> 1.0.1"])
+      s.add_dependency(%q<ronin>, ["~> 0.4.0"])
+      s.add_dependency(%q<ronin-web>, ["~> 0.2.2"])
+      s.add_dependency(%q<ronin-exploits>, ["~> 0.3.2"])
+      s.add_dependency(%q<rspec>, ["~> 1.3.0"])
+      s.add_dependency(%q<yard>, ["~> 0.5.3"])
     end
   else
-    s.add_dependency(%q<cssmin>, [">= 1.0.2"])
-    s.add_dependency(%q<jsmin>, [">= 1.0.1"])
-    s.add_dependency(%q<ronin>, [">= 0.4.0"])
-    s.add_dependency(%q<ronin-web>, [">= 0.2.2"])
-    s.add_dependency(%q<ronin-exploits>, [">= 0.3.2"])
-    s.add_dependency(%q<rspec>, [">= 1.3.0"])
-    s.add_dependency(%q<yard>, [">= 0.5.3"])
+    s.add_dependency(%q<cssmin>, ["~> 1.0.2"])
+    s.add_dependency(%q<jsmin>, ["~> 1.0.1"])
+    s.add_dependency(%q<ronin>, ["~> 0.4.0"])
+    s.add_dependency(%q<ronin-web>, ["~> 0.2.2"])
+    s.add_dependency(%q<ronin-exploits>, ["~> 0.3.2"])
+    s.add_dependency(%q<rspec>, ["~> 1.3.0"])
+    s.add_dependency(%q<yard>, ["~> 0.5.3"])
   end
 end
 
