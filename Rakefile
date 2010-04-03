@@ -56,30 +56,44 @@ unless $LOAD_PATH.include?(lib_dir)
   $LOAD_PATH << lib_dir
 end
 
-require 'ronin/gen'
+require 'ronin/gen/generators/php/rpc_server'
 
 namespace :php do
   namespace :rpc do
-    GEN_DIR = File.join('static','ronin','gen','php','rpc')
-    STATIC_DIR = File.join('static','ronin','php','rpc')
-    Generator = Ronin::Gen.generator('php:rpc_server')
+    deps = [
+      'static/ronin/php/rpc',
+      'static/ronin/gen/php/rpc/service.php',
+      'static/ronin/gen/php/rpc/console_service.php',
+      'static/ronin/gen/php/rpc/shell_service.php',
+      'static/ronin/gen/php/rpc/rpc_server.php',
+      'static/ronin/gen/php/rpc/server.php.erb'
+    ]
 
-    directory STATIC_DIR
+    ajax_deps = [
+      'static/ronin/gen/php/rpc/ajax/css/layout.css',
+      'static/ronin/gen/php/rpc/ajax/js/base64.js',
+      'static/ronin/gen/php/rpc/ajax/js/jquery.min.js',
+      'static/ronin/gen/php/rpc/ajax/js/jquery-ui-personalized.min.js',
+      'static/ronin/gen/php/rpc/ajax/js/jquery.phprpc.js',
+      'static/ronin/gen/php/rpc/ajax/js/jquery.terminal.js',
+      'static/ronin/gen/php/rpc/ajax/js/ui.js',
+    ]
 
-    file File.join(STATIC_DIR,'server.php') => (
-      Dir[File.join(GEN_DIR,'*.php')] +
-      [File.join(GEN_DIR,'server.php.erb')]
-    ) do |t|
-      Generator.generate(
-        {:no_ajax => true},
-        [t.name]
-      )
+    generator = Ronin::Gen::Generators::Php::RpcServer
+
+    directory 'static/ronin/php/rpc'
+
+    file 'static/ronin/php/rpc/server.php' => deps do |t|
+      generator.generate({:no_ajax => true}, [t.name])
     end
 
-    file File.join(STATIC_DIR,'server.ajax.php') => (
-      Dir[File.join(GEN_DIR,'**','*')]
-    ) do |t|
-      Generator.generate({},[t.name])
+    file 'static/ronin/php/rpc/server.ajax.php' => (deps + ajax_deps) do |t|
+      generator.generate({}, [t.name])
     end
   end
 end
+
+task :gemspec => [
+  'static/ronin/php/rpc/server.php',
+  'static/ronin/php/rpc/server.ajax.php'
+]
