@@ -84,4 +84,4 @@ if (isset($_REQUEST['rpc_call']))
 ?>
 -->
 
-<% unless options.no_ajax? %><%= template 'ajax.php.erb' %><% end %>
+<% unless options.no_ajax? %><%= erb 'ajax.php.erb' %><% end %>

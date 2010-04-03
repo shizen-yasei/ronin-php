@@ -44,7 +44,7 @@ module Ronin
           # @since 0.2.0
           #
           def generate
-            template SERVER_FILE, self.path
+            erb SERVER_FILE, self.path
           end
 
           protected
