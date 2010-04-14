@@ -15,6 +15,7 @@ begin
     gem.authors = ['Postmodern']
     gem.add_dependency 'cssmin', '~> 1.0.2'
     gem.add_dependency 'jsmin', '~> 1.0.1'
+    gem.add_dependency 'data_paths', '~> 0.2.1'
     gem.add_dependency 'ronin', '~> 0.4.0'
     gem.add_dependency 'ronin-web', '~> 0.2.2'
     gem.add_dependency 'ronin-exploits', '~> 0.3.2'
@@ -27,6 +28,7 @@ begin
       static/ronin/php/rpc/server.min.php
     }
   end
+  Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
