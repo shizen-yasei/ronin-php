@@ -2,7 +2,6 @@ source 'http://rubygems.org'
 ronin_ruby = "git://github.com/ronin-ruby"
 
 group :runtime do
-  gem 'bundler',	'~> 0.9.19'
   gem 'cssmin',		'~> 1.0.2'
   gem 'jsmin',		'~> 1.0.1'
   gem 'data_paths',	'~> 0.2.1'
@@ -12,8 +11,9 @@ group :runtime do
 end
 
 group :development do
-  gem 'rake',			'~> 0.8.7'
-  gem 'jeweler',		'~> 1.4.0', :git => 'git://github.com/technicalpickles/jeweler.git'
-  gem 'rspec',			'~> 1.3.0'
-  gem 'yard',			'~> 0.5.3'
+  gem 'bundler',	'~> 0.9.19'
+  gem 'rake',		'~> 0.8.7'
+  gem 'jeweler',	'~> 1.4.0', :git => 'git://github.com/technicalpickles/jeweler.git'
+  gem 'rspec',		'~> 1.3.0'
+  gem 'yard',		'~> 0.5.3'
 end
