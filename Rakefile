@@ -24,8 +24,8 @@ begin
     gem.has_rdoc = 'yard'
 
     gem.files.include %w{
-      static/ronin/php/rpc/server.php
-      static/ronin/php/rpc/server.min.php
+      data/ronin/php/rpc/server.php
+      data/ronin/php/rpc/server.min.php
     }
   end
   Jeweler::GemcutterTasks.new
@@ -63,39 +63,39 @@ require 'ronin/gen/generators/php/rpc_server'
 namespace :php do
   namespace :rpc do
     deps = [
-      'static/ronin/php/rpc',
-      'static/ronin/gen/php/rpc/service.php',
-      'static/ronin/gen/php/rpc/console_service.php',
-      'static/ronin/gen/php/rpc/shell_service.php',
-      'static/ronin/gen/php/rpc/rpc_server.php',
-      'static/ronin/gen/php/rpc/server.php.erb'
+      'data/ronin/php/rpc',
+      'data/ronin/gen/php/rpc/service.php',
+      'data/ronin/gen/php/rpc/console_service.php',
+      'data/ronin/gen/php/rpc/shell_service.php',
+      'data/ronin/gen/php/rpc/rpc_server.php',
+      'data/ronin/gen/php/rpc/server.php.erb'
     ]
 
     ajax_deps = [
-      'static/ronin/gen/php/rpc/ajax/css/layout.css',
-      'static/ronin/gen/php/rpc/ajax/js/base64.js',
-      'static/ronin/gen/php/rpc/ajax/js/jquery.min.js',
-      'static/ronin/gen/php/rpc/ajax/js/jquery-ui-personalized.min.js',
-      'static/ronin/gen/php/rpc/ajax/js/jquery.phprpc.js',
-      'static/ronin/gen/php/rpc/ajax/js/jquery.terminal.js',
-      'static/ronin/gen/php/rpc/ajax/js/ui.js',
+      'data/ronin/gen/php/rpc/ajax/css/layout.css',
+      'data/ronin/gen/php/rpc/ajax/js/base64.js',
+      'data/ronin/gen/php/rpc/ajax/js/jquery.min.js',
+      'data/ronin/gen/php/rpc/ajax/js/jquery-ui-personalized.min.js',
+      'data/ronin/gen/php/rpc/ajax/js/jquery.phprpc.js',
+      'data/ronin/gen/php/rpc/ajax/js/jquery.terminal.js',
+      'data/ronin/gen/php/rpc/ajax/js/ui.js',
     ]
 
     generator = Ronin::Gen::Generators::Php::RpcServer
 
-    directory 'static/ronin/php/rpc'
+    directory 'data/ronin/php/rpc'
 
-    file 'static/ronin/php/rpc/server.php' => deps do |t|
+    file 'data/ronin/php/rpc/server.php' => deps do |t|
       generator.generate({:no_ajax => true}, [t.name])
     end
 
-    file 'static/ronin/php/rpc/server.ajax.php' => (deps + ajax_deps) do |t|
+    file 'data/ronin/php/rpc/server.ajax.php' => (deps + ajax_deps) do |t|
       generator.generate({}, [t.name])
     end
   end
 end
 
 task :gemspec => [
-  'static/ronin/php/rpc/server.php',
-  'static/ronin/php/rpc/server.ajax.php'
+  'data/ronin/php/rpc/server.php',
+  'data/ronin/php/rpc/server.ajax.php'
 ]
