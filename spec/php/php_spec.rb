@@ -1,6 +1,5 @@
-require 'ronin/php/version'
-
 require 'spec_helper'
+require 'ronin/php/version'
 
 describe PHP do
   it "should have a version" do

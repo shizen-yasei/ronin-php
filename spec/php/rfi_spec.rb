@@ -1,6 +1,5 @@
-require 'ronin/php/rfi'
-
 require 'spec_helper'
+require 'ronin/php/rfi'
 
 describe PHP::RFI do
   it "should have a valid TEST_SCRIPT URL" do

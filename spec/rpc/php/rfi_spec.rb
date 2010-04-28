@@ -1,6 +1,5 @@
-require 'ronin/rpc/php/rfi'
-
 require 'spec_helper'
+require 'ronin/rpc/php/rfi'
 
 describe PHP::RFI do
   it "should have a valid RPC_SCRIPT URL" do
