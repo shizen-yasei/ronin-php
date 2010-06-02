@@ -5,6 +5,7 @@ group :runtime do
   gem 'data_paths',	'~> 0.2.1'
   gem 'ronin-support',	'~> 0.1.0', :git => "#{ronin_ruby}/ronin-support.git"
   gem 'ronin',		'~> 0.4.0', :git => "#{ronin_ruby}/ronin.git"
+  gem 'ronin-scanners',	'~> 0.2.0', :git => "#{ronin_ruby}/ronin-scanners.git"
   gem 'ronin-web',	'~> 0.2.2', :git => "#{ronin_ruby}/ronin-web.git"
   gem 'ronin-exploits',	'~> 0.4.0', :git => "#{ronin_ruby}/ronin-exploits.git"
 end

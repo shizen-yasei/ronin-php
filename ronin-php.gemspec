@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Postmodern"]
-  s.date = %q{2010-05-08}
+  s.date = %q{2010-06-02}
   s.default_executable = %q{ronin-php}
   s.description = %q{Ronin PHP is a Ruby library for Ronin that provides support for PHP related security tasks.}
   s.email = %q{postmodern.mod3@gmail.com}
@@ -95,7 +95,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/ronin-ruby/ronin-php}
   s.licenses = ["GPL-2"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.6}
+  s.rubygems_version = %q{1.3.7}
   s.summary = %q{A Ruby library for Ronin that provides support for PHP related security tasks.}
   s.test_files = [
     "spec/exploits/php/helpers/database.rb",
@@ -110,10 +110,11 @@ Gem::Specification.new do |s|
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<data_paths>, ["~> 0.2.1"])
       s.add_runtime_dependency(%q<ronin-support>, ["~> 0.1.0"])
       s.add_runtime_dependency(%q<ronin>, ["~> 0.4.0"])
+      s.add_runtime_dependency(%q<ronin-scanners>, ["~> 0.2.0"])
       s.add_runtime_dependency(%q<ronin-web>, ["~> 0.2.2"])
       s.add_runtime_dependency(%q<ronin-exploits>, ["~> 0.4.0"])
       s.add_runtime_dependency(%q<cssmin>, ["~> 1.0.2"])
@@ -130,6 +131,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<data_paths>, ["~> 0.2.1"])
       s.add_dependency(%q<ronin-support>, ["~> 0.1.0"])
       s.add_dependency(%q<ronin>, ["~> 0.4.0"])
+      s.add_dependency(%q<ronin-scanners>, ["~> 0.2.0"])
       s.add_dependency(%q<ronin-web>, ["~> 0.2.2"])
       s.add_dependency(%q<ronin-exploits>, ["~> 0.4.0"])
       s.add_dependency(%q<cssmin>, ["~> 1.0.2"])
@@ -147,6 +149,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<data_paths>, ["~> 0.2.1"])
     s.add_dependency(%q<ronin-support>, ["~> 0.1.0"])
     s.add_dependency(%q<ronin>, ["~> 0.4.0"])
+    s.add_dependency(%q<ronin-scanners>, ["~> 0.2.0"])
     s.add_dependency(%q<ronin-web>, ["~> 0.2.2"])
     s.add_dependency(%q<ronin-exploits>, ["~> 0.4.0"])
     s.add_dependency(%q<cssmin>, ["~> 1.0.2"])
