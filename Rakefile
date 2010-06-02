@@ -81,10 +81,12 @@ namespace :php do
     file 'data/ronin/php/rpc/server.ajax.php' => (deps + ajax_deps) do |t|
       generator.generate({}, [t.name])
     end
+
+    task :files => %w[
+      data/ronin/php/rpc/server.php
+      data/ronin/php/rpc/server.ajax.php
+    ]
   end
 end
 
-task :gemspec => [
-  'data/ronin/php/rpc/server.php',
-  'data/ronin/php/rpc/server.ajax.php'
-]
+task :gemspec => 'php:rpc:files'
