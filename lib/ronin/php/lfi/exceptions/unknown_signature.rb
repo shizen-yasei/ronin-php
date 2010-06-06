@@ -19,29 +19,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-require 'ronin/php/lfi/target'
-
 module Ronin
   module PHP
     class LFI
-      Target.log do |target|
-        target.paths['Linux'] = ['/var/log/wtmp']
-        target.paths['Solaris'] = ['/var/log/wtmp']
-
-        target.recognizor = /(tty\d+|:\d+)/
-      end
-
-      Target.log do |target|
-        target.paths['Linux'] = ['/var/log/apache/rewrite.log', '/var/log/apache2/rewrite.log']
-
-        target.recognizor = /init rewrite engine with requested uri/
-      end
-
-      Target.log do |target|
-        target.paths['Linux'] = ['/etc/syslog.conf']
-        target.paths['Solaris'] = ['/etc/syslog.conf']
-
-        target.recognizor = /kern\.(\*|emerg|alert|crit|err|warn(ing)?|notice|info|debug)/
+      class UnknownSignature < RuntimeError
       end
     end
   end

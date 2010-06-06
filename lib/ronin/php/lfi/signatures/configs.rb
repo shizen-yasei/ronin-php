@@ -19,47 +19,47 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-require 'ronin/php/lfi/target'
+require 'ronin/php/lfi/signature'
 
 module Ronin
   module PHP
     class LFI
-      Target.config do |target|
-        target.paths['Linux'] = ['/etc/passwd']
-        target.paths['Solaris'] = ['/etc/passwd']
+      Signature.config do |sig|
+        sig.paths['Linux'] = ['/etc/passwd']
+        sig.paths['Solaris'] = ['/etc/passwd']
 
-        target.recognizor = /root:/
+        sig.recognizor = /root:/
       end
 
-      Target.config do |target|
-        target.paths['Linux'] = ['/etc/group']
-        target.paths['Solaris'] = ['/etc/group']
+      Signature.config do |sig|
+        sig.paths['Linux'] = ['/etc/group']
+        sig.paths['Solaris'] = ['/etc/group']
 
-        target.recognizor = /root:/
+        sig.recognizor = /root:/
       end
 
-      Target.config do |target|
-        target.paths['Linux'] = ['/etc/fstab']
-        target.paths['Solaris'] = ['/etc/vfstab']
+      Signature.config do |sig|
+        sig.paths['Linux'] = ['/etc/fstab']
+        sig.paths['Solaris'] = ['/etc/vfstab']
 
-        target.recognizor = /\/?proc\s+(-\s+)?\/proc\s+proc/
+        sig.recognizor = /\/?proc\s+(-\s+)?\/proc\s+proc/
       end
 
-      Target.config do |target|
-        target.paths['Linux'] = ['/etc/mtab']
-        target.paths['Solaris'] = ['/etc/mnttab']
+      Signature.config do |sig|
+        sig.paths['Linux'] = ['/etc/mtab']
+        sig.paths['Solaris'] = ['/etc/mnttab']
 
-        target.recognizor = /proc\s+\/proc\s+proc/
+        sig.recognizor = /proc\s+\/proc\s+proc/
       end
 
-      Target.config do |target|
-        target.paths['Linux'] = ['/etc/apache/apache.conf', '/etc/apache2/apache.conf']
-        target.paths['Solaris'] = ['/etc/apache/apache.conf', '/etc/apache2/apache.conf']
+      Signature.config do |sig|
+        sig.paths['Linux'] = ['/etc/apache/apache.conf', '/etc/apache2/apache.conf']
+        sig.paths['Solaris'] = ['/etc/apache/apache.conf', '/etc/apache2/apache.conf']
 
-        target.recognizor = /ServerRoot/
+        sig.recognizor = /ServerRoot/
 
         apache_setting = lambda { |name,setting|
-          target.extract name, /^[^#]*#{setting}\s+\"?[^\"]+\"?\n/
+          sig.extract name, /^[^#]*#{setting}\s+\"?[^\"]+\"?\n/
         }
 
         apache_setting.call(:apache_server_name,'ServerName')
@@ -69,7 +69,7 @@ module Ronin
         apache_setting.call(:apache_server_root,'ServerRoot')
         apache_setting.call(:apache_server_admin,'ServerAdmin')
         apache_setting.call(:apache_document_root,'DocumentRoot')
-        apache_setting.call(:apache_pid_file,'PidTarget')
+        apache_setting.call(:apache_pid_file,'PidSignature')
         apache_setting.call(:apache_user,'User')
         apache_setting.call(:apache_group,'Group')
         apache_setting.call(:apache_log_level,'LogLevel')
@@ -80,18 +80,18 @@ module Ronin
         apache_setting.call(:apache_script_alias,'ScriptAlias')
       end
 
-      Target.config do |target|
-        target.paths['Linux'] = ['/etc/lighttpd/lighttpd.conf']
-        target.paths['Solaris'] = ['/etc/lighttpd/lighttpd.conf']
+      Signature.config do |sig|
+        sig.paths['Linux'] = ['/etc/lighttpd/lighttpd.conf']
+        sig.paths['Solaris'] = ['/etc/lighttpd/lighttpd.conf']
 
-        target.recognizor = /server\.modules/
+        sig.recognizor = /server\.modules/
 
         lighttpd_string = lambda { |name,setting|
-          target.extract name, /^[^#]*#{Regexp.escape(setting)}\s*=\s*\"([^\"]+)\"\n/
+          sig.extract name, /^[^#]*#{Regexp.escape(setting)}\s*=\s*\"([^\"]+)\"\n/
         }
 
         lighttpd_number = lambda { |name,setting|
-          target.extract name, /^[^#]*#{Regexp.escape(setting)}\s*=\s*(\d+)\n/
+          sig.extract name, /^[^#]*#{Regexp.escape(setting)}\s*=\s*(\d+)\n/
         }
 
         lighttpd_string.call(:lighttpd_name,'server.name')
@@ -114,13 +114,13 @@ module Ronin
         lighttpd_string.call(:lighttpd_ssl_pem,'ssl.pemfile')
       end
 
-      Target.config do |target|
-        target.paths['Linux'] = ['/etc/mysql/my.cnf']
+      Signature.config do |sig|
+        sig.paths['Linux'] = ['/etc/mysql/my.cnf']
 
-        target.recognizor = /^\[mysql[^\]]*\]/
+        sig.recognizor = /^\[mysql[^\]]*\]/
 
         mysql_setting = lambda { |name,setting|
-          target.extract name, /\[mysqld\]\n[^\[]+#{setting}\s*=\s*(.*)\n/
+          sig.extract name, /\[mysqld\]\n[^\[]+#{setting}\s*=\s*(.*)\n/
         }
 
         mysql_setting.call(:mysql_user, 'user')

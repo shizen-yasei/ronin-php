@@ -19,9 +19,9 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-require 'ronin/php/lfi/exceptions/unknown_target'
-require 'ronin/php/lfi/target'
-require 'ronin/php/lfi/targets'
+require 'ronin/php/lfi/exceptions/unknown_signature'
+require 'ronin/php/lfi/signature'
+require 'ronin/php/lfi/signatures'
 require 'ronin/php/lfi/file'
 require 'ronin/extensions/uri'
 require 'ronin/network/http'
@@ -186,17 +186,17 @@ module Ronin
       # @param [Hash] options
       #   Additional inclusion options.
       #
-      # @raise [UnknownTarget] Unable to load target information for the
-      #                        file with the specified _name_.
+      # @raise [UnknownSignature]
+      #   Unable to load signature information for the file.
       #
       # @see inclusion_of
       #
       def include_target(name,options={},&block)
         name = name.to_s
-        target = Target.with_file(name)
+        target = Signature.with_file(name)
 
         unless target
-          raise(UnknownTarget,"unknown target file #{name.dump}",caller)
+          raise(UnknownSignature,"unknown file signature #{name.dump}",caller)
         end
 
         return inclusion_of(target,options,&block)
@@ -235,13 +235,13 @@ module Ronin
       # @see inclusion_of
       #
       def include_targets(options={},&block)
-        (Target.configs + Target.logs).map { |target|
+        (Signature.configs + Signature.logs).map { |target|
           inclusion_of(target,options,&block)
         }.compact
       end
 
       #
-      # Mirrors all targeted config and log files.
+      # Mirrors all known config and log files.
       #
       # @param [String] directory
       #   The directory to mirror all local files to.
@@ -252,10 +252,10 @@ module Ronin
       # @return [Array<String>]
       #   The desintation paths of the mirrored local files.
       #
-      # @see include_targets
+      # @see include_known
       #
-      def mirror_targets(directory,options={})
-        include_targets(options).map do |file|
+      def mirror_known(directory,options={})
+        include_known(options).map do |file|
           file.mirror(directory)
         end
       end
@@ -266,8 +266,8 @@ module Ronin
       #   to LFI.
       #
       def vulnerable?(options={})
-        Target.tests.each do |target|
-          inclusion_of(target) do |file|
+        Signature.tests.each do |sig|
+          inclusion_of(sig) do |file|
             return true
           end
         end
@@ -276,7 +276,7 @@ module Ronin
       end
 
       #
-      # Extracts information from all targeted files.
+      # Extracts information from all known files.
       #
       # @param [Hash] options
       #   Additional inclusion options.
@@ -290,9 +290,9 @@ module Ronin
       def fingerprint(options={})
         data = {}
 
-        Target.with_extractors.each do |target|
-          inclusion_of(target,options) do |file|
-            data.merge!(target.extract_from(file.contents))
+        Signature.with_extractors.each do |sig|
+          inclusion_of(sig,options) do |file|
+            data.merge!(sig.extract_from(file.contents))
           end
         end
 
@@ -312,25 +312,25 @@ module Ronin
       protected
 
       #
-      # @param [String] target
-      #   Commonly known name of a file.
+      # @param [Signature] sig
+      #   A file signature for a known file.
       #
       # @return [Array<String>]
-      #   The available paths of the specified target file.
+      #   The available paths of the specified file signature.
       #
-      def paths_of(target)
+      def paths_of(sig)
         if @os
-          return target.paths_for(@os)
+          return sig.paths_for(@os)
         else
-          return target.all_paths
+          return sig.all_paths
         end
       end
 
       #
-      # Returns the File object obtained via a given target file.
+      # Returns the File object obtained via a given file signature.
       #
-      # @param [String] target
-      #   Commonly known name of a file.
+      # @param [Signature] sig
+      #   The file signature for a known file.
       #
       # @param [Hash] options
       #   Additional inclusion options.
@@ -345,11 +345,11 @@ module Ronin
       # @return [File]
       #   The file representing the successfully included local file.
       #
-      def inclusion_of(target,options={},&block)
-        paths_of(target).each do |path|
+      def inclusion_of(sig,options={},&block)
+        paths_of(sig).each do |path|
           body = get(path,options)
 
-          if target.included_in?(body)
+          if sig.included_in?(body)
             file = File.new(path,body)
 
             block.call(file) if block

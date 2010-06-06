@@ -19,22 +19,22 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-require 'ronin/php/lfi/target'
+require 'ronin/php/lfi/signature'
 
 module Ronin
   module PHP
     class LFI
-      Target.test do |target|
-        target.paths['Linux'] = ['/etc/group']
-        target.paths['Solaris'] = ['/etc/group']
+      Signature.test do |sig|
+        sig.paths['Linux'] = ['/etc/group']
+        sig.paths['Solaris'] = ['/etc/group']
 
-        target.recognizor = /root:/
+        sig.recognizor = /root:/
       end
 
-      Target.test do |target|
-        target.paths['Windows'] = ['/boot.ini']
+      Signature.test do |sig|
+        sig.paths['Windows'] = ['/boot.ini']
 
-        target.recognizor = /\[boot loader\]/
+        sig.recognizor = /\[boot loader\]/
       end
     end
   end

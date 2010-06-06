@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Postmodern"]
-  s.date = %q{2010-06-02}
+  s.date = %q{2010-06-05}
   s.default_executable = %q{ronin-php}
   s.description = %q{Ronin PHP is a Ruby library for Ronin that provides support for PHP related security tasks.}
   s.email = %q{postmodern.mod3@gmail.com}
@@ -57,18 +57,18 @@ Gem::Specification.new do |s|
     "lib/ronin/php/extensions/string.rb",
     "lib/ronin/php/lfi.rb",
     "lib/ronin/php/lfi/exceptions.rb",
-    "lib/ronin/php/lfi/exceptions/unknown_target.rb",
+    "lib/ronin/php/lfi/exceptions/unknown_signature.rb",
     "lib/ronin/php/lfi/extensions.rb",
     "lib/ronin/php/lfi/extensions/uri.rb",
     "lib/ronin/php/lfi/extensions/uri/http.rb",
     "lib/ronin/php/lfi/file.rb",
     "lib/ronin/php/lfi/lfi.rb",
     "lib/ronin/php/lfi/scanner.rb",
-    "lib/ronin/php/lfi/target.rb",
-    "lib/ronin/php/lfi/targets.rb",
-    "lib/ronin/php/lfi/targets/configs.rb",
-    "lib/ronin/php/lfi/targets/logs.rb",
-    "lib/ronin/php/lfi/targets/tests.rb",
+    "lib/ronin/php/lfi/signature.rb",
+    "lib/ronin/php/lfi/signatures.rb",
+    "lib/ronin/php/lfi/signatures/configs.rb",
+    "lib/ronin/php/lfi/signatures/logs.rb",
+    "lib/ronin/php/lfi/signatures/tests.rb",
     "lib/ronin/php/rfi.rb",
     "lib/ronin/php/rfi/extensions.rb",
     "lib/ronin/php/rfi/extensions/uri.rb",
@@ -111,6 +111,7 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<dm-is-predefined>, ["~> 0.3.0"])
       s.add_runtime_dependency(%q<data_paths>, ["~> 0.2.1"])
       s.add_runtime_dependency(%q<ronin-support>, ["~> 0.1.0"])
       s.add_runtime_dependency(%q<ronin>, ["~> 0.4.0"])
@@ -128,6 +129,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<ronin-gen>, ["~> 0.3.0"])
       s.add_development_dependency(%q<rspec>, ["~> 1.3.0"])
     else
+      s.add_dependency(%q<dm-is-predefined>, ["~> 0.3.0"])
       s.add_dependency(%q<data_paths>, ["~> 0.2.1"])
       s.add_dependency(%q<ronin-support>, ["~> 0.1.0"])
       s.add_dependency(%q<ronin>, ["~> 0.4.0"])
@@ -146,6 +148,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rspec>, ["~> 1.3.0"])
     end
   else
+    s.add_dependency(%q<dm-is-predefined>, ["~> 0.3.0"])
     s.add_dependency(%q<data_paths>, ["~> 0.2.1"])
     s.add_dependency(%q<ronin-support>, ["~> 0.1.0"])
     s.add_dependency(%q<ronin>, ["~> 0.4.0"])

@@ -19,6 +19,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-require 'ronin/php/lfi/targets/tests'
-require 'ronin/php/lfi/targets/configs'
-require 'ronin/php/lfi/targets/logs'
+require 'ronin/php/lfi/signatures/tests'
+require 'ronin/php/lfi/signatures/configs'
+require 'ronin/php/lfi/signatures/logs'

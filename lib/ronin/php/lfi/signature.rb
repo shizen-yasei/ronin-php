@@ -22,23 +22,26 @@
 module Ronin
   module PHP
     class LFI
-      class Target
+      class Signature
 
-        # Hash of OS specific paths for the target
+        # Hash of OS specific paths for the signature
         attr_reader :paths
 
-        # Hash of patterns to recognize the target by
+        # Hash of patterns to recognize the signature by
         attr_accessor :recognizor
 
         # Hash of extractor rules
         attr_reader :extractors
 
         #
-        # Creates a new Target object.
+        # Creates a new Signature object.
         #
-        # @yield [target]
+        # @yield [signature]
         #   If a block is given, it will be passed the newly created
-        #   Target object.
+        #   signature object.
+        #
+        # @yieldparam [Signature] signature
+        #   The newly created signature object.
         #
         def initialize(&block)
           @paths = Hash.new { |hash,key| hash[key] = [] }
@@ -53,32 +56,30 @@ module Ronin
         # The supported OSes.
         #
         # @return [Array]
-        #   OSes that the targeted file can be found on.
+        #   OSes that the file can be found on.
         #
         def oses
           @paths.keys
         end
 
         #
-        # All the paths of the target.
+        # All the paths of the file.
         #
         # @return [Array]
-        #   Paths of the targetted file.
+        #   Paths of the file.
         #
         def all_paths
           @paths.values.flatten.uniq
         end
 
         #
-        # Finds the paths for the targetted file commonly found on a given
-        # OS.
+        # Finds the paths for the file commonly found on a given OS.
         #
         # @param [String] os
         #   The OS to search for.
         #
         # @return [String]
-        #   The path that the targetted file can be found at on the given
-        #   OS.
+        #   The path that the file can be found at on the given OS.
         #
         def paths_for(os)
           @paths[os]
@@ -88,11 +89,10 @@ module Ronin
         # Iterates over each path.
         #
         # @yield [path]
-        #   A given block will be passed each known path of the targetted
-        #   file.
+        #   A given block will be passed each known path of the file.
         #
         # @yieldparam [String] path
-        #   A path that the targetted file is known to reside at.
+        #   A path that the file is known to reside at.
         #
         def each_path(&block)
           @paths.each_value do |os_paths|
@@ -101,14 +101,14 @@ module Ronin
         end
 
         #
-        # Determines if the given body of text contains the targetted file.
+        # Determines if the given body of text contains the file.
         #
         # @param [String] body
         #   The body of text to examine.
         #
         # @return [Boolean]
-        #   Specifies whether the a given body of text has the targetted
-        #   file included in it.
+        #   Specifies whether the a given body of text has the file
+        #   included in it.
         #
         def included_in?(body)
           if @recognizor
@@ -119,7 +119,7 @@ module Ronin
         end
 
         #
-        # Add an extraction rule to the targetted file.
+        # Add an extraction rule to the file.
         #
         # @param [Symbol] name
         #   The name of the rule.
@@ -162,17 +162,17 @@ module Ronin
         end
 
         #
-        # All Target categories.
+        # All file signature categories.
         #
         # @return [Hash]
-        #   All categories of targetted files.
+        #   All categories of signature files.
         #
-        def Target.categories
+        def Signature.categories
           @@categories ||= Hash.new { |hash,key| hash[key] = [] }
         end
 
         #
-        # Determines if any targetted files have been defined in a given
+        # Determines if any signature files have been defined in a given
         # category.
         #
         # @param [Symbol] name
@@ -181,149 +181,150 @@ module Ronin
         # @return [Boolean]
         #   Specifies whether there is a category with the given name.
         #
-        def Target.has_category?(name)
-          Target.categories.has_key?(name)
+        def Signature.has_category?(name)
+          Signature.categories.has_key?(name)
         end
 
         #
-        # Finds the targets within the category with a given name.
+        # Finds the signature files within the category with a given name.
         #
         # @param [Symbol] name
         #   The category to search for.
         #
-        # @return [Array<Target>]
-        #   The targetted files within the category.
+        # @return [Array<Signature>]
+        #   The signature files within the category.
         #
-        def Target.category(name)
-          Target.categories[name]
+        def Signature.category(name)
+          Signature.categories[name]
         end
 
         #
-        # All targets.
+        # All signature files.
         #
-        # @return [Array<Target>]
-        #   All targetted files.
+        # @return [Array<Signature>]
+        #   All signature files.
         #
-        def Target.all
-          Target.categories.values.flatten
+        def Signature.all
+          Signature.categories.values.flatten
         end
 
         #
-        # Iterates over all targets.
+        # Iterates over all file signatures.
         #
-        # @yield [target]
-        #   The given block will be passed each registered targetted file.
+        # @yield [signature]
+        #   The given block will be passed each registered file signatures.
         #
-        # @yieldparam [Target] target
-        #   A targetted file.
+        # @yieldparam [Signature] signature
+        #   A file signature.
         #
-        def Target.each(&block)
-          Target.categories.each_value do |targets|
-            targets.each(&block)
+        def Signature.each(&block)
+          Signature.categories.each_value do |sigs|
+            sigs.each(&block)
           end
         end
 
         #
-        # Defines a new target within the test category of targets, used
-        # for testing LFI.
+        # Defines a new signature within the test category, used to test
+        # for LFI.
         #
-        def Target.test(&block)
-          Target.define(:test,&block)
+        def Signature.test(&block)
+          Signature.define(:test,&block)
         end
 
         #
-        # Defines a new target within the config category of configuration
-        # file targets.
+        # Defines a new signature within the config category of
+        # configuration file signatures.
         #
-        def Target.config(&block)
-          Target.define(:config,&block)
+        def Signature.config(&block)
+          Signature.define(:config,&block)
         end
 
         #
-        # Defines a new target within the log category of log file targets.
+        # Defines a new signature within the log category of log file
+        # signatures.
         #
-        def Target.log(&block)
-          Target.define(:log,&block)
+        def Signature.log(&block)
+          Signature.define(:log,&block)
         end
 
         #
-        # The targeted files used in testing for LFI.
+        # The file signatures used in testing for LFI.
         #
-        # @return [Array<Target>]
-        #   The targetted files used to identify LFI vulnerabilities.
+        # @return [Array<Signature>]
+        #   The file signatures used to identify LFI vulnerabilities.
         #
-        def Target.tests
-          Target.category(:test)
+        def Signature.tests
+          Signature.category(:test)
         end
 
         #
-        # The targeted configuration files.
+        # The configuration file signatures.
         #
-        # @return [Array<Target>]
-        #   The targetted configuration files.
+        # @return [Array<Signature>]
+        #   The configuration file signatures.
         #
-        def Target.configs
-          Target.category(:config)
+        def Signature.configs
+          Signature.category(:config)
         end
 
         #
-        # The targeted log files.
+        # The log file signatures.
         #
-        # @return [Array<Target>]
-        #   The targetted log files.
+        # @return [Array<Signature>]
+        #   The log file signatures.
         #
-        def Target.logs
-          Target.category(:log)
+        def Signature.logs
+          Signature.category(:log)
         end
 
         #
-        # All targets for a given OS.
+        # All file signatures for a given OS.
         #
         # @param [String] os
-        #   The OS to find targetted files for.
+        #   The OS to find file signatures for.
         #
-        # @return [Array<Target>]
-        #   All targetted files for the given OS.
+        # @return [Array<Signature>]
+        #   All file signatures for the given OS.
         #
-        def Target.targets_for(os)
-          Target.each do |target|
-            if target.oses.include?(os)
-              return target
+        def Signature.signatures_for(os)
+          Signature.each do |sig|
+            if sig.oses.include?(os)
+              return sig
             end
           end
         end
 
         #
-        # All targets with extractors.
+        # All file signatures with extractors.
         #
-        # @return [Array<Target>]
-        #   All targetted files with data extraction rules.
+        # @return [Array<Signature>]
+        #   All file signatures with data extraction rules.
         #
-        def Target.with_extractors
-          targets = []
+        def Signature.with_extractors
+          sigs = []
 
-          Target.each do |target|
-            unless target.extractors.empty?
-              targets << target
+          Signature.each do |sig|
+            unless sig.extractors.empty?
+              sigs << sig
             end
           end
 
-          return targets
+          return sigs
         end
 
         #
-        # All targets with a matching file-name.
+        # All file signatures with a matching file-name.
         #
         # @param [String] name
         #   The file-name to search for.
         #
-        # @return [Array<Target>]
-        #   The targetted files with the matching file-name.
+        # @return [Array<Signature>]
+        #   The file signatures with the matching file-name.
         #
-        def Target.with_file(name)
-          Target.each do |target|
-            target.each_path do |path|
-              return target if path =~ /#{name}$/
+        def Signature.with_file(name)
+          Signature.each do |sig|
+            sig.each_path do |path|
+              return sig if path =~ /#{name}$/
             end
           end
         end
@@ -331,19 +332,19 @@ module Ronin
         protected
 
         #
-        # Defines a new targetted file in a given category.
+        # Defines a new file signature in a given category.
         #
         # @param [Symbol] name
-        #   The category to define the targetted file within.
+        #   The category to define the file signature within.
         #
-        # @return [Target]
-        #   The newly defined targetted file.
+        # @return [Signature]
+        #   The newly defined file signature.
         #
         def self.define(name,&block)
-          new_target = Target.new(&block)
+          new_sig = Signature.new(&block)
 
-          Target.categories[name] << new_target
-          return new_target
+          .categories[name] << new_sig
+          return new_sig
         end
 
       end
