@@ -2,7 +2,9 @@ source 'http://rubygems.org'
 ronin_ruby = 'git://github.com/ronin-ruby'
 
 group :runtime do
-  gem 'dm-is-predefined','~> 0.3.0', :git => 'git://github.com/postmodern/dm-is-predefined.git'
+  # DataMapper plugins
+  gem 'dm-is-predefined',	'~> 0.3.0', :git => 'git://github.com/postmodern/dm-is-predefined.git'
+
   gem 'data_paths',	'~> 0.2.1'
   gem 'ronin-support',	'~> 0.1.0', :git => "#{ronin_ruby}/ronin-support.git"
   gem 'ronin',		'~> 0.4.0', :git => "#{ronin_ruby}/ronin.git"
