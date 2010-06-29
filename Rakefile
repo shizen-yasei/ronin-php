@@ -87,6 +87,8 @@ namespace :php do
       data/ronin/php/rpc/server.ajax.php
     ]
   end
+
+  task :files => 'php:rpc:files'
 end
 
-task :gemspec => 'php:rpc:files'
+task :gemspec => 'php:files'
