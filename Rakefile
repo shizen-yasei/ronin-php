@@ -82,12 +82,14 @@ namespace :php do
       generator.generate({}, [t.name])
     end
 
+    desc 'Generates data files for Ronin::PHP::RPC'
     task :files => %w[
       data/ronin/php/rpc/server.php
       data/ronin/php/rpc/server.ajax.php
     ]
   end
 
+  desc 'Generates data files for Ronin::PHP'
   task :files => 'php:rpc:files'
 end
 
