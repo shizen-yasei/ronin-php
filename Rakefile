@@ -29,6 +29,7 @@ Jeweler::Tasks.new do |gem|
       data/ronin/php/rpc/server.min.php
   }
 end
+Jeweler::GemcutterTasks.new
 
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new
