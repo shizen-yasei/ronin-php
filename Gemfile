@@ -10,6 +10,12 @@ gem 'ronin-scanners',	'~> 0.2.0', :git => "#{RONIN}/ronin-scanners.git"
 gem 'ronin-web',	'~> 0.3.0', :git => "#{RONIN}/ronin-web.git"
 gem 'ronin-exploits',	'~> 0.4.0', :git => "#{RONIN}/ronin-exploits.git"
 
+group(:development, :runtime) do
+  gem 'cssmin',		'~> 1.0.2'
+  gem 'jsmin',		'~> 1.0.1'
+  gem 'ronin-gen',	'~> 0.3.0', :git => "#{RONIN}/ronin-gen.git"
+end
+
 group(:development) do
   gem 'rake',		'~> 0.8.7'
   gem 'jeweler',	'~> 1.5.0.pre'
@@ -24,12 +30,6 @@ group(:doc) do
   end
 
   gem 'yard',		'~> 0.6.0'
-end
-
-group(:development, :runtime) do
-  gem 'cssmin',		'~> 1.0.2'
-  gem 'jsmin',		'~> 1.0.1'
-  gem 'ronin-gen',	'~> 0.3.0', :git => "#{RONIN}/ronin-gen.git"
 end
 
 gem 'rspec',	'~> 2.0.0.beta.20', :group => [:development, :test]
