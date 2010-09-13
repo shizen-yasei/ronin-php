@@ -9,10 +9,10 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Postmodern"]
-  s.date = %q{2010-08-31}
+  s.date = %q{2010-09-13}
   s.default_executable = %q{ronin-php}
   s.description = %q{Ronin PHP is a Ruby library for Ronin that provides support for PHP related security tasks.}
-  s.email = %q{postmodern.mod3@gmail.com}
+  s.email = %q{ronin-ruby@googlegroups.com}
   s.executables = ["ronin-php"]
   s.extra_rdoc_files = [
     "ChangeLog.md",
@@ -118,13 +118,13 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<ronin-support>, ["~> 0.1.0"])
       s.add_runtime_dependency(%q<ronin>, ["~> 0.4.0"])
       s.add_runtime_dependency(%q<ronin-scanners>, ["~> 0.2.0"])
-      s.add_runtime_dependency(%q<ronin-web>, ["~> 0.2.2"])
+      s.add_runtime_dependency(%q<ronin-web>, ["~> 0.3.0"])
       s.add_runtime_dependency(%q<ronin-exploits>, ["~> 0.4.0"])
-      s.add_development_dependency(%q<rake>, ["~> 0.8.7"])
-      s.add_development_dependency(%q<jeweler>, ["~> 1.5.0.pre"])
       s.add_development_dependency(%q<cssmin>, ["~> 1.0.2"])
       s.add_development_dependency(%q<jsmin>, ["~> 1.0.1"])
       s.add_development_dependency(%q<ronin-gen>, ["~> 0.3.0"])
+      s.add_development_dependency(%q<rake>, ["~> 0.8.7"])
+      s.add_development_dependency(%q<jeweler>, ["~> 1.5.0.pre"])
       s.add_development_dependency(%q<rspec>, ["~> 2.0.0.beta.20"])
     else
       s.add_dependency(%q<uri-query_params>, ["~> 0.4.0"])
@@ -132,13 +132,13 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<ronin-support>, ["~> 0.1.0"])
       s.add_dependency(%q<ronin>, ["~> 0.4.0"])
       s.add_dependency(%q<ronin-scanners>, ["~> 0.2.0"])
-      s.add_dependency(%q<ronin-web>, ["~> 0.2.2"])
+      s.add_dependency(%q<ronin-web>, ["~> 0.3.0"])
       s.add_dependency(%q<ronin-exploits>, ["~> 0.4.0"])
-      s.add_dependency(%q<rake>, ["~> 0.8.7"])
-      s.add_dependency(%q<jeweler>, ["~> 1.5.0.pre"])
       s.add_dependency(%q<cssmin>, ["~> 1.0.2"])
       s.add_dependency(%q<jsmin>, ["~> 1.0.1"])
       s.add_dependency(%q<ronin-gen>, ["~> 0.3.0"])
+      s.add_dependency(%q<rake>, ["~> 0.8.7"])
+      s.add_dependency(%q<jeweler>, ["~> 1.5.0.pre"])
       s.add_dependency(%q<rspec>, ["~> 2.0.0.beta.20"])
     end
   else
@@ -147,13 +147,13 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<ronin-support>, ["~> 0.1.0"])
     s.add_dependency(%q<ronin>, ["~> 0.4.0"])
     s.add_dependency(%q<ronin-scanners>, ["~> 0.2.0"])
-    s.add_dependency(%q<ronin-web>, ["~> 0.2.2"])
+    s.add_dependency(%q<ronin-web>, ["~> 0.3.0"])
     s.add_dependency(%q<ronin-exploits>, ["~> 0.4.0"])
-    s.add_dependency(%q<rake>, ["~> 0.8.7"])
-    s.add_dependency(%q<jeweler>, ["~> 1.5.0.pre"])
     s.add_dependency(%q<cssmin>, ["~> 1.0.2"])
     s.add_dependency(%q<jsmin>, ["~> 1.0.1"])
     s.add_dependency(%q<ronin-gen>, ["~> 0.3.0"])
+    s.add_dependency(%q<rake>, ["~> 0.8.7"])
+    s.add_dependency(%q<jeweler>, ["~> 1.5.0.pre"])
     s.add_dependency(%q<rspec>, ["~> 2.0.0.beta.20"])
   end
 end
