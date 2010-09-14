@@ -29,7 +29,7 @@ var Shell = {
   },
 
   exec: function(command) {
-    $.phprpc.callService('shell','exec',new Array(command),function(output) {
+    PHP_RPC.callService('shell','exec',new Array(command),function(output) {
       if (output.error != null)
       {
         Shell.print(output.error);
@@ -59,7 +59,7 @@ var PHP = {
   },
 
   inspect: function(code) {
-    $.phprpc.callService('console','inspect',new Array(code),function(response) {
+    PHP_RPC.callService('console','inspect',new Array(code),function(response) {
       if (response.error != null)
       {
         PHP.print(response.error);
