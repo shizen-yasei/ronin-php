@@ -721,12 +721,20 @@ function fingerprint($params=array())
     'host_name' => php_uname('n'),
     'php_server_api' => php_sapi_name(),
     'php_version' => phpversion(),
-    'uid' => posix_getuid(),
-    'gid' => posix_getgid(),
     'cwd' => getcwd(),
     'disk_free_space' => disk_free_space('/'),
     'disk_total_space' => disk_total_space('/')
   );
+
+  if (function_exists('posix_getuid'))
+  {
+    $profile['uid'] = posix_getuid();
+  }
+
+  if (function_exists('posix_getgid'))
+  {
+    $profile['gid'] = posix_getgid();
+  }
 
   switch ($profile['php_server_api'])
   {
