@@ -99,7 +99,7 @@ class RPCServer
     $return_value = call_user_func_array($func,$arguments);
 
     $output = ob_get_contents();
-    ob_end_clean();
+    ob_end_flush();
 
     $updated_state = $this->save_state();
 
