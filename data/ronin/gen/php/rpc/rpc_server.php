@@ -1,34 +1,31 @@
 class RPCServer
 {
-  var $_msgpack;
-
   var $methods;
 
   var $services;
 
   function RPCServer()
   {
-    $this->_msgpack = new MsgPack_Coder();
     $this->methods = array();
     $this->services = array();
   }
 
   function error_msg($message)
   {
-    return $this->_msgpack->encode(array(
+    return array(
       'type' => 'error',
       'message' => $message
-    ));
+    );
   }
 
   function response_msg($state,$output,$return_value)
   {
-    return $this->_msgpack->encode(array(
+    return array(
       'type' => 'response',
       'state' => $state,
       'output' => $output,
       'return_value' => $return_value,
-    ));
+    );
   }
 
   function load_state($state)

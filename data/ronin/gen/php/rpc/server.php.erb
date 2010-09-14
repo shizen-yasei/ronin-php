@@ -75,8 +75,9 @@ if (isset($_REQUEST['rpc_call']))
   $server->register_service('console', new ConsoleService());
   $server->register_service('shell', new ShellService());
 
-  $msg = base64_decode(rawurldecode($_REQUEST['rpcrequest']));
-  $response = base64_encode($server->call_method($msg));
+  $msgpack = new MsgPack_Coder();
+  $msg = $msgpack->decode(base64_decode(rawurldecode($_REQUEST['rpcrequest'])));
+  $response = base64_encode($msgpack->encode($server->call_method($msg)));
 
   echo("<rpc-response>{$response}</rpc-response>");
   exit;
