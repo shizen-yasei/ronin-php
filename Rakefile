@@ -26,7 +26,7 @@ Jeweler::Tasks.new do |gem|
 
   gem.files.include %w{
       data/ronin/php/rpc/server.php
-      data/ronin/php/rpc/server.min.php
+      data/ronin/php/rpc/server.ajax.php
   }
 end
 Jeweler::GemcutterTasks.new
