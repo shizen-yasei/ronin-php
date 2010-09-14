@@ -1,5 +1,3 @@
-<?php
-
 /**
  * PHP MsgPack encode/decode
  * http://code.google.com/p/msgpack-php

@@ -21,8 +21,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-<?php
-
 /**
  * PHP MsgPack encode/decode
  * http://code.google.com/p/msgpack-php
@@ -346,6 +344,7 @@ class MsgPack_Coder {
 	}
 
 }
+
 class RPCServer
 {
   var $_msgpack;
