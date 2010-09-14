@@ -34,10 +34,12 @@ Gem::Specification.new do |s|
     "data/ronin/gen/php/rpc/ajax/js/base64.js",
     "data/ronin/gen/php/rpc/ajax/js/jquery-ui-personalized.min.js",
     "data/ronin/gen/php/rpc/ajax/js/jquery.min.js",
-    "data/ronin/gen/php/rpc/ajax/js/jquery.phprpc.js",
     "data/ronin/gen/php/rpc/ajax/js/jquery.terminal.js",
+    "data/ronin/gen/php/rpc/ajax/js/msgpack.js",
+    "data/ronin/gen/php/rpc/ajax/js/php_rpc.js",
     "data/ronin/gen/php/rpc/ajax/js/ui.js",
     "data/ronin/gen/php/rpc/console_service.php",
+    "data/ronin/gen/php/rpc/msgpack.php",
     "data/ronin/gen/php/rpc/rpc_server.php",
     "data/ronin/gen/php/rpc/server.php.erb",
     "data/ronin/gen/php/rpc/service.php",
@@ -115,6 +117,7 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<uri-query_params>, ["~> 0.4.0"])
       s.add_runtime_dependency(%q<data_paths>, ["~> 0.2.1"])
+      s.add_runtime_dependency(%q<ffi-msgpack>, ["~> 0.1.4"])
       s.add_runtime_dependency(%q<ronin-support>, ["~> 0.1.0"])
       s.add_runtime_dependency(%q<ronin>, ["~> 0.4.0"])
       s.add_runtime_dependency(%q<ronin-scanners>, ["~> 0.2.0"])
@@ -129,6 +132,7 @@ Gem::Specification.new do |s|
     else
       s.add_dependency(%q<uri-query_params>, ["~> 0.4.0"])
       s.add_dependency(%q<data_paths>, ["~> 0.2.1"])
+      s.add_dependency(%q<ffi-msgpack>, ["~> 0.1.4"])
       s.add_dependency(%q<ronin-support>, ["~> 0.1.0"])
       s.add_dependency(%q<ronin>, ["~> 0.4.0"])
       s.add_dependency(%q<ronin-scanners>, ["~> 0.2.0"])
@@ -144,6 +148,7 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<uri-query_params>, ["~> 0.4.0"])
     s.add_dependency(%q<data_paths>, ["~> 0.2.1"])
+    s.add_dependency(%q<ffi-msgpack>, ["~> 0.1.4"])
     s.add_dependency(%q<ronin-support>, ["~> 0.1.0"])
     s.add_dependency(%q<ronin>, ["~> 0.4.0"])
     s.add_dependency(%q<ronin-scanners>, ["~> 0.2.0"])
