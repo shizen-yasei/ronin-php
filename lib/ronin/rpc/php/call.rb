@@ -20,9 +20,9 @@
 #
 
 require 'ronin/rpc/call'
-require 'ronin/formatting/binary'
 
-require 'xmlrpc/client'
+require 'ffi/msgpack'
+require 'base64'
 
 module Ronin
   module RPC
@@ -30,17 +30,20 @@ module Ronin
       class Call < RPC::Call
 
         #
-        # Encodes the function call along with additional session
-        # information.
+        # Encodes the function call along with additional state information.
         #
-        # @param [Hash] session
-        #   Additional session information to encode.
+        # @param [Hash] state
+        #   Additional state information to encode.
         #
         # @return [String]
-        #   Base64 encoded XMLRPC method call.
+        #   Base64 / MessagePack encoded PHP-RPC method call.
         #
-        def encode(session={})
-          XMLRPC::Create.new.methodCall(@name,session,*(@arguments)).base64_encode
+        def encode(state={})
+          Base64.base64_encode(FFI::MsgPack.pack(
+            'state' => state,
+            'name' => @name,
+            'arguments' => @arguments
+          ))
         end
 
       end

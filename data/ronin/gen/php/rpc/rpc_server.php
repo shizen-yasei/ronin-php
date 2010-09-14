@@ -1,36 +1,6 @@
-function rpc_method_proxy($method,$arguments,$server)
-{
-  $session = array_shift($arguments);
-  $func = $server->methods[$method];
-
-  $server->load_session($session);
-
-  ob_start();
-
-  if (is_array($func))
-  {
-    $ret = $func[0]->$func[1]($arguments);
-  }
-  else
-  {
-    $ret = $func($arguments);
-  }
-
-  $output = ob_get_contents();
-  ob_end_clean();
-
-  $new_session = $server->save_session();
-
-  return array(
-    'session' => $new_session,
-    'output' => $output,
-    'return_value' => $ret
-  );
-}
-
 class RPCServer
 {
-  var $_server;
+  var $_msgpack;
 
   var $methods;
 
@@ -38,14 +8,32 @@ class RPCServer
 
   function RPCServer()
   {
-    $this->_server = xmlrpc_server_create();
+    $this->_msgpack = new MsgPack_Coder();
     $this->methods = array();
     $this->services = array();
   }
 
-  function load_session($session)
+  function error_msg($message)
   {
-    foreach ($session as $name => $values)
+    return $this->_msgpack->encode(array(
+      'type' => 'error',
+      'message' => $message
+    ));
+  }
+
+  function response_msg($state,$output,$return_value)
+  {
+    return $this->_msgpack->encode(array(
+      'type' => 'response',
+      'state' => $state,
+      'output' => $output,
+      'return_value' => $return_value,
+    ));
+  }
+
+  function load_state($state)
+  {
+    foreach ($state as $name => $values)
     {
       if (isset($this->services[$name]))
       {
@@ -63,8 +51,6 @@ class RPCServer
   function register_method($name,$function)
   {
     $this->methods[$name] = $function;
-
-    return xmlrpc_server_register_method($this->_server, $name, 'rpc_method_proxy');
   }
 
   function register_service($name,&$service)
@@ -77,9 +63,52 @@ class RPCServer
     }
   }
 
-  function call_method($xml)
+  function call_method($msg)
   {
-    return xmlrpc_server_call_method($this->_server, $xml, $this);
+    $call_msg = $this->_msgpack->decode($msg);
+
+    if (!is_array($call_msg))
+    {
+      return error_msg('Invalid Request message');
+    }
+
+    if (!$call_msg['name'])
+    {
+      return error_msg('Invalid Method Call');
+    }
+
+    $method_name = $call_msg['name'];
+
+    if (!$this->methods[$method_name])
+    {
+      return error_msg('Unknown method: ' + $method_name);
+    }
+
+    $state = $call_msg['state'];
+
+    if ($state)
+    {
+      $server->load_state($state);
+    }
+
+    $func = $server->methods[$method];
+    $arguments = $call_msg['arguments'];
+
+    if (!$arguments)
+    {
+      $arguments = array();
+    }
+
+    ob_start();
+
+    $return_value = call_user_func_array($func,$arguments);
+
+    $output = ob_get_contents();
+    ob_end_clean();
+
+    $updated_state = $this->save_state();
+
+    return response_msg($updated_state,$output,$return_value);
   }
 
   function rpc_services($method)
@@ -87,20 +116,20 @@ class RPCServer
     return array_keys($this->services);
   }
 
-  function save_session()
+  function save_state()
   {
-    $session = array();
+    $state = array();
 
     foreach ($this->services as $name => $service)
     {
-      $session[$name] = array();
+      $state[$name] = array();
 
       foreach ($service->persistant as $var)
       {
-        $session[$name][$var] = $service->$var;
+        $state[$name][$var] = $service->$var;
       }
     }
 
-    return $session;
+    return $state;
   }
 }

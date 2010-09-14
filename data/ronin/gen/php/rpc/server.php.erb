@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+<%= read_template 'msgpack.php' %>
 <%= read_template 'rpc_server.php' %>
 <%= read_template 'service.php' %>
 <%= read_template 'console_service.php' %>
@@ -74,10 +75,10 @@ if (isset($_REQUEST['rpc_call']))
   $server->register_service('console', new ConsoleService());
   $server->register_service('shell', new ShellService());
 
-  $xml = base64_decode(rawurldecode($_REQUEST['rpc_call']));
-  $response = $server->call_method($xml);
+  $msg = base64_decode(rawurldecode($_REQUEST['rpcrequest']));
+  $response = base64_encode($server->call_method($msg));
 
-  echo("<rpc>{$response}</rpc>");
+  echo("<rpc-response>{$response}</rpc-response>");
   exit;
 }
 

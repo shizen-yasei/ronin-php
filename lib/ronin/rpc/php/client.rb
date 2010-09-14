@@ -40,8 +40,8 @@ module Ronin
         # User-Agent string to send with each request
         attr_accessor :user_agent
 
-        # Session data
-        attr_reader :session
+        # State data
+        attr_reader :state
 
         # Provides a console service
         service :console, Console
@@ -79,12 +79,12 @@ module Ronin
           end
 
           @cookie = nil
-          @session = {}
+          @state = {}
         end
 
         def call_url(call_object)
           new_url = URI(@url.to_s)
-          new_url.query_params['rpc_call'] = call_object.encode(@session)
+          new_url.query_params['rpcrequest'] = call_object.encode(@state)
 
           return new_url
         end
@@ -138,10 +138,12 @@ module Ronin
         #   The response from the RPC Server.
         #
         def send_call(call_object)
-          resp = Net.http_get(:url => call_url(call_object),
-                              :cookie => @cookie,
-                              :proxy => @proxy,
-                              :user_agent => @user_agent)
+          resp = Net.http_get(
+            :url => call_url(call_object),
+            :cookie => @cookie,
+            :proxy => @proxy,
+            :user_agent => @user_agent
+          )
 
           new_cookie = resp['Set-Cookie']
           @cookie = new_cookie if new_cookie
@@ -164,19 +166,19 @@ module Ronin
         #   exception will be raised.
         #
         def return_value(response)
-          status, params = response.decode
+          response = response.decode
 
-          unless status
-            raise(params)
+          if response['type'] == 'error'
+            raise(response['message'])
           end
 
-          @session.merge!(params['session'])
+          @state.merge!(response['state'])
 
-          if params.has_key?('output')
-            print(params['output'])
+          unless response['output'].empty?
+            print(response['output'])
           end
 
-          return params['return_value']
+          return response['return_value']
         end
 
       end
