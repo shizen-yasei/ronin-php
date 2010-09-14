@@ -754,11 +754,10 @@ if (isset($_REQUEST['rpcrequest']))
   $server->register_service('console', new ConsoleService());
   $server->register_service('shell', new ShellService());
 
-  $msgpack = new MsgPack_Coder();
-  $msg = $msgpack->decode(base64_decode(rawurldecode($_REQUEST['rpcrequest'])));
-  $response_msg = $server->call_method($msg);
-  var_dump($response_msg);
-  $response = base64_encode($msgpack->encode($response_msg));
+  $request = $_REQUEST['rpcrequest'];
+  $call = MsgPack_Coder::decode(base64_decode(rawurldecode($request)));
+  $return_value = $server->call_method($call);
+  $response = base64_encode(MsgPack_Coder::encode($return_value));
 
   echo("<rpc-response>{$response}</rpc-response>");
   exit;
@@ -772,19 +771,27 @@ if (isset($_REQUEST['rpcrequest']))
     <title>Ronin::PHP - AJAX PHP-RPC Console</title>
     <style type="text/css">#console_container{float:left;margin:0 20% 0 20%;padding:1em;width:60%;z-index:10000;background-color:white;color:black;font-family:Helvetica;font-size:.8em;}#console_title{font-weight:bold;}#console_content{background-color:black;}.ui-tabs-hide{display:none;}.ui-tabs-nav{float:right;margin:0;padding:.5em 0 0 .5em;list-style:none;}.ui-tabs-nav:after{display:block;clear:both;content:" ";}.ui-tabs-nav li{float:left;margin:0 0 0 2px;font-weight:bold;}.ui-tabs-nav a{float:left;margin-left:1em;margin-right:1em;color:white;text-decoration:none;}.ui-tabs-nav a span{float:left;}.ui-tabs-nav .ui-tabs-selected a{text-decoration:underline;border-bottom:2px solid white;}div.console_tab{clear:right;margin:0;padding:0 1em 1em 1em;}div.console_tab h2{color:white;font-weight:bold;}div.console_tab a{color:white;text-decoration:none;border-bottom:1px dotted gray;}div.console_tab a:hover{color:white;text-decoration:none;border-bottom:1px solid white;}div.console_tab button{color:white;background-color:black;border:2px solid white;}div.console_dialogue{margin:0;padding:1em;background-color:#c3c3c3;}.terminal_textarea{padding:.125em;width:100%;color:white;font-family:monospace;font-size:1.2em;background-color:black;border:2px solid white;}textarea.terminal_textarea{height:auto;margin:0 0 .5em 0;}input.terminal_textarea{margin:.5em 0 0 0;}</style>
     <script type="text/javascript">
-var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(input){var output="";var chr1,chr2,chr3,enc1,enc2,enc3,enc4;var i=0;input=Base64._utf8_encode(input);while(i<input.length){chr1=input.charCodeAt(i++);chr2=input.charCodeAt(i++);chr3=input.charCodeAt(i++);enc1=chr1>>2;enc2=((chr1&3)<<4)|(chr2>>4);enc3=((chr2&15)<<2)|(chr3>>6);enc4=chr3&63;if(isNaN(chr2)){enc3=enc4=64;}else if(isNaN(chr3)){enc4=64;}
-output=output+
-this._keyStr.charAt(enc1)+this._keyStr.charAt(enc2)+
-this._keyStr.charAt(enc3)+this._keyStr.charAt(enc4);}
-return output;},decode:function(input){var output="";var chr1,chr2,chr3;var enc1,enc2,enc3,enc4;var i=0;input=input.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(i<input.length){enc1=this._keyStr.indexOf(input.charAt(i++));enc2=this._keyStr.indexOf(input.charAt(i++));enc3=this._keyStr.indexOf(input.charAt(i++));enc4=this._keyStr.indexOf(input.charAt(i++));chr1=(enc1<<2)|(enc2>>4);chr2=((enc2&15)<<4)|(enc3>>2);chr3=((enc3&3)<<6)|enc4;output=output+String.fromCharCode(chr1);if(enc3!=64){output=output+String.fromCharCode(chr2);}
-if(enc4!=64){output=output+String.fromCharCode(chr3);}}
-output=Base64._utf8_decode(output);return output;},_utf8_encode:function(string){string=string.replace(/\r\n/g,"\n");var utftext="";for(var n=0;n<string.length;n++){var c=string.charCodeAt(n);if(c<128){utftext+=String.fromCharCode(c);}
-else if((c>127)&&(c<2048)){utftext+=String.fromCharCode((c>>6)|192);utftext+=String.fromCharCode((c&63)|128);}
-else{utftext+=String.fromCharCode((c>>12)|224);utftext+=String.fromCharCode(((c>>6)&63)|128);utftext+=String.fromCharCode((c&63)|128);}}
-return utftext;},_utf8_decode:function(utftext){var string="";var i=0;var c=c1=c2=0;while(i<utftext.length){c=utftext.charCodeAt(i);if(c<128){string+=String.fromCharCode(c);i++;}
-else if((c>191)&&(c<224)){c2=utftext.charCodeAt(i+1);string+=String.fromCharCode(((c&31)<<6)|(c2&63));i+=2;}
-else{c2=utftext.charCodeAt(i+1);c3=utftext.charCodeAt(i+2);string+=String.fromCharCode(((c&15)<<12)|((c2&63)<<6)|(c3&63));i+=3;}}
-return string;}}</script>
+base64={};base64.PADCHAR='=';base64.ALPHA='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';base64.getbyte64=function(s,i){var idx=base64.ALPHA.indexOf(s.charAt(i));if(idx==-1){throw"Cannot decode base64";}
+return idx;}
+base64.decode=function(s){s=""+s;var getbyte64=base64.getbyte64;var pads,i,b10;var imax=s.length
+if(imax==0){return s;}
+if(imax%4!=0){throw"Cannot decode base64";}
+pads=0
+if(s.charAt(imax-1)==base64.PADCHAR){pads=1;if(s.charAt(imax-2)==base64.PADCHAR){pads=2;}
+imax-=4;}
+var x=[];for(i=0;i<imax;i+=4){b10=(getbyte64(s,i)<<18)|(getbyte64(s,i+1)<<12)|(getbyte64(s,i+2)<<6)|getbyte64(s,i+3);x.push(String.fromCharCode(b10>>16,(b10>>8)&0xff,b10&0xff));}
+switch(pads){case 1:b10=(getbyte64(s,i)<<18)|(getbyte64(s,i+1)<<12)|(getbyte64(s,i+2)<<6)
+x.push(String.fromCharCode(b10>>16,(b10>>8)&0xff));break;case 2:b10=(getbyte64(s,i)<<18)|(getbyte64(s,i+1)<<12);x.push(String.fromCharCode(b10>>16));break;}
+return x.join('');}
+base64.getbyte=function(s,i){var x=s.charCodeAt(i);if(x>255){throw"INVALID_CHARACTER_ERR: DOM Exception 5";}
+return x;}
+base64.encode=function(s){if(arguments.length!=1){throw"SyntaxError: Not enough arguments";}
+var padchar=base64.PADCHAR;var alpha=base64.ALPHA;var getbyte=base64.getbyte;var i,b10;var x=[];s=""+s;var imax=s.length-s.length%3;if(s.length==0){return s;}
+for(i=0;i<imax;i+=3){b10=(getbyte(s,i)<<16)|(getbyte(s,i+1)<<8)|getbyte(s,i+2);x.push(alpha.charAt(b10>>18));x.push(alpha.charAt((b10>>12)&0x3F));x.push(alpha.charAt((b10>>6)&0x3f));x.push(alpha.charAt(b10&0x3f));}
+switch(s.length-imax){case 1:b10=getbyte(s,i)<<16;x.push(alpha.charAt(b10>>18)+alpha.charAt((b10>>12)&0x3F)+
+padchar+padchar);break;case 2:b10=(getbyte(s,i)<<16)|(getbyte(s,i+1)<<8);x.push(alpha.charAt(b10>>18)+alpha.charAt((b10>>12)&0x3F)+
+alpha.charAt((b10>>6)&0x3f)+padchar);break;}
+return x.join('');}</script>
     <script type="text/javascript">
 MessagePack={};MessagePack.unpack=function(data){var unpacker=new MessagePack.Decoder(data);return unpacker.unpack();};MessagePack.UTF8=0;MessagePack.ASCII8bit=1;MessagePack.UTF16=2;MessagePack.ByteArray=-1;MessagePack.CharSet=MessagePack.UTF8;MessagePack.Decoder=function(data,charSet){this.index=0;if(MessagePack.hasVBS){if(typeof(data)=="unknown"){this.length=msgpack_getLength(data);this.byte_array_to_string(data);}else{this.length=msgpack_getLength(data);this.data=data;}}else{this.length=data.length;this.data=data;}
 charSet=charSet||MessagePack.CharSet||0;if(charSet=='utf-8'){charSet=MessagePack.UTF8;}
@@ -1007,9 +1014,9 @@ else var s=p/(2*Math.PI)*Math.asin(c/a);if(t<1)return-.5*(a*Math.pow(2,10*(t-=1)
 {callback(data);}
 input.val('');}});};$.fn.terminalFocus=function(){return this.each(function(){$("input.terminal_textarea",this).focus();});};$.fn.terminalClear=function(){return this.each(function(){$("textarea.terminal_textarea",this).val('');});};jQuery.fn.terminalPrint=function(message){return this.each(function(){var output=$("textarea.terminal_textarea",this);output.val(output.val()+message);output.attr('scrollTop',output.attr('scrollHeight'));});};jQuery.fn.terminalPrintLine=function(message){return this.terminalPrint(message+"\n");};})(jQuery);</script>
     <script type="text/javascript">
-var PHP_RPC={Request:{encode:function(method,args){return Base64.encode(MessagePack.pack({'name':method,'arguments':args,'state':PHP_RPC.state}));}},Response:{valid_types:{'error':true,'return_value':true},valid_keys:{'error':['message'],'return_value':['state','output','return_value']},decode:function(page){var extractor=new RegExp("<rpc-response>(.*)<\/rpc-response>");var match=page.match(extractor);if(match==null||match[1]==null||match[1].length==0)
+var PHP_RPC={Request:{encode:function(method,args){return base64.encode(MessagePack.pack({'name':method,'arguments':args,'state':PHP_RPC.state}));}},Response:{valid_types:{'error':true,'return':true},valid_keys:{'error':['message'],'return':['state','output','return_value']},decode:function(page){var extractor=new RegExp("<rpc-response>(.*)<\/rpc-response>");var match=page.match(extractor);if(match==null||match[1]==null||match[1].length==0)
 {throw"PHP-RPC Response missing";}
-var response=MessagePack.unpack(Base64.decode(match[1]));if(response==null||!(response instanceof Array))
+var response=MessagePack.unpack(base64.decode(match[1]));if(response==null)
 {throw"Invalid PHP-RPC Response";}
 if(response['type']==null||!(response['type']in PHP_RPC.Response.valid_types))
 {throw"Invalid PHP-RPC Response type";}
@@ -1020,7 +1027,9 @@ return response;}},serverURL:window.location.href,requestMethod:'GET',state:{},c
 {url+='?';}
 else if(url[url.length-1]!='&')
 {url+='&';}
-var request=PHP_RPC.Request.encode(method,args);url+=('rpcrequest='+encodeURIComponent(request));return url;},call:function(method,args,callback){var url=PHP_RPC.callURL(method,args);jQuery.ajax({url:url,type:PHP_RPC.requestMethod,success:function(data){var response=PHP_RPC.Response.decode(data);PHP_RPC.state=response['state'];callback(response);}});},callService:function(service,method,args,callback){PHP_RPC.call(service+'.'+method,args,callback);}};</script>
+var request=PHP_RPC.Request.encode(method,args);url+=('rpcrequest='+encodeURIComponent(request));return url;},call:function(method,args,callback){var url=PHP_RPC.callURL(method,args);jQuery.ajax({url:url,type:PHP_RPC.requestMethod,success:function(data){var response=PHP_RPC.Response.decode(data);if(response['type']=='error')
+{throw response['message'];}
+PHP_RPC.state=response['state'];callback(response);}});},callService:function(service,method,args,callback){PHP_RPC.call(service+'.'+method,args,callback);}};</script>
     <script type="text/javascript">
 var Shell={clear:function(){$("#console_shell").terminalClear();},print:function(message){$("#console_shell").terminalPrint(message);},exec:function(command){PHP_RPC.callService('shell','exec',new Array(command),function(output){if(output.error!=null)
 {Shell.print(output.error);}

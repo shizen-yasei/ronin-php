@@ -4,7 +4,7 @@ var PHP_RPC = {
      * Encodes a new PHP-RPC Request.
      */
     encode: function(method,args) {
-      return Base64.encode(MessagePack.pack({
+      return base64.encode(MessagePack.pack({
         'name': method,
         'arguments': args,
         'state': PHP_RPC.state
@@ -14,12 +14,12 @@ var PHP_RPC = {
 
   Response: {
     // valid PHP-RPC Response types
-    valid_types: {'error': true, 'return_value': true},
+    valid_types: {'error': true, 'return': true},
 
     // valid keys for PHP-RPC Responses
     valid_keys: {
       'error': ['message'],
-      'return_value': ['state', 'output', 'return_value']
+      'return': ['state', 'output', 'return_value']
     },
 
     /*
@@ -34,9 +34,9 @@ var PHP_RPC = {
         throw "PHP-RPC Response missing";
       }
 
-      var response = MessagePack.unpack(Base64.decode(match[1]));
+      var response = MessagePack.unpack(base64.decode(match[1]));
 
-      if (response == null || !(response instanceof Array))
+      if (response == null)
       {
         throw "Invalid PHP-RPC Response";
       }
@@ -103,6 +103,11 @@ var PHP_RPC = {
       type: PHP_RPC.requestMethod,
       success: function(data) {
         var response = PHP_RPC.Response.decode(data);
+
+        if (response['type'] == 'error')
+        {
+          throw response['message'];
+        }
 
         PHP_RPC.state = response['state'];
         callback(response);
