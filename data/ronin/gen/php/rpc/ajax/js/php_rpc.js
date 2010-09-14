@@ -72,7 +72,7 @@ var PHP_RPC = {
   /*
    * Crafts a URL for a PHP-RPC Request.
    */
-  callURL: function(request) {
+  callURL: function(method,args) {
     var url = PHP_RPC.serverURL;
     var insert_index = url.indexOf('?');
 
@@ -94,6 +94,8 @@ var PHP_RPC = {
       url_insert('&');
     }
 
+    var request = PHP_RPC.Request.encode(method,args);
+
     // insert the PHP-RPC Request message into the URL
     url_insert('rpcrequest=' + encodeURIComponent(request));
     return url;
@@ -103,14 +105,13 @@ var PHP_RPC = {
    * Performs a PHP-RPC call.
    */
   call: function(method,args,callback) {
-    var request = PHP_RPC.Request.encode(method,args);
-    var url = PHP_RPC.callURL(request);
+    var url = PHP_RPC.callURL(method,args);
 
     jQuery.ajax({
       url: url,
       type: PHP_RPC.requestMethod,
       success: function(data) {
-        var response = PHP_RPC.Response.decode(response);
+        var response = PHP_RPC.Response.decode(data);
 
         PHP_RPC.state = response['state'];
         callback(response);
