@@ -64,19 +64,19 @@ class RPCServer
   {
     if (!is_array($request))
     {
-      return error_msg('Invalid Request message');
+      return $this->error_msg('Invalid Request message');
     }
 
     if (!$request['name'])
     {
-      return error_msg('Invalid Method Call');
+      return $this->error_msg('Invalid Method Call');
     }
 
     $method_name = $request['name'];
 
     if (!$this->methods[$method_name])
     {
-      return error_msg('Unknown method: ' + $method_name);
+      return $this->error_msg('Unknown method: ' + $method_name);
     }
 
     $state = $request['state'];

@@ -77,7 +77,9 @@ if (isset($_REQUEST['rpcrequest']))
 
   $msgpack = new MsgPack_Coder();
   $msg = $msgpack->decode(base64_decode(rawurldecode($_REQUEST['rpcrequest'])));
-  $response = base64_encode($msgpack->encode($server->call_method($msg)));
+  $response_msg = $server->call_method($msg);
+  var_dump($response_msg);
+  $response = base64_encode($msgpack->encode($response_msg));
 
   echo("<rpc-response>{$response}</rpc-response>");
   exit;

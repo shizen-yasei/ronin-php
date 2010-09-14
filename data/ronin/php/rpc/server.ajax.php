@@ -365,10 +365,10 @@ class RPCServer
     );
   }
 
-  function return_value_msg($state,$output,$return_value)
+  function return_msg($state,$output,$return_value)
   {
     return array(
-      'type' => 'response',
+      'type' => 'return',
       'state' => $state,
       'output' => $output,
       'return_value' => $return_value,
@@ -411,19 +411,19 @@ class RPCServer
   {
     if (!is_array($request))
     {
-      return error_msg('Invalid Request message');
+      return $this->error_msg('Invalid Request message');
     }
 
     if (!$request['name'])
     {
-      return error_msg('Invalid Method Call');
+      return $this->error_msg('Invalid Method Call');
     }
 
     $method_name = $request['name'];
 
     if (!$this->methods[$method_name])
     {
-      return error_msg('Unknown method: ' + $method_name);
+      return $this->error_msg('Unknown method: ' + $method_name);
     }
 
     $state = $request['state'];
@@ -450,7 +450,7 @@ class RPCServer
 
     $updated_state = $this->save_state();
 
-    return $this->return_value_msg($updated_state,$output,$return_value);
+    return $this->return_msg($updated_state,$output,$return_value);
   }
 
   function rpc_services($method)
@@ -756,7 +756,9 @@ if (isset($_REQUEST['rpcrequest']))
 
   $msgpack = new MsgPack_Coder();
   $msg = $msgpack->decode(base64_decode(rawurldecode($_REQUEST['rpcrequest'])));
-  $response = base64_encode($msgpack->encode($server->call_method($msg)));
+  $response_msg = $server->call_method($msg);
+  var_dump($response_msg);
+  $response = base64_encode($msgpack->encode($response_msg));
 
   echo("<rpc-response>{$response}</rpc-response>");
   exit;
