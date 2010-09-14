@@ -67,7 +67,7 @@ function fingerprint($params=array())
 # Inlined PHP: End
 #
 
-if (isset($_REQUEST['rpc_call']))
+if (isset($_REQUEST['rpcrequest']))
 {
   $server = new RPCServer();
   $server->register_method('running', 'running');

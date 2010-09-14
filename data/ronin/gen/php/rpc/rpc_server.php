@@ -18,7 +18,7 @@ class RPCServer
     );
   }
 
-  function response_msg($state,$output,$return_value)
+  function return_value_msg($state,$output,$return_value)
   {
     return array(
       'type' => 'response',
@@ -60,28 +60,26 @@ class RPCServer
     }
   }
 
-  function call_method($msg)
+  function call_method($request)
   {
-    $call_msg = $this->_msgpack->decode($msg);
-
-    if (!is_array($call_msg))
+    if (!is_array($request))
     {
       return error_msg('Invalid Request message');
     }
 
-    if (!$call_msg['name'])
+    if (!$request['name'])
     {
       return error_msg('Invalid Method Call');
     }
 
-    $method_name = $call_msg['name'];
+    $method_name = $request['name'];
 
     if (!$this->methods[$method_name])
     {
       return error_msg('Unknown method: ' + $method_name);
     }
 
-    $state = $call_msg['state'];
+    $state = $request['state'];
 
     if ($state)
     {
@@ -89,7 +87,7 @@ class RPCServer
     }
 
     $func = $server->methods[$method];
-    $arguments = $call_msg['arguments'];
+    $arguments = $request['arguments'];
 
     if (!$arguments)
     {
@@ -105,7 +103,7 @@ class RPCServer
 
     $updated_state = $this->save_state();
 
-    return response_msg($updated_state,$output,$return_value);
+    return $this->return_value_msg($updated_state,$output,$return_value);
   }
 
   function rpc_services($method)
