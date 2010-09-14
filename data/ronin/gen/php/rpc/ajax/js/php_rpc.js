@@ -4,7 +4,7 @@ var PHP_RPC = {
      * Encodes a new PHP-RPC Request.
      */
     encode: function(method,args) {
-      return Base64.encode(MsgPack.pack({
+      return Base64.encode(MessagePack.pack({
         'name': method,
         'arguments': args
       }));
@@ -16,10 +16,10 @@ var PHP_RPC = {
     valid_types: {'error': true, 'return_value': true},
 
     // valid keys for PHP-RPC Responses
-    valid_keys: [
+    valid_keys: {
       'error': ['message'],
       'return_value': ['state', 'output', 'return_value']
-    ],
+    },
 
     /*
      * Decodes a PHP-RPC Response.
@@ -33,9 +33,9 @@ var PHP_RPC = {
         throw "PHP-RPC Response missing";
       }
 
-      var response = MsgPack.unpack(Base64.decode(match[1]));
+      var response = MessagePack.unpack(Base64.decode(match[1]));
 
-      if (response == null || !(response instanceOf Array))
+      if (response == null || !(response instanceof Array))
       {
         throw "Invalid PHP-RPC Response";
       }
@@ -51,8 +51,7 @@ var PHP_RPC = {
       {
         if (response[check_keys[i]] == null)
         {
-          throw "PHP-RPC Response is missing the " + \
-                check_keys[i] + " key";
+          throw "PHP-RPC Response is missing the " + check_keys[i] + " key";
         }
       }
 
@@ -105,7 +104,7 @@ var PHP_RPC = {
 
     jQuery.ajax({
       url: url,
-      type: PHP_RPC.requestType,
+      type: PHP_RPC.requestMethod,
       success: function(response) {
         callback(PHP_RPC.Response.decode(response));
       }
