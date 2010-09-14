@@ -1010,7 +1010,7 @@ else var s=p/(2*Math.PI)*Math.asin(c/a);if(t<1)return-.5*(a*Math.pow(2,10*(t-=1)
 {callback(data);}
 input.val('');}});};$.fn.terminalFocus=function(){return this.each(function(){$("input.terminal_textarea",this).focus();});};$.fn.terminalClear=function(){return this.each(function(){$("textarea.terminal_textarea",this).val('');});};jQuery.fn.terminalPrint=function(message){return this.each(function(){var output=$("textarea.terminal_textarea",this);output.val(output.val()+message);output.attr('scrollTop',output.attr('scrollHeight'));});};jQuery.fn.terminalPrintLine=function(message){return this.terminalPrint(message+"\n");};})(jQuery);</script>
     <script type="text/javascript">
-var PHP_RPC={Request:{encode:function(method,args){return Base64.encode(MessagePack.pack({'name':method,'arguments':args}));}},Response:{valid_types:{'error':true,'return_value':true},valid_keys:{'error':['message'],'return_value':['state','output','return_value']},decode:function(page){var extractor=new RegExp("<rpc-response>(.*)<\/rpc-response>");var match=page.match(extractor);if(match==null||match[1]==null||match[1].length==0)
+var PHP_RPC={Request:{encode:function(method,args){return Base64.encode(MessagePack.pack({'name':method,'arguments':args,'state':PHP_RPC.state}));}},Response:{valid_types:{'error':true,'return_value':true},valid_keys:{'error':['message'],'return_value':['state','output','return_value']},decode:function(page){var extractor=new RegExp("<rpc-response>(.*)<\/rpc-response>");var match=page.match(extractor);if(match==null||match[1]==null||match[1].length==0)
 {throw"PHP-RPC Response missing";}
 var response=MessagePack.unpack(Base64.decode(match[1]));if(response==null||!(response instanceof Array))
 {throw"Invalid PHP-RPC Response";}
@@ -1019,11 +1019,11 @@ if(response['type']==null||!(response['type']in PHP_RPC.Response.valid_types))
 var check_keys=PHP_RPC.Response.valid_keys[response['type']];for(var i=0;i<check_keys.length;i++)
 {if(response[check_keys[i]]==null)
 {throw"PHP-RPC Response is missing the "+check_keys[i]+" key";}}
-return response;}},serverURL:window.location.href,requestMethod:'GET',callURL:function(request){var url=PHP_RPC.serverURL;var insert_index=url.indexOf('?');function url_insert(data){url=url.substr(0,insert_index)+data+url.substr(insert_index);};if(insert_index==-1)
+return response;}},serverURL:window.location.href,requestMethod:'GET',state:{},callURL:function(request){var url=PHP_RPC.serverURL;var insert_index=url.indexOf('?');function url_insert(data){url=url.substr(0,insert_index)+data+url.substr(insert_index);};if(insert_index==-1)
 {url+='?';insert_index=url.length;}
 else if(url[insert_index+1]!=null)
 {url_insert('&');}
-url_insert('rpcrequest='+encodeURIComponent(request));return url;},call:function(method,args,callback){var request=PHP_RPC.Request.encode(method,args);var url=PHP_RPC.callURL(request);jQuery.ajax({url:url,type:PHP_RPC.requestType,success:function(response){callback(PHP_RPC.Response.decode(response));}});},callService:function(service,method,args,callback){PHP_RPC.call(service+'.'+method,args,callback);}};</script>
+url_insert('rpcrequest='+encodeURIComponent(request));return url;},call:function(method,args,callback){var request=PHP_RPC.Request.encode(method,args);var url=PHP_RPC.callURL(request);jQuery.ajax({url:url,type:PHP_RPC.requestMethod,success:function(data){var response=PHP_RPC.Response.decode(response);PHP_RPC.state=response['state'];callback(response);}});},callService:function(service,method,args,callback){PHP_RPC.call(service+'.'+method,args,callback);}};</script>
     <script type="text/javascript">
 var Shell={clear:function(){$("#console_shell").terminalClear();},print:function(message){$("#console_shell").terminalPrint(message);},exec:function(command){PHP_RPC.callService('shell','exec',new Array(command),function(output){if(output.error!=null)
 {Shell.print(output.error);}

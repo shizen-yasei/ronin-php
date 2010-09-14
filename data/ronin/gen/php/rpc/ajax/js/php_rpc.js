@@ -6,7 +6,8 @@ var PHP_RPC = {
     encode: function(method,args) {
       return Base64.encode(MessagePack.pack({
         'name': method,
-        'arguments': args
+        'arguments': args,
+        'state': PHP_RPC.state
       }));
     }
   },
@@ -65,6 +66,9 @@ var PHP_RPC = {
   // The HTTP Request method to use
   requestMethod: 'GET',
 
+  // The State used by the PHP-RPC Client
+  state: {},
+
   /*
    * Crafts a URL for a PHP-RPC Request.
    */
@@ -105,8 +109,11 @@ var PHP_RPC = {
     jQuery.ajax({
       url: url,
       type: PHP_RPC.requestMethod,
-      success: function(response) {
-        callback(PHP_RPC.Response.decode(response));
+      success: function(data) {
+        var response = PHP_RPC.Response.decode(response);
+
+        PHP_RPC.state = response['state'];
+        callback(response);
       }
     });
   },
