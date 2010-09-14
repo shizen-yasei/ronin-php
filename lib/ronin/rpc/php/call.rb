@@ -39,7 +39,7 @@ module Ronin
         #   Base64 / MessagePack encoded PHP-RPC method call.
         #
         def encode(state={})
-          Base64.base64_encode(FFI::MsgPack.pack(
+          Base64.encode64(FFI::MsgPack.pack(
             'state' => state,
             'name' => @name,
             'arguments' => @arguments

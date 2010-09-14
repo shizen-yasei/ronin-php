@@ -65,7 +65,7 @@ module Ronin
             raise(ResponseMissing,"failed to receive a valid RPC response",caller)
           end
 
-          response = FFI::MsgPack.unpack(Base64.base64_decode(match[1]))
+          response = FFI::MsgPack.unpack(Base64.decode64(match[1]))
 
           unless response.kind_of?(Hash)
             raise(InvalidResponse,"decoded RPC response was not a Hash",caller)
