@@ -49,6 +49,7 @@ namespace :php do
   namespace :rpc do
     deps = [
       'data/ronin/php/rpc',
+      'data/ronin/gen/php/rpc/msgpack.php',
       'data/ronin/gen/php/rpc/service.php',
       'data/ronin/gen/php/rpc/console_service.php',
       'data/ronin/gen/php/rpc/shell_service.php',
@@ -59,11 +60,12 @@ namespace :php do
     ajax_deps = [
       'data/ronin/gen/php/rpc/ajax/css/layout.css',
       'data/ronin/gen/php/rpc/ajax/js/base64.js',
+      'data/ronin/gen/php/rpc/ajax/js/msgpack.js',
       'data/ronin/gen/php/rpc/ajax/js/jquery.min.js',
       'data/ronin/gen/php/rpc/ajax/js/jquery-ui-personalized.min.js',
-      'data/ronin/gen/php/rpc/ajax/js/jquery.phprpc.js',
       'data/ronin/gen/php/rpc/ajax/js/jquery.terminal.js',
-      'data/ronin/gen/php/rpc/ajax/js/ui.js',
+      'data/ronin/gen/php/rpc/ajax/js/php_rpc.js',
+      'data/ronin/gen/php/rpc/ajax/js/ui.js'
     ]
 
     generator = Ronin::Gen::Generators::Php::RpcServer
