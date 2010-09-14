@@ -19,7 +19,7 @@ var PHP_RPC = {
     // valid keys for PHP-RPC Responses
     valid_keys: {
       'error': ['message'],
-      'return': ['state', 'output', 'return_value']
+      'return': ['state', 'output'] // return_value may contain null
     },
 
     /*

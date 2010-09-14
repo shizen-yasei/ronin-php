@@ -411,29 +411,29 @@ class RPCServer
   {
     if (!is_array($request))
     {
-      return $this->error_msg('Invalid Request message');
+      return $this->error_msg("Invalid Request message");
     }
 
     if (!$request['name'])
     {
-      return $this->error_msg('Invalid Method Call');
+      return $this->error_msg("Invalid Method Call");
     }
 
     $method_name = $request['name'];
 
     if (!$this->methods[$method_name])
     {
-      return $this->error_msg('Unknown method: ' + $method_name);
+      return $this->error_msg("Unknown method: {$method_name}");
     }
 
     $state = $request['state'];
 
     if ($state)
     {
-      $server->load_state($state);
+      $this->load_state($state);
     }
 
-    $func = $server->methods[$method];
+    $func = $this->methods[$method_name];
     $arguments = $request['arguments'];
 
     if (!$arguments)
@@ -444,6 +444,7 @@ class RPCServer
     ob_start();
 
     $return_value = call_user_func_array($func,$arguments);
+    var_dump($return_value);
 
     $output = ob_get_contents();
     ob_end_clean();
@@ -1014,7 +1015,7 @@ else var s=p/(2*Math.PI)*Math.asin(c/a);if(t<1)return-.5*(a*Math.pow(2,10*(t-=1)
 {callback(data);}
 input.val('');}});};$.fn.terminalFocus=function(){return this.each(function(){$("input.terminal_textarea",this).focus();});};$.fn.terminalClear=function(){return this.each(function(){$("textarea.terminal_textarea",this).val('');});};jQuery.fn.terminalPrint=function(message){return this.each(function(){var output=$("textarea.terminal_textarea",this);output.val(output.val()+message);output.attr('scrollTop',output.attr('scrollHeight'));});};jQuery.fn.terminalPrintLine=function(message){return this.terminalPrint(message+"\n");};})(jQuery);</script>
     <script type="text/javascript">
-var PHP_RPC={Request:{encode:function(method,args){return base64.encode(MessagePack.pack({'name':method,'arguments':args,'state':PHP_RPC.state}));}},Response:{valid_types:{'error':true,'return':true},valid_keys:{'error':['message'],'return':['state','output','return_value']},decode:function(page){var extractor=new RegExp("<rpc-response>(.*)<\/rpc-response>");var match=page.match(extractor);if(match==null||match[1]==null||match[1].length==0)
+var PHP_RPC={Request:{encode:function(method,args){return base64.encode(MessagePack.pack({'name':method,'arguments':args,'state':PHP_RPC.state}));}},Response:{valid_types:{'error':true,'return':true},valid_keys:{'error':['message'],'return':['state','output']},decode:function(page){var extractor=new RegExp("<rpc-response>(.*)<\/rpc-response>");var match=page.match(extractor);if(match==null||match[1]==null||match[1].length==0)
 {throw"PHP-RPC Response missing";}
 var response=MessagePack.unpack(base64.decode(match[1]));if(response==null)
 {throw"Invalid PHP-RPC Response";}

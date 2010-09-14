@@ -411,29 +411,29 @@ class RPCServer
   {
     if (!is_array($request))
     {
-      return $this->error_msg('Invalid Request message');
+      return $this->error_msg("Invalid Request message");
     }
 
     if (!$request['name'])
     {
-      return $this->error_msg('Invalid Method Call');
+      return $this->error_msg("Invalid Method Call");
     }
 
     $method_name = $request['name'];
 
     if (!$this->methods[$method_name])
     {
-      return $this->error_msg('Unknown method: ' + $method_name);
+      return $this->error_msg("Unknown method: {$method_name}");
     }
 
     $state = $request['state'];
 
     if ($state)
     {
-      $server->load_state($state);
+      $this->load_state($state);
     }
 
-    $func = $server->methods[$method];
+    $func = $this->methods[$method_name];
     $arguments = $request['arguments'];
 
     if (!$arguments)
@@ -444,6 +444,7 @@ class RPCServer
     ob_start();
 
     $return_value = call_user_func_array($func,$arguments);
+    var_dump($return_value);
 
     $output = ob_get_contents();
     ob_end_clean();
