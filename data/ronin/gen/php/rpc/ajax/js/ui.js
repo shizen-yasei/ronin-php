@@ -19,7 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-var shell = {
+var Shell = {
   clear: function() {
     $("#console_shell").terminalClear();
   },
@@ -32,24 +32,24 @@ var shell = {
     $.phprpc.callService('shell','exec',new Array(command),function(output) {
       if (output.error != null)
       {
-        shell.print(output.error);
+        Shell.print(output.error);
       }
       else
       {
         var text = '$ ' + command + "\n";
 
-	if (output.returnValue != null && output.returnValue.length > 0)
-	{
-	  text += output.returnValue;
-	}
+        if (output.returnValue != null && output.returnValue.length > 0)
+        {
+          text += output.returnValue;
+        }
 
-        shell.print(text);
+        Shell.print(text);
       }
     });
   }
 };
 
-var php = {
+var PHP = {
   clear: function() {
     $("#console_php").terminalClear();
   },
@@ -62,7 +62,7 @@ var php = {
     $.phprpc.callService('console','inspect',new Array(code),function(response) {
       if (response.error != null)
       {
-        php.print(response.error);
+        PHP.print(response.error);
       }
       else
       {
@@ -73,7 +73,7 @@ var php = {
           text = text + response.output;
         }
 
-        php.print(text + "=> " + response.returnValue + "\n");
+        PHP.print(text + "=> " + response.returnValue + "\n");
       }
     });
   }

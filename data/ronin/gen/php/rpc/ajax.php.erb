@@ -10,11 +10,11 @@
     <script type="text/javascript">
       $(document).ready(function() {
         $("#console_shell").terminal(function(input) {
-          shell.exec(input);
+          Shell.exec(input);
         });
 
         $("#console_php").terminal(function(input) {
-          php.inspect(input);
+          PHP.inspect(input);
         });
 
         $("#console_tabs > ul").tabs({
