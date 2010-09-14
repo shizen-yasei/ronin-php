@@ -18,10 +18,10 @@ class RPCServer
     );
   }
 
-  function return_value_msg($state,$output,$return_value)
+  function return_msg($state,$output,$return_value)
   {
     return array(
-      'type' => 'response',
+      'type' => 'return',
       'state' => $state,
       'output' => $output,
       'return_value' => $return_value,
@@ -103,7 +103,7 @@ class RPCServer
 
     $updated_state = $this->save_state();
 
-    return $this->return_value_msg($updated_state,$output,$return_value);
+    return $this->return_msg($updated_state,$output,$return_value);
   }
 
   function rpc_services($method)

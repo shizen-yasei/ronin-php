@@ -33,12 +33,12 @@ module Ronin
       class Response < RPC::Response
 
         # Valid response types
-        VALID_TYPES = Set['error', 'return_value']
+        VALID_TYPES = Set['error', 'return']
 
         # Valid response keys for the response types
         VALID_KEYS = {
           'error' => Set['message'],
-          'return_value' => Set[
+          'return' => Set[
             'state',
             'output',
             'return_value'
@@ -61,7 +61,7 @@ module Ronin
         def decode
           match = @contents.match(/<rpc-response>(.*)<\/rpc-response>/m)
 
-          unless (match || match[1])
+          unless (match && match[1])
             raise(ResponseMissing,"failed to receive a valid RPC response",caller)
           end
 
