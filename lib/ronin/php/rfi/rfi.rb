@@ -19,10 +19,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-require 'ronin/extensions/uri'
 require 'ronin/network/http'
 require 'ronin/web/spider'
 
+require 'uri/query_params'
 require 'digest/md5'
 
 module Ronin

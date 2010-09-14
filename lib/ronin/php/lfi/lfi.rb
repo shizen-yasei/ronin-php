@@ -23,10 +23,11 @@ require 'ronin/php/lfi/exceptions/unknown_signature'
 require 'ronin/php/lfi/signature'
 require 'ronin/php/lfi/signatures'
 require 'ronin/php/lfi/file'
-require 'ronin/extensions/uri'
 require 'ronin/network/http'
 require 'ronin/web/spider'
 require 'ronin/path'
+
+require 'uri/query_params'
 
 module Ronin
   module PHP
