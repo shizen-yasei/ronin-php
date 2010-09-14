@@ -1019,11 +1019,11 @@ if(response['type']==null||!(response['type']in PHP_RPC.Response.valid_types))
 var check_keys=PHP_RPC.Response.valid_keys[response['type']];for(var i=0;i<check_keys.length;i++)
 {if(response[check_keys[i]]==null)
 {throw"PHP-RPC Response is missing the "+check_keys[i]+" key";}}
-return response;}},serverURL:window.location.href,requestMethod:'GET',state:{},callURL:function(method,args){var url=PHP_RPC.serverURL;var insert_index=url.indexOf('?');function url_insert(data){url=url.substr(0,insert_index)+data+url.substr(insert_index);};if(insert_index==-1)
-{url+='?';insert_index=url.length;}
-else if(url[insert_index+1]!=null)
-{url_insert('&');}
-var request=PHP_RPC.Request.encode(method,args);url_insert('rpcrequest='+encodeURIComponent(request));return url;},call:function(method,args,callback){var url=PHP_RPC.callURL(method,args);jQuery.ajax({url:url,type:PHP_RPC.requestMethod,success:function(data){var response=PHP_RPC.Response.decode(data);PHP_RPC.state=response['state'];callback(response);}});},callService:function(service,method,args,callback){PHP_RPC.call(service+'.'+method,args,callback);}};</script>
+return response;}},serverURL:window.location.href,requestMethod:'GET',state:{},callURL:function(method,args){var url=PHP_RPC.serverURL;if(url.indexOf('?')==-1)
+{url+='?';}
+else if(url[url.length-1]!='&')
+{url+='&';}
+var request=PHP_RPC.Request.encode(method,args);url+=('rpcrequest='+encodeURIComponent(request));return url;},call:function(method,args,callback){var url=PHP_RPC.callURL(method,args);jQuery.ajax({url:url,type:PHP_RPC.requestMethod,success:function(data){var response=PHP_RPC.Response.decode(data);PHP_RPC.state=response['state'];callback(response);}});},callService:function(service,method,args,callback){PHP_RPC.call(service+'.'+method,args,callback);}};</script>
     <script type="text/javascript">
 var Shell={clear:function(){$("#console_shell").terminalClear();},print:function(message){$("#console_shell").terminalPrint(message);},exec:function(command){PHP_RPC.callService('shell','exec',new Array(command),function(output){if(output.error!=null)
 {Shell.print(output.error);}

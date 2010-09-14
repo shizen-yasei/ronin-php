@@ -74,30 +74,21 @@ var PHP_RPC = {
    */
   callURL: function(method,args) {
     var url = PHP_RPC.serverURL;
-    var insert_index = url.indexOf('?');
 
-    function url_insert(data) {
-      url = url.substr(0,insert_index) + data + url.substr(insert_index);
-    };
-
-    if (insert_index == -1)
+    if (url.indexOf('?') == -1)
     {
       // if there is no '?' character, append it
       url += '?';
-
-      // insert any extra query params after the '?' character
-      insert_index = url.length;
     }
-    else if (url[insert_index + 1] != null)
+    else if (url[url.length - 1] != '&')
     {
-      // insert a '&' separater character after the '?' character
-      url_insert('&');
+      url += '&';
     }
 
     var request = PHP_RPC.Request.encode(method,args);
 
     // insert the PHP-RPC Request message into the URL
-    url_insert('rpcrequest=' + encodeURIComponent(request));
+    url += ('rpcrequest=' + encodeURIComponent(request));
     return url;
   },
 
