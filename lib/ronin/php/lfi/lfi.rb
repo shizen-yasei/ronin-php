@@ -93,6 +93,49 @@ module Ronin
         @os = options[:os]
       end
 
+      #
+      # Scans the URL for LFI vulnerabilities.
+      #
+      # @param [URI::HTTP, String] url
+      #   The URL to scan.
+      #
+      # @param [Hash] options
+      #   Additional options.
+      #
+      # @option options [Range] :up
+      #   The number of directories to attempt traversing up.
+      #
+      # @yield [lfi]
+      #   The given block will be passed each discovered LFI vulnerability.
+      #
+      # @yieldparam [LFI] lfi
+      #   A discovered LFI vulnerability.
+      #
+      # @return [Enumerator]
+      #   If no block is given, an enumerator object will be returned.
+      #
+      # @since 0.2.0
+      #
+      def LFI.scan(url,options={})
+        return enum_for(:scan,url,options) unless block_given?
+
+        url = URI(url.to_s) unless url.kind_of?(URI)
+        up = (options[:up] || (0..MAX_UP))
+
+        url.query_params.each_key do |param|
+          lfi = Ronin::PHP::LFI.new(url,param)
+
+          up.each do |n|
+            lfi.up = n
+
+            if lfi.vulnerable?(options)
+              yield lfi
+              break
+            end
+          end
+        end
+      end
+
       def LFI.spider(url,options={},&block)
         lfis = []
 
