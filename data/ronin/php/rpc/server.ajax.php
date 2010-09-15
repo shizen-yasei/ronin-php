@@ -718,8 +718,6 @@ function fingerprint($params=array())
       'extdir' => PHP_EXTENSION_DIR,
       'libdir' => PHP_LIBDIR,
       'lib_suffix' => PHP_SHLIB_SUFFIX,
-      'ini_files' => split(',',php_ini_scanned_files()),
-      'loaded_ini_file' => php_ini_loaded_file(),
       'loaded_exts' => get_loaded_extensions(),
       'server_api' => PHP_SAPI,
       'version' => array(
@@ -744,6 +742,16 @@ function fingerprint($params=array())
   if (function_exists('posix_getgid'))
   {
     $profile['gid'] = posix_getgid();
+  }
+
+  if (function_exists('php_ini_loaded_file'))
+  {
+    $profile['php']['loaded_ini_file'] = php_ini_loaded_file();
+  }
+
+  if (function_exists('php_ini_scanned_files'))
+  {
+    $profile['php']['ini_files'] = split(',',php_ini_scanned_files());
   }
 
   switch ($profile['php']['server_api'])
