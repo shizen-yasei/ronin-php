@@ -14,10 +14,8 @@ class ConsoleService extends Service
     $this->persistant = array('includes');
   }
 
-  function rpc_invoke($params)
+  function rpc_invoke($name,$arguments)
   {
-    $name = $params[0];
-    $arguments = $params[1];
     $call_arguments = array();
 
     if ($arguments != null)
@@ -40,10 +38,8 @@ class ConsoleService extends Service
     return $ret;
   }
 
-  function rpc_eval($params)
+  function rpc_eval($code)
   {
-    $code = trim($params[0]);
-
     if ($code[strlen($code) - 1] != ';')
     {
       $code .= ';';
@@ -52,9 +48,9 @@ class ConsoleService extends Service
     return eval('return ' . $code);
   }
 
-  function rpc_inspect($params)
+  function rpc_inspect($code)
   {
-    $ret = $this->rpc_eval($params);
+    $ret = $this->rpc_eval($code);
 
     ob_start();
     print_r($ret);

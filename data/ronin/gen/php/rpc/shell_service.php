@@ -50,6 +50,7 @@ class ShellService extends Service
 
     $output = ob_get_contents();
     ob_end_clean();
+
     return split("\n",rtrim($output,"\n\r"));
   }
 
@@ -73,15 +74,13 @@ class ShellService extends Service
     }
   }
 
-  function rpc_cwd($params=array())
+  function rpc_cwd()
   {
     return $this->cwd;
   }
 
-  function rpc_cd($params)
+  function rpc_cd($new_cwd)
   {
-    $new_cwd = $params[0];
-
     if ($new_cwd[0] != DIRECTORY_SEPARATOR)
     {
       $new_cwd = $this->cwd . DIRECTORY_SEPARATOR . $new_cwd;
@@ -98,32 +97,28 @@ class ShellService extends Service
     return false;
   }
 
-  function rpc_env($params=array())
+  function rpc_env()
   {
     return $this->env;
   }
 
-  function rpc_getenv($params)
+  function rpc_getenv($key)
   {
-    return $this->env[$params[0]];
+    return $this->env[$key];
   }
 
-  function rpc_setenv($params)
+  function rpc_setenv($key,$value)
   {
-    return $this->env[$params[0]] = $params[1];
+    return $this->env[$key] = $value;
   }
 
-  function rpc_exec($params)
+  function rpc_exec($program,$arguments=array())
   {
-    $command = 'cd ' . $this->cwd . '; ';
+    $command = "cd {$this->cwd}; {$program}";
 
-    if (count($params) > 1)
+    if (count($arguments) > 0)
     {
-      $command .= array_shift($params) . ' ' . $this->format($params);
-    }
-    else
-    {
-      $command .= $params[0];
+      $command .= ' ' . $this->format($arguments);
     }
 
     $command .= '; pwd';

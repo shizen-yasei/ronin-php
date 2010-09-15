@@ -58,7 +58,7 @@ GIT
 
 GIT
   remote: http://github.com/ronin-ruby/ronin.git
-  revision: cd1ec557b340a60506e03492d13e5cf71a9b2fe0
+  revision: 5c07e2565f022442e68f463968ce0c6de55a3e6c
   specs:
     ronin (0.4.0)
       activesupport (~> 3.0.0)
