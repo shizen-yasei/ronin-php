@@ -69,6 +69,9 @@ var PHP_RPC = {
   // The State used by the PHP-RPC Client
   state: {},
 
+  // The default exception handler
+  exceptionHandler: function(message) { throw message; },
+
   /*
    * Crafts a URL for a PHP-RPC Request.
    */
@@ -106,11 +109,16 @@ var PHP_RPC = {
 
         if (response['type'] == 'error')
         {
-          throw response['message'];
+          PHP_RPC.exceptionHandler(response['message']);
         }
 
         PHP_RPC.state = response['state'];
         callback(response);
+      },
+      error: function(xhr,type) {
+        PHP_RPC.exceptionHandler(
+          'The AJAX Request could not be completed (' + type + ')'
+        );
       }
     });
   },

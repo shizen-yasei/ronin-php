@@ -20,18 +20,11 @@
  */
 
 var UI = {
-  catchExceptions: function(callback) {
-    try
-    {
-      callback();
-    }
-    catch(exception)
-    {
-      var mesg = $('<p class="exception"/>').text(exception);
+  error: function(message) {
+    var mesg = $('<p class="exception"/>').text(message);
 
-      mesg.insertBefore("input.terminal_textarea").hide();
-      mesg.slideDown('slow').delay(3000).fadeOut('slow',mesg.remove);
-    }
+    mesg.insertBefore("input.terminal_textarea").hide();
+    mesg.slideDown('slow').delay(3000).fadeOut('slow',mesg.remove);
   },
 
   Shell: {
@@ -44,17 +37,15 @@ var UI = {
     },
 
     exec: function(command) {
-      UI.catchExceptions(function() {
-        PHP_RPC.callService('shell','exec',new Array(command),function(output) {
-          var text = '$ ' + command + "\n";
+      PHP_RPC.callService('shell','exec',new Array(command),function(output) {
+        var text = '$ ' + command + "\n";
 
-          if (output.return_value != null && output.return_value.length > 0)
-          {
-            text += output.return_value;
-          }
+        if (output.return_value != null && output.return_value.length > 0)
+        {
+          text += output.return_value;
+        }
 
-          UI.Shell.print(text);
-        });
+        UI.Shell.print(text);
       });
     }
   },
@@ -69,17 +60,15 @@ var UI = {
     },
 
     inspect: function(code) {
-      UI.catchExceptions(function() {
-        PHP_RPC.callService('console','inspect',new Array(code),function(response) {
-          var text = '>> ' + code + "\n";
+      PHP_RPC.callService('console','inspect',new Array(code),function(response) {
+        var text = '>> ' + code + "\n";
 
-          if (response.output != null)
-          {
-            text += response.output;
-          }
+        if (response.output != null)
+        {
+          text += response.output;
+        }
 
-          UI.PHP.print(text + "=> " + response.return_value + "\n");
-        });
+        UI.PHP.print(text + "=> " + response.return_value + "\n");
       });
     }
   }

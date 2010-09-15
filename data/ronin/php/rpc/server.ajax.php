@@ -1024,24 +1024,23 @@ if(response['type']==null||!(response['type']in PHP_RPC.Response.valid_types))
 var check_keys=PHP_RPC.Response.valid_keys[response['type']];for(var i=0;i<check_keys.length;i++)
 {if(response[check_keys[i]]==null)
 {throw"PHP-RPC Response is missing the "+check_keys[i]+" key";}}
-return response;}},serverURL:window.location.href,requestMethod:'GET',state:{},callURL:function(method,args){var url=PHP_RPC.serverURL;if(url.indexOf('?')==-1)
+return response;}},serverURL:window.location.href,requestMethod:'GET',state:{},exceptionHandler:function(message){throw message;},callURL:function(method,args){var url=PHP_RPC.serverURL;if(url.indexOf('?')==-1)
 {url+='?';}
 else if(url[url.length-1]!='&')
 {url+='&';}
 var request=PHP_RPC.Request.encode(method,args);url+=('rpcrequest='+encodeURIComponent(request));return url;},call:function(method,args,callback){var url=PHP_RPC.callURL(method,args);jQuery.ajax({url:url,type:PHP_RPC.requestMethod,success:function(data){var response=PHP_RPC.Response.decode(data);if(response['type']=='error')
-{throw response['message'];}
-PHP_RPC.state=response['state'];callback(response);}});},callService:function(service,method,args,callback){PHP_RPC.call(service+'.'+method,args,callback);}};</script>
+{PHP_RPC.exceptionHandler(response['message']);}
+PHP_RPC.state=response['state'];callback(response);},error:function(xhr,type){PHP_RPC.exceptionHandler('The AJAX Request could not be completed ('+type+')');}});},callService:function(service,method,args,callback){PHP_RPC.call(service+'.'+method,args,callback);}};</script>
     <script type="text/javascript">
-var UI={catchExceptions:function(callback){try
-{callback();}
-catch(exception)
-{var mesg=$('<p class="exception"/>').text(exception);mesg.insertBefore("input.terminal_textarea").hide();mesg.slideDown('slow').delay(3000).fadeOut('slow',mesg.remove);}},Shell:{clear:function(){$("#console_shell").terminalClear();},print:function(message){$("#console_shell").terminalPrint(message);},exec:function(command){UI.catchExceptions(function(){PHP_RPC.callService('shell','exec',new Array(command),function(output){var text='$ '+command+"\n";if(output.return_value!=null&&output.return_value.length>0)
+var UI={error:function(message){var mesg=$('<p class="exception"/>').text(message);mesg.insertBefore("input.terminal_textarea").hide();mesg.slideDown('slow').delay(3000).fadeOut('slow',mesg.remove);},Shell:{clear:function(){$("#console_shell").terminalClear();},print:function(message){$("#console_shell").terminalPrint(message);},exec:function(command){PHP_RPC.callService('shell','exec',new Array(command),function(output){var text='$ '+command+"\n";if(output.return_value!=null&&output.return_value.length>0)
 {text+=output.return_value;}
-UI.Shell.print(text);});});}},PHP:{clear:function(){$("#console_php").terminalClear();},print:function(message){$("#console_php").terminalPrint(message);},inspect:function(code){UI.catchExceptions(function(){PHP_RPC.callService('console','inspect',new Array(code),function(response){var text='>> '+code+"\n";if(response.output!=null)
+UI.Shell.print(text);});}},PHP:{clear:function(){$("#console_php").terminalClear();},print:function(message){$("#console_php").terminalPrint(message);},inspect:function(code){PHP_RPC.callService('console','inspect',new Array(code),function(response){var text='>> '+code+"\n";if(response.output!=null)
 {text+=response.output;}
-UI.PHP.print(text+"=> "+response.return_value+"\n");});});}}};</script>
+UI.PHP.print(text+"=> "+response.return_value+"\n");});}}};</script>
     <script type="text/javascript">
       $(document).ready(function() {
+        PHP_RPC.exceptionHandler = UI.error;
+
         $("#console_shell").terminal(function(input) {
           UI.Shell.exec(input);
         });

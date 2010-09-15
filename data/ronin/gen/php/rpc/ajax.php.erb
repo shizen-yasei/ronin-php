@@ -11,6 +11,8 @@
     <%= js_min read_template('ajax/js/ui.js') %>
     <script type="text/javascript">
       $(document).ready(function() {
+        PHP_RPC.exceptionHandler = UI.error;
+
         $("#console_shell").terminal(function(input) {
           UI.Shell.exec(input);
         });
