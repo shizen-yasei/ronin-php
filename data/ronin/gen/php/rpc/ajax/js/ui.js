@@ -46,21 +46,14 @@ var UI = {
     exec: function(command) {
       UI.catchExceptions(function() {
         PHP_RPC.callService('shell','exec',new Array(command),function(output) {
-          if (output.error != null)
-          {
-            UI.Shell.print(output.error);
-          }
-          else
-          {
-            var text = '$ ' + command + "\n";
+          var text = '$ ' + command + "\n";
 
-            if (output.returnValue != null && output.returnValue.length > 0)
-            {
-              text += output.returnValue;
-            }
-
-            UI.Shell.print(text);
+          if (output.return_value != null && output.return_value.length > 0)
+          {
+            text += output.return_value;
           }
+
+          UI.Shell.print(text);
         });
       });
     }
@@ -78,21 +71,14 @@ var UI = {
     inspect: function(code) {
       UI.catchExceptions(function() {
         PHP_RPC.callService('console','inspect',new Array(code),function(response) {
-          if (response.error != null)
-          {
-            UI.PHP.print(response.error);
-          }
-          else
-          {
-            var text = '>> ' + code + "\n";
+          var text = '>> ' + code + "\n";
 
-            if (response.output != null)
-            {
-              text = text + response.output;
-            }
-
-            UI.PHP.print(text + "=> " + response.returnValue + "\n");
+          if (response.output != null)
+          {
+            text += response.output;
           }
+
+          UI.PHP.print(text + "=> " + response.return_value + "\n");
         });
       });
     }
