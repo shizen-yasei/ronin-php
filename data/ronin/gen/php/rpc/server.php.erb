@@ -76,7 +76,7 @@ function fingerprint($params=array())
     $profile['gid'] = posix_getgid();
   }
 
-  switch ($profile['php_server_api'])
+  switch ($profile['php']['server_api'])
   {
   case 'apache':
     $profile['apache_version'] = apache_get_version();
