@@ -106,6 +106,38 @@ module Ronin
         @@ronin_rfi_test_script = new_url
       end
 
+      #
+      # Scans the URL for RFI vulnerabilities.
+      #
+      # @param [URI::HTTP, String] url
+      #   The URL to scan.
+      #
+      # @param [Hash] options
+      #   Additional options.
+      #
+      # @yield [rfi]
+      #   The given block will be passed each discovered RFI vulnerability.
+      #
+      # @yieldparam [RFI] rfi
+      #   A discovered RFI vulnerability.
+      #
+      # @return [Enumerator]
+      #   If no block is given, an enumerator object will be returned.
+      #
+      # @since 0.2.0
+      #
+      def RFI.scan(url,options={})
+        return enum_for(:scan,url,options) unless block_given?
+
+        url = URI(url.to_s) unless url.kind_of?(URI)
+
+        url.query_params.each_key do |param|
+          rfi = RFI.new(url,param)
+
+          yield rfi if rfi.vulnerable?(options)
+        end
+      end
+
       def RFI.spider(url,options={},&block)
         rfis = []
 
