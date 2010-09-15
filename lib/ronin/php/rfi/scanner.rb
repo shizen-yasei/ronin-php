@@ -19,13 +19,13 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-require 'ronin/php/rfi/extensions/uri/http'
-require 'ronin/scanners/web'
+require 'ronin/php/rfi/rfi'
+require 'ronin/scanners/web_vuln_scanner'
 
 module Ronin
   module Scanners
-    Web.scanner(:rfi) do |page,results,options|
-      page.url.rfi_scan(options,&results)
+    WebVulnScanner.test_for(:rfi) do |page,block|
+      PHP::RFI.scan(page.url,&block)
     end
   end
 end

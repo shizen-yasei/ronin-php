@@ -1,6 +1,6 @@
 GIT
   remote: http://github.com/ronin-ruby/ronin-exploits.git
-  revision: e7757f5d091d46d923a5085e1129cc9ab1deb8b8
+  revision: 1e5347cea2f5d0e688a6e0726bd03638dec4e60a
   specs:
     ronin-exploits (0.4.0)
       data_paths (~> 0.2.1)
@@ -8,10 +8,11 @@ GIT
       ronin (~> 0.4.0)
       ronin-gen (~> 0.3.0)
       ronin-support (~> 0.1.0)
+      uri-query_params (~> 0.4.0)
 
 GIT
   remote: http://github.com/ronin-ruby/ronin-gen.git
-  revision: b3eaccc0dbffd0e405a6338a562cb61eaa5865a0
+  revision: 556a1657c81daa1645372d0a3216423e481cd7fd
   specs:
     ronin-gen (0.3.0)
       data_paths (~> 0.2.1)
@@ -22,7 +23,7 @@ GIT
 
 GIT
   remote: http://github.com/ronin-ruby/ronin-scanners.git
-  revision: 11c16a03fcacbc9764b21a91f3b9d0069b057b70
+  revision: 7177586c109452a76172805b0bae7147dbd32ed0
   specs:
     ronin-scanners (0.2.0)
       nokogiri (~> 1.4.1)
