@@ -61,7 +61,7 @@ module URI
     # @deprecated Use {#rfi_scan} instead.
     #
     def test_rfi(*arguments,&block)
-      rf_scan(*arguments,&block)
+      rfi_scan(*arguments,&block)
     end
 
     #
