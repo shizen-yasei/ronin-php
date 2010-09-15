@@ -19,62 +19,82 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-var Shell = {
-  clear: function() {
-    $("#console_shell").terminalClear();
+var UI = {
+  catchExceptions: function(callback) {
+    try
+    {
+      callback();
+    }
+    catch(exception)
+    {
+      var mesg = $('<p class="exception"/>').text(exception);
+
+      mesg.insertBefore("input.terminal_textarea").hide();
+      mesg.slideDown('slow').delay(3000).fadeOut('slow',mesg.remove);
+    }
   },
 
-  print: function(message) {
-    $("#console_shell").terminalPrint(message);
+  Shell: {
+    clear: function() {
+      $("#console_shell").terminalClear();
+    },
+
+    print: function(message) {
+      $("#console_shell").terminalPrint(message);
+    },
+
+    exec: function(command) {
+      UI.catchExceptions(function() {
+        PHP_RPC.callService('shell','exec',new Array(command),function(output) {
+          if (output.error != null)
+          {
+            UI.Shell.print(output.error);
+          }
+          else
+          {
+            var text = '$ ' + command + "\n";
+
+            if (output.returnValue != null && output.returnValue.length > 0)
+            {
+              text += output.returnValue;
+            }
+
+            UI.Shell.print(text);
+          }
+        });
+      });
+    }
   },
 
-  exec: function(command) {
-    PHP_RPC.callService('shell','exec',new Array(command),function(output) {
-      if (output.error != null)
-      {
-        Shell.print(output.error);
-      }
-      else
-      {
-        var text = '$ ' + command + "\n";
+  PHP: {
+    clear: function() {
+      $("#console_php").terminalClear();
+    },
 
-        if (output.returnValue != null && output.returnValue.length > 0)
-        {
-          text += output.returnValue;
-        }
+    print: function(message) {
+      $("#console_php").terminalPrint(message);
+    },
 
-        Shell.print(text);
-      }
-    });
-  }
-};
+    inspect: function(code) {
+      UI.catchExceptions(function() {
+        PHP_RPC.callService('console','inspect',new Array(code),function(response) {
+          if (response.error != null)
+          {
+            UI.PHP.print(response.error);
+          }
+          else
+          {
+            var text = '>> ' + code + "\n";
 
-var PHP = {
-  clear: function() {
-    $("#console_php").terminalClear();
-  },
+            if (response.output != null)
+            {
+              text = text + response.output;
+            }
 
-  print: function(message) {
-    $("#console_php").terminalPrint(message);
-  },
-
-  inspect: function(code) {
-    PHP_RPC.callService('console','inspect',new Array(code),function(response) {
-      if (response.error != null)
-      {
-        PHP.print(response.error);
-      }
-      else
-      {
-        var text = '>> ' + code + "\n";
-
-        if (response.output != null)
-        {
-          text = text + response.output;
-        }
-
-        PHP.print(text + "=> " + response.returnValue + "\n");
-      }
-    });
+            UI.PHP.print(text + "=> " + response.returnValue + "\n");
+          }
+        });
+      });
+    }
   }
 };

@@ -12,11 +12,11 @@
     <script type="text/javascript">
       $(document).ready(function() {
         $("#console_shell").terminal(function(input) {
-          Shell.exec(input);
+          UI.Shell.exec(input);
         });
 
         $("#console_php").terminal(function(input) {
-          PHP.inspect(input);
+          UI.PHP.inspect(input);
         });
 
         $("#console_tabs > ul").tabs({
