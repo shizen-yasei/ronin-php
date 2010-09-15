@@ -20,37 +20,41 @@
 #
 
 require 'ronin/php/rfi/rfi'
-require 'ronin/scanners/scanner'
-
-require 'uri/query_params'
 
 module URI
   class HTTP < Generic
 
-    include Ronin::Scanners::Scanner
+    #
+    # @see Ronin::PHP::LFI.scan
+    #
+    def rfi_scan(options={})
+      Ronin::PHP::RFI.scan(self,options)
+    end
 
     #
-    # Defines a scanner method for finding Remote File Inclusion (RFI)
-    # in specified URLs.
+    # Attempts to find the first RFI vulnerability in the URL.
     #
-    # @example Scan the url for RFI vulnerabilities.
-    #   url.scan_rfi
-    #   # => [#<Ronin::PHP::RFI: ...>, ...]
+    # @param [Hash] options
+    #   Additional options.
     #
-    # @example Scan the url and return the first RFI detected.
-    #   url.first_rfi
-    #   # => #<Ronin::PHP::RFI: ...>
+    # @return [Ronin::PHP::RFI, nil]
+    #   The first RFI vulnerability discovered.
     #
-    # @example Determine if the url is vulnerable to RFI.
-    #   url.has_rfi?
-    #   # => true
-    #
-    scanner(:rfi) do |url,results,options|
-      url.query_params.each_key do |param|
-        rfi = Ronin::PHP::RFI.new(url,param)
+    def first_rfi(options={})
+      rfi_scan(options).first
+    end
 
-        results.call(rfi) if rfi.vulnerable?(options)
-      end
+    #
+    # Determines if the URL is vulnerable to Remote File Inclusion (RFI).
+    #
+    # @param [Hash] options
+    #   Additional options.
+    #
+    # @return [Boolean]
+    #   Specifies whether the URL is vulnerable to RFI.
+    #
+    def has_rfi?(options={})
+      !(first_rfi(options).nil?)
     end
 
     #
