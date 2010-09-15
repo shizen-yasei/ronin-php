@@ -20,46 +20,47 @@
 #
 
 require 'ronin/php/lfi/lfi'
-require 'ronin/scanners/scanner'
-
-require 'uri/query_params'
 
 module URI
   class HTTP < Generic
 
-    include Ronin::Scanners::Scanner
+    #
+    # @see Ronin::PHP::LFI.scan
+    #
+    def lfi_scan(options={})
+      Ronin::PHP::LFI.scan(self,options)
+    end
 
     #
-    # Defines a scanner for finding Local File Inclusion (LFI) on specified
-    # URLs.
+    # Attempts to find the first LFI vulnerability of the URL.
     #
-    # @example Scan the url for LFI vulnerabilities.
-    #   url.lfi_scan
-    #   # => [#<Ronin::PHP::LFI: ...>, ...]
+    # @param [Hash] options
+    #   Additional options.
     #
-    # @example Scan the url and return the first LFI detected.
-    #   url.first_lfi
-    #   # => #<Ronin::PHP::LFI: ...>
+    # @option options [Range] :up
+    #   The number of directories to attempt traversing up.
     #
-    # @example Determine if the url is vulnerable to LFI.
-    #   url.has_lfi?
-    #   # => true
+    # @return [Ronin::PHP::LFI]
+    #   The first LFI vulnerability found.
     #
-    scanner(:lfi) do |url,results,options|
-      up = (options[:up] || 0..Ronin::PHP::LFI::MAX_UP)
+    def first_lfi(options={})
+      Ronin::PHP::LFI.scan(self,options).first
+    end
 
-      url.query_params.each_key do |param|
-        lfi = Ronin::PHP::LFI.new(url,param)
-
-        up.each do |n|
-          lfi.up = n
-
-          if lfi.vulnerable?(options)
-            results.call(lfi)
-            break
-          end
-        end
-      end
+    #
+    # Determines if the URL is vulnerable to Local File Inclusion (LFI).
+    #
+    # @param [Hash] options
+    #   Additional options.
+    #
+    # @option options [Range] :up
+    #   The number of directories to attempt traversing up.
+    #
+    # @return [Boolean]
+    #   Specifies whether the URL is vulnerable to LFI.
+    #
+    def has_lfi?(options={})
+      !(first_lfi(options).nil?)
     end
 
     #
