@@ -138,21 +138,6 @@ module Ronin
         end
       end
 
-      def RFI.spider(url,options={},&block)
-        rfis = []
-
-        Web::Spider.site(url,options) do |spider|
-          spider.every_url_like(/\?[a-zA-Z0-9_]/) do |vuln_url|
-            found = vuln_url.test_rfi
-
-            found.each(&block) if block
-            rfis += found
-          end
-        end
-
-        return rfis
-      end
-
       #
       # @return [Boolean]
       #   Specifies whether the RFI script URL will be terminated with
