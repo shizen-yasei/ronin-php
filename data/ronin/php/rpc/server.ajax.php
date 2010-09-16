@@ -1074,7 +1074,7 @@ UI.PHP.print(text+"=> "+response.return_value+"\n");});}}};</script>
 
   <body>
     <div id="console_container">
-      <h1 id="console_title">AJAX PHP-RPC Console v1.0</h1>
+      <h1 id="console_title">AJAX PHP-RPC Console v2.0</h1>
 
       <div id="console_content">
         <div id="console_tabs">
