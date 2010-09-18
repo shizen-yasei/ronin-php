@@ -1,6 +1,5 @@
 # Ronin PHP
 
-* [ronin.rubyforge.org/docs/ronin-php](http://ronin.rubyforge.org/docs/ronin-php/)
 * [github.com/ronin-ruby/ronin-php](http://github.com/ronin-ruby/ronin-php/)
 * [github.com/ronin-ruby/ronin-php/issues](http://github.com/ronin-ruby/ronin-php/issues)
 * [groups.google.com/group/ronin-ruby](http://groups.google.com/group/ronin-ruby)
