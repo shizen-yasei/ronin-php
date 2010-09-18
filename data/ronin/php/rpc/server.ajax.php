@@ -19,7 +19,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 /**
  * PHP MsgPack encode/decode
  * http://code.google.com/p/msgpack-php
@@ -695,10 +694,8 @@ class ShellService extends Service
   }
 }
 
-function running($params=array())
-{
-  return true;
-}
+
+function running($params=array()) { return true; }
 
 function fingerprint($params=array())
 {
@@ -733,15 +730,8 @@ function fingerprint($params=array())
     'disk_total_space' => disk_total_space('/')
   );
 
-  if (function_exists('posix_getuid'))
-  {
-    $profile['uid'] = posix_getuid();
-  }
-
-  if (function_exists('posix_getgid'))
-  {
-    $profile['gid'] = posix_getgid();
-  }
+  if (function_exists('posix_getuid')) { $profile['uid'] = posix_getuid(); }
+  if (function_exists('posix_getgid')) { $profile['gid'] = posix_getgid(); }
 
   if (function_exists('php_ini_loaded_file'))
   {
