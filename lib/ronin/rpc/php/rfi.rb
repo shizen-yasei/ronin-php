@@ -24,7 +24,7 @@ require 'ronin/rpc/php/client'
 module Ronin
   module PHP
     class RFI
-      RPC_SCRIPT = 'http://ronin.rubyforge.org/static/ronin/php/rpc/server.min.php'
+      RPC_SCRIPT = 'http://github.com/ronin-ruby/ronin-php/raw/master/data/ronin/php/rpc/server.ajax.php'
 
       #
       # @return [String]
