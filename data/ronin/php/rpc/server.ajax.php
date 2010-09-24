@@ -740,7 +740,7 @@ function fingerprint($params=array())
 
   if (function_exists('php_ini_scanned_files'))
   {
-    $profile['php']['ini_files'] = split(',',php_ini_scanned_files());
+    $profile['php']['ini_files'] = explode(',',php_ini_scanned_files());
   }
 
   switch ($profile['php']['server_api'])
