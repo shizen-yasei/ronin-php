@@ -343,7 +343,7 @@ module Ronin
         def self.define(name,&block)
           new_sig = Signature.new(&block)
 
-          .categories[name] << new_sig
+          Signature.categories[name] << new_sig
           return new_sig
         end
 
