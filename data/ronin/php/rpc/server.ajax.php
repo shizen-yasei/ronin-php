@@ -441,6 +441,7 @@ class RPCServer
 
     ob_start();
 
+    // This will cause issues in php < 5.3.0
     $return_value = call_user_func_array($func,$arguments);
 
     $output = ob_get_contents();
@@ -603,12 +604,34 @@ class ShellService extends Service
   {
     ob_start();
 
-    passthru($command);
+    $descriptorspec = array(
+      0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
+      1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
+      2 => array("pipe", "w")   // stderr is a file to write to<br>
+    );
+
+    // This may cause problems on windows 98
+    $process = proc_open($command, $descriptorspec, $pipes, $this->cwd);
+
+    if (is_resource($process)) {
+      $read = array($pipes[1],$pipes[2]);
+      $write = NULL;
+      $except = NULL;
+
+      stream_select($read, $write, $except, 2);
+      echo stream_get_contents($pipes[2]);
+      echo stream_get_contents($pipes[1]);
+
+      fclose($pipes[0]);
+      fclose($pipes[1]);
+      fclose($pipes[2]);
+      $return = proc_close($process);
+    }
 
     $output = ob_get_contents();
     ob_end_clean();
 
-    return split("\n",rtrim($output,"\n\r"));
+    return explode("\n",rtrim($output,"\n\r"));
   }
 
   function load_env()
@@ -764,7 +787,8 @@ if (isset($_REQUEST['rpcrequest']))
   $server->register_service('shell', new ShellService());
 
   $request = $_REQUEST['rpcrequest'];
-  $call = MsgPack_Coder::decode(base64_decode(rawurldecode($request)));
+  $encoded_call = base64_decode(rawurldecode($request));
+  $call = MsgPack_Coder::decode($encoded_call);
   $return_value = $server->call_method($call);
   $response = base64_encode(MsgPack_Coder::encode($return_value));
 
