@@ -1100,10 +1100,41 @@ UI.PHP.print(text+"=> "+response.return_value+"\n");});}}};</script>
   echo(" -->");
 
   $info = fingerprint();
+  echo get_printable_fingerprint($info); 
 
-  foreach($info as $name => $value)
-  {
-    echo("<p><strong>" . str_replace('_', ' ', $name) . ":</strong> $value</p>\n");
+  function get_printable_fingerprint($info) {
+    $return = "";
+    static $stack_depth = -1;
+    if (is_array($info)) {
+      // If it is a hash we will pretty print it with the current indentation
+      // If it is a regular array we will print it as a csv
+      if (isset($info[0])) {
+        return implode(', ', $info);
+      }
+      else {
+        $stack_depth++;
+        foreach($info as $name => $value) {
+          $return .= "<p>". get_padding($stack_depth) ."<strong>". 
+            str_replace('_', ' ', $name) . ":</strong> ".
+            get_printable_fingerprint($value) ."</p>\n";
+        }
+        $stack_depth--;
+      }
+    }
+    else {
+      return $info;
+    }
+
+    return $return;
+  }
+
+  function get_padding($count) {
+    $return = "";
+    $i = 0;
+    while ($i++ < 3*$count) {
+      $return .= '&nbsp;';
+    }
+    return $return;
   }
 
   echo("<!-- ");
