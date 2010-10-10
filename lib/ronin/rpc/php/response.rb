@@ -62,26 +62,26 @@ module Ronin
           match = @contents.match(/<rpc-response>(.*)<\/rpc-response>/m)
 
           unless (match && match[1])
-            raise(ResponseMissing,"failed to receive a valid RPC response",caller)
+            raise(ResponseMissing,"failed to receive a valid RPC response")
           end
 
           response = FFI::MsgPack.unpack(Base64.decode64(match[1]))
 
           unless response.kind_of?(Hash)
-            raise(InvalidResponse,"decoded RPC response was not a Hash",caller)
+            raise(InvalidResponse,"decoded RPC response was not a Hash")
           end
 
           unless response['type']
-            raise(InvalidResponse,"decoded RPC response does not have a 'type' key",caller)
+            raise(InvalidResponse,"decoded RPC response does not have a 'type' key")
           end
 
           unless VALID_TYPES.include?(response['type'])
-            raise(InvalidResponse,"invalid RPC response type #{response['type'].dump}",caller)
+            raise(InvalidResponse,"invalid RPC response type #{response['type'].dump}")
           end
 
           VALID_KEYS[response['type']].each do |key|
             unless response.has_key?(key)
-              raise(InvalidResponse,"decoded RPC response does not have a #{key.dump} key",caller)
+              raise(InvalidResponse,"decoded RPC response does not have a #{key.dump} key")
             end
           end
 

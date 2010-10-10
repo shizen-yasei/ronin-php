@@ -225,7 +225,7 @@ module Ronin
         target = Signature.with_file(name)
 
         unless target
-          raise(UnknownSignature,"unknown file signature #{name.dump}",caller)
+          raise(UnknownSignature,"unknown file signature #{name.dump}")
         end
 
         return inclusion_of(target,options,&block)
