@@ -151,7 +151,7 @@ GEM
     ffi-msgpack (0.1.4)
       ffi (~> 0.6.0)
     git (1.2.5)
-    jeweler (1.5.0.pre3)
+    jeweler (1.5.0.pre5)
       bundler (~> 1.0.0)
       git (>= 1.2.5)
       rake
