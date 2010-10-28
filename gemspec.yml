@@ -1,0 +1,21 @@
+name: ronin-php
+summary: A Ruby library for Ronin that provides support for PHP related security tasks.
+description:
+  Ronin PHP is a Ruby library for Ronin that provides support for PHP related security tasks.
+
+license: GPL-2
+authors: Postmodern
+email: postmodern.mod3@gmail.com
+homepage: http://github.com/ronin-ruby/ronin-php
+has_yard: true
+
+dependencies:
+  uri-query_params: ~> 0.4.0
+  data_paths: ~> 0.2.1
+  ffi-msgpack: ~> 0.1.4
+  cssmin: ~> 1.0.2
+  jsmin: ~> 1.0.1
+
+development_dependencies:
+  bundler: ~> 1.0.0
+  yard: ~> 0.6.1

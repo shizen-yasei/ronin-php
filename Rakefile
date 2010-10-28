@@ -1,8 +1,15 @@
 require 'rubygems'
-require 'bundler'
 
 begin
-  Bundler.setup(:development, :doc)
+  require 'bundler'
+rescue LoadError => e
+  STDERR.puts e.message
+  STDERR.puts "Run `gem install bundler` to install Bundler."
+  exit e.status_code
+end
+
+begin
+  Bundler.setup(:development)
 rescue Bundler::BundlerError => e
   STDERR.puts e.message
   STDERR.puts "Run `bundle install` to install missing gems"
@@ -10,26 +17,9 @@ rescue Bundler::BundlerError => e
 end
 
 require 'rake'
-require 'jeweler'
-require './lib/ronin/php/version.rb'
 
-Jeweler::Tasks.new do |gem|
-  gem.name = 'ronin-php'
-  gem.version = Ronin::PHP::VERSION
-  gem.licenses = ['GPL-2']
-  gem.summary = %Q{A Ruby library for Ronin that provides support for PHP related security tasks.}
-  gem.description = %Q{Ronin PHP is a Ruby library for Ronin that provides support for PHP related security tasks.}
-  gem.email = 'ronin-ruby@googlegroups.com'
-  gem.homepage = 'http://github.com/ronin-ruby/ronin-php'
-  gem.authors = ['Postmodern']
-  gem.has_rdoc = 'yard'
-
-  gem.files.include %w{
-      data/ronin/php/rpc/server.php
-      data/ronin/php/rpc/server.ajax.php
-  }
-end
-Jeweler::GemcutterTasks.new
+require 'ore/tasks'
+Ore::Tasks.new
 
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new
