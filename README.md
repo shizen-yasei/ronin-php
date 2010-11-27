@@ -1,8 +1,9 @@
 # Ronin PHP
 
-* [github.com/ronin-ruby/ronin-php](http://github.com/ronin-ruby/ronin-php/)
-* [github.com/ronin-ruby/ronin-php/issues](http://github.com/ronin-ruby/ronin-php/issues)
-* [groups.google.com/group/ronin-ruby](http://groups.google.com/group/ronin-ruby)
+* [Source](http://github.com/ronin-ruby/ronin-php)
+* [Issues](http://github.com/ronin-ruby/ronin-php/issues)
+* [Documentation](http://rubydoc.info/github/ronin-ruby/ronin-php/frames)
+* [Mailing List](http://groups.google.com/group/ronin-ruby)
 * irc.freenode.net #ronin
 
 ## Description
