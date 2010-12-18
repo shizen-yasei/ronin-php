@@ -23,10 +23,11 @@ group :development do
   gem 'ronin',		    '~> 1.0.0', :git => "#{RONIN}/ronin.git"
   gem 'ronin-gen',	  '~> 0.3.0', :git => "#{RONIN}/ronin-gen.git"
 
-  case RUBY_PLATFORM
-  when 'java'
+  platforms :jruby do
     gem 'maruku',     '~> 0.6.0'
-  else
+  end
+
+  platforms :ruby do
     gem 'rdiscount',	'~> 1.6.3'
   end
 
