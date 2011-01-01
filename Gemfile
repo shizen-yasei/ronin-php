@@ -24,7 +24,7 @@ group :development do
   gem 'ronin-gen',	  '~> 0.3.0', :git => "#{RONIN}/ronin-gen.git"
 
   platforms :jruby do
-    gem 'maruku',     '~> 0.6.0'
+    gem 'BlueCloth'
   end
 
   platforms :ruby do
